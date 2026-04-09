@@ -1,0 +1,237 @@
+{
+  "periods": [
+    { "id": "prehistoire", "label": "Préhistoire", "color": "#8a6f3a" },
+    { "id": "ancien",      "label": "Ancien Empire", "color": "#c08a2e" },
+    { "id": "moyen",       "label": "Moyen Empire", "color": "#a64b2a" },
+    { "id": "nouvel",      "label": "Nouvel Empire", "color": "#1f3a8a" },
+    { "id": "tardif",      "label": "Basse Époque", "color": "#3b342a" },
+    { "id": "greco",       "label": "Période gréco-romaine", "color": "#5a4a8a" },
+    { "id": "moderne",     "label": "Égypte moderne", "color": "#14245a" }
+  ],
+  "events": [
+    {
+      "year": -5500,
+      "displayDate": "vers 5500 av. J.-C.",
+      "period": "prehistoire",
+      "title": "Premières cultures néolithiques",
+      "description": "Les civilisations de Badari et de Nagada s'établissent le long du Nil. Agriculture, poterie et premiers rites funéraires apparaissent."
+    },
+    {
+      "year": -3150,
+      "displayDate": "vers 3150 av. J.-C.",
+      "period": "prehistoire",
+      "title": "Unification de la Haute et Basse Égypte",
+      "description": "Le roi Narmer (parfois assimilé à Ménès) unifie les Deux Terres et fonde la première dynastie. Naissance de l'État pharaonique."
+    },
+    {
+      "year": -2700,
+      "displayDate": "vers 2700 av. J.-C.",
+      "period": "ancien",
+      "title": "IIIᵉ dynastie — l'âge des bâtisseurs",
+      "description": "Le pharaon Djéser et son architecte Imhotep érigent la pyramide à degrés de Saqqara, premier monument monumental en pierre de l'humanité."
+    },
+    {
+      "year": -2560,
+      "displayDate": "vers 2560 av. J.-C.",
+      "period": "ancien",
+      "title": "Construction de la grande pyramide de Khéops",
+      "description": "Plus de 2,3 millions de blocs assemblés sur le plateau de Gizeh. Plus haute construction humaine pendant près de 4000 ans."
+    },
+    {
+      "year": -2500,
+      "displayDate": "vers 2500 av. J.-C.",
+      "period": "ancien",
+      "title": "Le Sphinx de Gizeh",
+      "description": "Sculpté sous Khéphren, le Grand Sphinx garde le plateau funéraire. Symbole intemporel de la puissance pharaonique."
+    },
+    {
+      "year": -2181,
+      "displayDate": "vers 2181 av. J.-C.",
+      "period": "ancien",
+      "title": "Effondrement de l'Ancien Empire",
+      "description": "Sécheresses, baisse des crues du Nil et affaiblissement du pouvoir central plongent l'Égypte dans la Première Période Intermédiaire."
+    },
+    {
+      "year": -2055,
+      "displayDate": "vers 2055 av. J.-C.",
+      "period": "moyen",
+      "title": "Réunification par Montouhotep II",
+      "description": "Le roi thébain restaure l'unité du pays. Début du Moyen Empire, considéré comme l'âge d'or de la littérature égyptienne."
+    },
+    {
+      "year": -1991,
+      "displayDate": "vers 1991 av. J.-C.",
+      "period": "moyen",
+      "title": "XIIᵉ dynastie et essor culturel",
+      "description": "Sous Amenemhat Iᵉʳ et Sésostris Iᵉʳ, l'Égypte étend son influence en Nubie. Apogée de l'art classique et des hiéroglyphes."
+    },
+    {
+      "year": -1650,
+      "displayDate": "vers 1650 av. J.-C.",
+      "period": "moyen",
+      "title": "Invasion des Hyksôs",
+      "description": "Des peuples sémitiques venus du Levant s'installent dans le delta et fondent une dynastie. Ils introduisent le cheval et le char de guerre."
+    },
+    {
+      "year": -1550,
+      "displayDate": "vers 1550 av. J.-C.",
+      "period": "nouvel",
+      "title": "Ahmôsis chasse les Hyksôs",
+      "description": "Début du Nouvel Empire et de la XVIIIᵉ dynastie. L'Égypte devient pour trois siècles la première puissance du Proche-Orient."
+    },
+    {
+      "year": -1479,
+      "displayDate": "1479 av. J.-C.",
+      "period": "nouvel",
+      "title": "Hatchepsout, femme pharaon",
+      "description": "Régente puis pharaon à part entière, elle organise l'expédition au pays de Pount et bâtit le temple de Deir el-Bahari."
+    },
+    {
+      "year": -1457,
+      "displayDate": "1457 av. J.-C.",
+      "period": "nouvel",
+      "title": "Bataille de Megiddo",
+      "description": "Thoutmôsis III écrase une coalition cananéenne. Première bataille de l'histoire dont on possède un récit détaillé."
+    },
+    {
+      "year": -1353,
+      "displayDate": "1353 av. J.-C.",
+      "period": "nouvel",
+      "title": "La révolution d'Akhenaton",
+      "description": "Le pharaon impose le culte exclusif d'Aton et fonde une nouvelle capitale, Amarna. Première tentative monothéiste connue."
+    },
+    {
+      "year": -1332,
+      "displayDate": "1332 av. J.-C.",
+      "period": "nouvel",
+      "title": "Toutânkhamon restaure les anciens dieux",
+      "description": "Mort à 19 ans, son tombeau presque intact sera découvert par Howard Carter en 1922 et révèlera l'opulence funéraire pharaonique."
+    },
+    {
+      "year": -1274,
+      "displayDate": "1274 av. J.-C.",
+      "period": "nouvel",
+      "title": "Bataille de Qadesh",
+      "description": "Ramsès II affronte les Hittites de Mouwatalli II. La bataille débouche sur le premier traité de paix écrit de l'histoire."
+    },
+    {
+      "year": -1264,
+      "displayDate": "1264 av. J.-C.",
+      "period": "nouvel",
+      "title": "Construction d'Abou Simbel",
+      "description": "Ramsès II fait creuser deux temples colossaux dans la falaise nubienne, alignés pour que le soleil illumine le sanctuaire deux fois par an."
+    },
+    {
+      "year": -1075,
+      "displayDate": "vers 1075 av. J.-C.",
+      "period": "tardif",
+      "title": "Fin du Nouvel Empire",
+      "description": "L'invasion des Peuples de la mer, la sécheresse et les crises internes affaiblissent durablement le pouvoir. L'Égypte se fragmente."
+    },
+    {
+      "year": -664,
+      "displayDate": "664 av. J.-C.",
+      "period": "tardif",
+      "title": "Renaissance saïte",
+      "description": "La XXVIᵉ dynastie originaire de Saïs restaure la splendeur de l'art égyptien et entretient des liens commerciaux avec la Grèce."
+    },
+    {
+      "year": -525,
+      "displayDate": "525 av. J.-C.",
+      "period": "tardif",
+      "title": "Conquête perse",
+      "description": "Cambyse II, roi de Perse, défait Psammétique III à Péluse. L'Égypte devient une satrapie de l'Empire achéménide."
+    },
+    {
+      "year": -332,
+      "displayDate": "332 av. J.-C.",
+      "period": "greco",
+      "title": "Alexandre le Grand entre en Égypte",
+      "description": "Accueilli en libérateur, il fonde Alexandrie, qui deviendra la plus grande ville hellénistique et le phare intellectuel du monde antique."
+    },
+    {
+      "year": -305,
+      "displayDate": "305 av. J.-C.",
+      "period": "greco",
+      "title": "Début de la dynastie ptolémaïque",
+      "description": "Ptolémée Iᵉʳ, ancien général d'Alexandre, prend le titre de pharaon. La Bibliothèque d'Alexandrie devient le centre du savoir antique."
+    },
+    {
+      "year": -196,
+      "displayDate": "196 av. J.-C.",
+      "period": "greco",
+      "title": "La pierre de Rosette",
+      "description": "Décret rédigé en hiéroglyphes, démotique et grec ancien. Il permettra à Champollion en 1822 de déchiffrer l'écriture pharaonique."
+    },
+    {
+      "year": -30,
+      "displayDate": "30 av. J.-C.",
+      "period": "greco",
+      "title": "Mort de Cléopâtre VII",
+      "description": "Dernière souveraine de la dynastie ptolémaïque. Sa mort marque la fin de l'Égypte indépendante et l'annexion par Rome."
+    },
+    {
+      "year": 391,
+      "displayDate": "391 ap. J.-C.",
+      "period": "greco",
+      "title": "Fermeture des temples païens",
+      "description": "L'empereur Théodose interdit les cultes anciens. La connaissance des hiéroglyphes se perd peu à peu pour près de 1400 ans."
+    },
+    {
+      "year": 642,
+      "displayDate": "642 ap. J.-C.",
+      "period": "moderne",
+      "title": "Conquête arabe de l'Égypte",
+      "description": "'Amr ibn al-'As prend Alexandrie. L'Égypte entre dans le monde islamique et arabophone, étape majeure de son identité actuelle."
+    },
+    {
+      "year": 969,
+      "displayDate": "969 ap. J.-C.",
+      "period": "moderne",
+      "title": "Fondation du Caire fatimide",
+      "description": "Les Fatimides fondent Al-Qahira (« la Victorieuse ») et l'université d'Al-Azhar, qui demeure l'une des plus anciennes du monde encore en activité."
+    },
+    {
+      "year": 1798,
+      "displayDate": "1798",
+      "period": "moderne",
+      "title": "Expédition d'Égypte de Bonaparte",
+      "description": "L'armée française débarque à Alexandrie. Les savants qui l'accompagnent fondent la Description de l'Égypte et l'égyptologie moderne."
+    },
+    {
+      "year": 1822,
+      "displayDate": "1822",
+      "period": "moderne",
+      "title": "Champollion déchiffre les hiéroglyphes",
+      "description": "Grâce à la pierre de Rosette, le linguiste français retrouve la clé de l'écriture pharaonique. L'égyptologie devient une science."
+    },
+    {
+      "year": 1869,
+      "displayDate": "1869",
+      "period": "moderne",
+      "title": "Inauguration du canal de Suez",
+      "description": "Reliant la Méditerranée à la mer Rouge, le canal transforme le commerce mondial et place l'Égypte au cœur des enjeux géopolitiques."
+    },
+    {
+      "year": 1922,
+      "displayDate": "1922",
+      "period": "moderne",
+      "title": "Découverte du tombeau de Toutânkhamon",
+      "description": "Howard Carter ouvre la chambre funéraire intacte du jeune pharaon. La trouvaille déclenche une fascination mondiale pour l'Égypte ancienne."
+    },
+    {
+      "year": 1952,
+      "displayDate": "1952",
+      "period": "moderne",
+      "title": "Révolution des Officiers libres",
+      "description": "Nasser et ses compagnons renversent la monarchie. Naissance de la République d'Égypte et début d'une nouvelle ère politique."
+    },
+    {
+      "year": 2023,
+      "displayDate": "2023",
+      "period": "moderne",
+      "title": "Inauguration progressive du Grand Musée Égyptien",
+      "description": "Au pied des pyramides de Gizeh, le plus grand musée archéologique du monde regroupe plus de 100 000 pièces, dont l'intégralité du trésor de Toutânkhamon."
+    }
+  ]
+}

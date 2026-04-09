@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chronologie de l'Égypte — Kemet</title>
+<meta name="description" content="Frise chronologique interactive de l'histoire égyptienne, filtrable par période et par mot-clé.">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="container nav" aria-label="Navigation principale">
+    <a href="index.html" class="brand"><span class="brand-mark">𓋹</span> KEMET</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="histoire.html">Récit</a></li>
+      <li><a href="chronologie.html">Chronologie</a></li>
+      <li><a href="pharaons.html">Figures</a></li>
+      <li><a href="theorie.html">Théories</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom: 50px;">
+    <div class="container" style="max-width:820px;">
+      <span class="eyebrow">Frise interactive</span>
+      <h1>Chronologie<br><span class="accent">de la première dynastie à nos jours</span></h1>
+      <p class="lead">Filtrez par période, recherchez un pharaon, une bataille, un monument.
+      La base de données est ouverte : chaque événement est enrichissable.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:0;">
+    <div class="container">
+
+      <div class="timeline-controls">
+        <input type="search" id="tl-search" placeholder="Rechercher (ex : Toutânkhamon, pyramide, Cléopâtre…)" aria-label="Rechercher dans la chronologie">
+      </div>
+      <div class="timeline-controls" id="tl-chips" style="margin-top:-18px;"></div>
+
+      <div class="timeline" id="timeline">
+        <p class="timeline-empty">Chargement de la chronologie…</p>
+      </div>
+
+      <div class="divider"><span>Et après ?</span></div>
+
+      <div style="text-align:center; max-width:640px; margin:0 auto;">
+        <h2>Une question précise ?</h2>
+        <p>Cette chronologie est alimentée par un fichier de données ouvert.
+        Si vous cherchez un événement absent, signalez-le — nous enrichissons
+        régulièrement la base.</p>
+        <a href="contact.html" class="btn btn-primary">Suggérer un événement</a>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="color: var(--gold-bright);">
+          <span class="brand-mark" style="border-color: var(--gold-bright); color: var(--gold-bright);">𓋹</span> KEMET
+        </div>
+        <p style="margin-top:18px;">Le média de niche sur l'Égypte ancienne, pour lecteurs qui en savent déjà un peu et qui en veulent plus.</p>
+      </div>
+      <div><h4>Lire</h4><ul><li><a href="histoire.html">Récit long</a></li><li><a href="chronologie.html">Chronologie</a></li><li><a href="pharaons.html">Figures</a></li></ul></div>
+      <div><h4>Le projet</h4><ul><li><a href="contact.html">Contact</a></li><li><a href="contact.html">Contribuer</a></li></ul></div>
+      <div><h4>Légal</h4><ul><li><a href="#">Mentions légales</a></li><li><a href="#">Confidentialité</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Kemet. Tous droits réservés.</span><span>Média indépendant. Sources citées à chaque article.</span></div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
