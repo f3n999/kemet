@@ -1,0 +1,40 @@
+// Prisma Schema — Kemet (PostgreSQL / Neon)
+// https://www.prisma.io/docs/orm
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model TimelineEvent {
+  id          Int      @id @default(autoincrement())
+  year        Int
+  displayDate String
+  period      String
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+}
+
+model Pharaoh {
+  id          Int      @id @default(autoincrement())
+  name        String
+  dynasty     String
+  date        String
+  description String
+  slug        String   @unique
+  createdAt   DateTime @default(now())
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  createdAt DateTime @default(now())
+}

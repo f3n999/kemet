@@ -1,65 +1,145 @@
-import Image from "next/image";
+import Link from "next/link";
+import { prisma } from "@/lib/db";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const [eventCount, pharaohCount] = await Promise.all([
+    prisma.timelineEvent.count(),
+    prisma.pharaoh.count(),
+  ]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main>
+      {/* HERO */}
+      <section className="hero">
+        <div className="container hero-grid">
+          <div className="fade-up">
+            <span className="eyebrow">Média indépendant • Histoire de l&apos;Égypte ancienne</span>
+            <h1>
+              Comprendre l&apos;Égypte,
+              <span className="accent">pas la consommer.</span>
+            </h1>
+            <p className="lead">
+              Kemet raconte cinquante siècles d&apos;histoire égyptienne comme un historien
+              le ferait à un ami curieux&nbsp;: avec rigueur, avec angle, avec les sources.
+              Sans jargon, sans raccourci, sans top 10 des mystères.
+            </p>
+            <div className="hero-cta">
+              <Link href="/chronologie" className="btn btn-primary">Explorer la chronologie</Link>
+              <Link href="/pharaons" className="btn">Voir les figures</Link>
+            </div>
+          </div>
+
+          <aside className="hero-aside fade-up delay-2">
+            <h3>Ce que vous allez trouver ici</h3>
+            <p className="muted" style={{ fontSize: ".92rem" }}>
+              Deux entrées, un seul fil&nbsp;: comprendre comment cette civilisation a pensé,
+              bâti, régné et été redécouverte.
+            </p>
+            <div className="hero-stats">
+              <div>
+                <strong>{eventCount}</strong>
+                <span>Événements historiques</span>
+              </div>
+              <div>
+                <strong>{pharaohCount}</strong>
+                <span>Figures — rois, reines</span>
+              </div>
+              <div>
+                <strong>01</strong>
+                <span>Chronologie interactive</span>
+              </div>
+              <div>
+                <strong>50+</strong>
+                <span>Siècles d&apos;histoire</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <div className="container"><div className="divider"><span>Trois portes d&apos;entrée</span></div></div>
+
+      {/* PILIERS */}
+      <section style={{ paddingTop: 0 }}>
+        <div className="container">
+          <header className="section-head">
+            <span className="eyebrow">Par où commencer</span>
+            <h2>Lire, situer, approfondir</h2>
+            <p className="lead">
+              Deux manières d&apos;entrer selon ce que vous cherchez&nbsp;: la frise qui situe,
+              les portraits qui incarnent.
+            </p>
+          </header>
+
+          <div className="grid-3">
+            <article className="card">
+              <span className="num">N° 01</span>
+              <h3>La chronologie vivante</h3>
+              <p>
+                Une frise interactive filtrable par période et par mot-clé.
+                L&apos;index transversal du site&nbsp;: chaque événement raconte
+                une rupture, une construction, une disparition.
+              </p>
+              <Link className="read-more" href="/chronologie">Voir la chronologie</Link>
+            </article>
+
+            <article className="card">
+              <span className="num">N° 02</span>
+              <h3>Les figures</h3>
+              <p>
+                Pharaons, reines, architectes&nbsp;: les individus qui ont laissé une trace
+                assez nette pour qu&apos;on puisse encore leur parler à travers le temps.
+              </p>
+              <Link className="read-more" href="/pharaons">Voir les portraits</Link>
+            </article>
+
+            <article className="card">
+              <span className="num">N° 03</span>
+              <h3>Contribuer</h3>
+              <p>
+                Une erreur, une source à signaler, une question sur l&apos;égyptologie&nbsp;?
+                Kemet est un média indépendant qui vit par ses lecteurs.
+              </p>
+              <Link className="read-more" href="/contact">Nous écrire</Link>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* CITATION */}
+      <section>
+        <div className="container" style={{ maxWidth: "820px", textAlign: "center" }}>
+          <span className="eyebrow">Une terre, mille récits</span>
+          <h2 style={{ fontStyle: "italic", lineHeight: 1.25 }}>
+            «&nbsp;L&apos;Égypte est un don du Nil.&nbsp;»
+          </h2>
+          <p className="muted">— Hérodote, <em>Histoires</em>, livre II, vers 450 av. J.-C.</p>
+          <p style={{ marginTop: "30px", maxWidth: "none" }}>
+            Cette phrase est devenue un cliché parce qu&apos;elle est vraie. Sans la crue
+            annuelle du Nil, pas d&apos;agriculture&nbsp;; sans agriculture, pas d&apos;État&nbsp;;
+            sans État, pas de pyramides, pas d&apos;écriture, pas de trente dynasties. Tout
+            le reste découle de ce fleuve. Comprendre l&apos;Égypte, c&apos;est d&apos;abord comprendre
+            ça — et ensuite poser les bonnes questions sur ce qu&apos;on en a fait.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* PROMESSE ÉDITORIALE */}
+      <section style={{ background: "var(--ink)", color: "var(--papyrus)" }}>
+        <div className="container" style={{ maxWidth: "820px", textAlign: "center" }}>
+          <span className="eyebrow" style={{ color: "var(--gold-bright)" }}>Ligne éditoriale</span>
+          <h2 style={{ color: "var(--papyrus-light)" }}>Sources visibles. Angles assumés.</h2>
+          <p className="lead" style={{ color: "var(--papyrus-deep)", margin: "0 auto 32px" }}>
+            Chaque article publié sur Kemet cite ses sources en bas de page — BIFAO, ENiM,
+            Grimal, Wilkinson, Vernus. Aucun contenu généré sans relecture humaine. Aucun
+            article bâclé pour faire du trafic. Si ça ne parle pas à quelqu&apos;un qui a déjà
+            lu un livre sur l&apos;Égypte, ça ne sort pas.
+          </p>
+          <Link href="/chronologie" className="btn btn-gold">Commencer par la chronologie</Link>
         </div>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }
