@@ -5,6 +5,7 @@ config();
 
 import { PrismaClient } from '@prisma/client';
 import { PrismaNeon } from '@prisma/adapter-neon';
+import bcrypt from 'bcryptjs';
 
 const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -51,6 +52,7 @@ async function main() {
   await prisma.contactMessage.deleteMany();
   await prisma.timelineEvent.deleteMany();
   await prisma.pharaoh.deleteMany();
+  await prisma.user.deleteMany();
 
   console.log('Insertion des événements…');
   await prisma.timelineEvent.createMany({ data: events });
@@ -58,9 +60,22 @@ async function main() {
   console.log('Insertion des pharaons…');
   await prisma.pharaoh.createMany({ data: pharaohs });
 
+  console.log('Création du super admin…');
+  const adminPassword = await bcrypt.hash('Kemet2026!', 12);
+  await prisma.user.create({
+    data: {
+      name: 'Super Admin',
+      email: 'admin@kemet.fr',
+      password: adminPassword,
+      role: 'ADMIN',
+    },
+  });
+
   const evCount = await prisma.timelineEvent.count();
   const phCount = await prisma.pharaoh.count();
-  console.log(`✓ ${evCount} événements et ${phCount} pharaons insérés.`);
+  const usCount = await prisma.user.count();
+  console.log(`✓ ${evCount} événements, ${phCount} pharaons, ${usCount} utilisateur(s) insérés.`);
+  console.log('  Super admin → email: admin@kemet.fr  |  password: Kemet2026!');
 }
 
 main()
