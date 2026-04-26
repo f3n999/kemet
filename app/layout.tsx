@@ -25,6 +25,7 @@ export default function RootLayout({
               <li><Link href="/chronologie">Chronologie</Link></li>
               <li><Link href="/pharaons">Figures</Link></li>
               <li><Link href="/contact">Contact</Link></li>
+              <li><Link href="/login" style={{ fontFamily: "var(--serif-display)", fontSize: "0.8rem", letterSpacing: ".06em", border: "1px solid var(--gold)", padding: "6px 16px", borderRadius: "2px", color: "var(--gold)" }}>Connexion</Link></li>
             </ul>
           </nav>
         </header>
