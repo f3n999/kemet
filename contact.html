@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contact — Kemet</title>
-<meta name="description" content="Contactez Kemet pour toute question sur l'histoire de l'Égypte ou pour préparer votre voyage.">
+<meta name="description" content="Contactez Kemet pour toute question historique, signaler une erreur, proposer un article ou contribuer au projet.">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -18,7 +18,9 @@
       <li><a href="chronologie.html">Chronologie</a></li>
       <li><a href="pharaons.html">Figures</a></li>
       <li><a href="theorie.html">Théories</a></li>
+      <li><a href="ebooks.html">Ebooks</a></li>
       <li><a href="contact.html">Contact</a></li>
+      <li id="nav-auth-item"><a href="login.html" class="nav-cta">Connexion</a></li>
     </ul>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>
   </nav>
@@ -100,14 +102,18 @@
         </div>
         <p style="margin-top:18px;">Le média de niche sur l'Égypte ancienne, pour lecteurs qui en savent déjà un peu et qui en veulent plus.</p>
       </div>
-      <div><h4>Lire</h4><ul><li><a href="histoire.html">Récit long</a></li><li><a href="chronologie.html">Chronologie</a></li><li><a href="pharaons.html">Figures</a></li></ul></div>
-      <div><h4>Le projet</h4><ul><li><a href="contact.html">Contact</a></li><li><a href="contact.html">Contribuer</a></li></ul></div>
-      <div><h4>Légal</h4><ul><li><a href="#">Mentions légales</a></li><li><a href="#">Confidentialité</a></li></ul></div>
+      <div><h4>Lire</h4><ul><li><a href="histoire.html">Récit long</a></li><li><a href="chronologie.html">Chronologie</a></li><li><a href="pharaons.html">Figures</a></li><li><a href="theorie.html">Théories</a></li></ul></div>
+      <div><h4>Bibliothèque</h4><ul><li><a href="ebooks.html">Tous les ebooks</a></li><li><a href="dashboard.html">Mon compte</a></li></ul></div>
+      <div><h4>Le projet</h4><ul><li><a href="contact.html">Contact</a></li><li><a href="#">Mentions légales</a></li></ul></div>
     </div>
     <div class="footer-bottom"><span>© 2026 Kemet. Tous droits réservés.</span><span>Média indépendant. Sources citées à chaque article.</span></div>
   </div>
 </footer>
 
 <script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/kemet-config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => updateNavAuth());</script>
 </body>
 </html>

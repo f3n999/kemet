@@ -18,7 +18,9 @@
       <li><a href="chronologie.html">Chronologie</a></li>
       <li><a href="pharaons.html">Figures</a></li>
       <li><a href="theorie.html">Théories</a></li>
+      <li><a href="ebooks.html">Ebooks</a></li>
       <li><a href="contact.html">Contact</a></li>
+      <li id="nav-auth-item"><a href="login.html" class="nav-cta">Connexion</a></li>
     </ul>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>
   </nav>
@@ -35,6 +37,222 @@
       <p class="lead">L'égyptologie n'est pas un catalogue de certitudes. C'est un chantier.
       Cette page cartographie les grandes questions encore ouvertes — et, tout aussi
       important, celles qui ne le sont plus malgré ce qu'Internet prétend.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════
+       PYRAMIDE DES CONNAISSANCES
+  ════════════════════════════════════════════════════ -->
+  <section style="padding-top:0; padding-bottom:60px;">
+    <style>
+    .pyramid-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+      user-select: none;
+    }
+
+    /* ---- tiers ---- */
+    .ptier {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      text-align: center;
+      box-sizing: border-box;
+      position: relative;
+      transition: filter .25s ease, transform .2s ease;
+      cursor: pointer;
+    }
+    .ptier:hover { filter: brightness(1.13); transform: scaleY(1.02); z-index: 2; }
+
+    /* clip-path trapèzes — angle constant 9.2%/tier */
+    .pt0 {
+      min-height: 130px;
+      background: #c08a2e;           /* gold */
+      color: #14110d;
+      clip-path: polygon(46% 0%, 54% 0%, 63% 100%, 37% 100%);
+      padding: 0 38% 22px;
+      margin-bottom: -1px;
+    }
+    .pt1 {
+      min-height: 110px;
+      background: #2a5298;           /* lapis clair */
+      color: #f3e8ce;
+      clip-path: polygon(37% 0%, 63% 0%, 72% 100%, 28% 100%);
+      padding: 0 29% 20px;
+      margin-bottom: -1px;
+    }
+    .pt2 {
+      min-height: 110px;
+      background: #1f3a8a;           /* lapis foncé */
+      color: #e8d9b8;
+      clip-path: polygon(28% 0%, 72% 0%, 81% 100%, 19% 100%);
+      padding: 0 20% 20px;
+      margin-bottom: -1px;
+    }
+    .pt3 {
+      min-height: 120px;
+      background: #3d2b1f;           /* terre foncée */
+      color: #d4c4a0;
+      clip-path: polygon(19% 0%, 81% 0%, 90% 100%, 10% 100%);
+      padding: 0 11% 22px;
+      margin-bottom: -1px;
+    }
+    .pt4 {
+      min-height: 130px;
+      background: #14110d;           /* noir encre */
+      color: #a09070;
+      clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+      padding: 0 2% 28px;
+    }
+
+    /* ---- content inside each tier ---- */
+    .ptier-label {
+      font-family: var(--serif-display);
+      font-size: .7rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      opacity: .7;
+      margin-bottom: 5px;
+    }
+    .ptier-title {
+      font-family: var(--serif-display);
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0 0 6px;
+      line-height: 1.2;
+    }
+    .ptier-items {
+      font-size: .8rem;
+      line-height: 1.55;
+      opacity: .85;
+      margin: 0;
+    }
+
+    /* ---- tooltip on hover ---- */
+    .ptier-tip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ink);
+      color: var(--papyrus-light);
+      font-size: .78rem;
+      line-height: 1.5;
+      max-width: 280px;
+      padding: 12px 16px;
+      border-radius: 4px;
+      white-space: normal;
+      text-align: left;
+      z-index: 10;
+      pointer-events: none;
+      box-shadow: 0 6px 24px rgba(0,0,0,.35);
+    }
+    .ptier-tip::after {
+      content: '';
+      position: absolute;
+      top: 100%; left: 50%;
+      transform: translateX(-50%);
+      border: 7px solid transparent;
+      border-top-color: var(--ink);
+    }
+    .ptier:hover .ptier-tip { display: block; }
+
+    /* ---- legend ---- */
+    .pyramid-legend {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+      font-size: .78rem;
+    }
+    .pyramid-legend span {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--ink-soft);
+    }
+    .pyramid-legend i {
+      width: 12px; height: 12px;
+      border-radius: 2px;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    /* ---- mobile: flatten slightly ---- */
+    @media (max-width: 600px) {
+      .pt0 { clip-path: polygon(42% 0%, 58% 0%, 66% 100%, 34% 100%); padding: 0 34% 16px; }
+      .pt1 { clip-path: polygon(34% 0%, 66% 0%, 74% 100%, 26% 100%); padding: 0 26% 16px; }
+      .pt2 { clip-path: polygon(26% 0%, 74% 0%, 82% 100%, 18% 100%); padding: 0 18% 16px; }
+      .pt3 { clip-path: polygon(18% 0%, 82% 0%, 91% 100%, 9% 100%);  padding: 0 9% 18px; }
+      .pt4 { clip-path: polygon(9% 0%, 91% 0%, 100% 100%, 0% 100%);  padding: 0 1% 22px; }
+      .ptier-items { display: none; }
+      .ptier-title { font-size: .9rem; }
+    }
+    </style>
+
+    <div class="container" style="max-width:880px; text-align:center;">
+      <span class="eyebrow">Visualisation</span>
+      <h2 style="margin-bottom:8px;">La pyramide des savoirs</h2>
+      <p class="muted" style="margin-bottom:36px; font-size:.92rem;">
+        Du sommet (connu de tous) à la base (marges et pseudo-archéologie).<br>
+        Passez sur chaque niveau pour le détail.
+      </p>
+
+      <div class="pyramid-wrap">
+
+        <!-- NIVEAU 1 — SOMMET -->
+        <div class="ptier pt0">
+          <div class="ptier-tip">Ce que la culture générale retient : grandes figures, objets iconiques. Correct dans l'ensemble, souvent simplifié.</div>
+          <p class="ptier-label">Niveau 1</p>
+          <p class="ptier-title">Grand Public</p>
+          <p class="ptier-items">Pyramides · Toutânkhamon · Cléopâtre</p>
+        </div>
+
+        <!-- NIVEAU 2 -->
+        <div class="ptier pt1">
+          <div class="ptier-tip">L'amateur éclairé qui a lu un livre, regardé Arte, fait un musée. Les faits sont solides, le contexte commence à apparaître.</div>
+          <p class="ptier-label">Niveau 2</p>
+          <p class="ptier-title">Amateur éclairé</p>
+          <p class="ptier-items">Akhenaton · Hatchepsout · Pierre de Rosette<br>Ramsès II &amp; Qadesh · Imhotep</p>
+        </div>
+
+        <!-- NIVEAU 3 -->
+        <div class="ptier pt2">
+          <div class="ptier-tip">Le passionné qui lit les revues, connaît les débats internes à l'égyptologie et distingue ce qui est établi de ce qui est encore en discussion.</div>
+          <p class="ptier-label">Niveau 3</p>
+          <p class="ptier-title">Passionné</p>
+          <p class="ptier-items">KV55 · Damnatio memoriae · Lettres d'Amarna<br>Deir el-Medina · Théologie d'Héliopolis · Papyrus Merer</p>
+        </div>
+
+        <!-- NIVEAU 4 -->
+        <div class="ptier pt3">
+          <div class="ptier-tip">Débats techniques entre spécialistes : questions de datation, d'ADN royal, d'interprétation de textes. Peu couvert dans les médias, très riche scientifiquement.</div>
+          <p class="ptier-label">Niveau 4</p>
+          <p class="ptier-title">Débats de spécialistes</p>
+          <p class="ptier-items">ADN momies royales · Hypothèse Reeves KV62 · C14 &amp; chronologie haute/basse<br>Identité des Hyksôs · Smenkhkarê vs Néfertiti · Origine proto-écriture</p>
+        </div>
+
+        <!-- NIVEAU 5 — BASE -->
+        <div class="ptier pt4">
+          <div class="ptier-tip">Zone à risque : mélange de vraies questions non résolues, de spéculation hors consensus, et de pseudo-archéologie commerciale. À lire avec le filtre de la règle des trois critères.</div>
+          <p class="ptier-label">Niveau 5</p>
+          <p class="ptier-title">Marges &amp; pseudo-archéologie</p>
+          <p class="ptier-items">Sphinx antédiluvien · Civilisation perdue · Ancient aliens<br>Pyramides = réacteurs énergétiques · Atlantide égyptienne · Chambre secrète de Gizeh</p>
+        </div>
+
+      </div>
+
+      <div class="pyramid-legend">
+        <span><i style="background:#c08a2e;"></i> Consensus solide</span>
+        <span><i style="background:#2a5298;"></i> Débats académiques</span>
+        <span><i style="background:#3d2b1f;"></i> Recherche active</span>
+        <span><i style="background:#14110d;"></i> Marges / pseudo</span>
+      </div>
     </div>
   </section>
 
@@ -180,13 +398,17 @@
         <p style="margin-top:18px;">Le média de niche sur l'Égypte ancienne, pour lecteurs qui en savent déjà un peu et qui en veulent plus.</p>
       </div>
       <div><h4>Lire</h4><ul><li><a href="histoire.html">Récit long</a></li><li><a href="chronologie.html">Chronologie</a></li><li><a href="pharaons.html">Figures</a></li><li><a href="theorie.html">Théories</a></li></ul></div>
-      <div><h4>Le projet</h4><ul><li><a href="contact.html">Contact</a></li><li><a href="contact.html">Contribuer</a></li></ul></div>
-      <div><h4>Légal</h4><ul><li><a href="#">Mentions légales</a></li><li><a href="#">Confidentialité</a></li></ul></div>
+      <div><h4>Bibliothèque</h4><ul><li><a href="ebooks.html">Tous les ebooks</a></li><li><a href="dashboard.html">Mon compte</a></li></ul></div>
+      <div><h4>Le projet</h4><ul><li><a href="contact.html">Contact</a></li><li><a href="#">Mentions légales</a></li></ul></div>
     </div>
     <div class="footer-bottom"><span>© 2026 Kemet. Tous droits réservés.</span><span>Média indépendant. Sources citées à chaque article.</span></div>
   </div>
 </footer>
 
 <script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/kemet-config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => updateNavAuth());</script>
 </body>
 </html>
