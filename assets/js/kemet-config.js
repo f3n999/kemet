@@ -5,8 +5,8 @@
    ========================================================= */
 
 window.KEMET_CONFIG = {
-  supabaseUrl:  'REMPLACE_PAR_TON_PROJECT_URL',   // ex: https://xxxx.supabase.co
-  supabaseKey:  'REMPLACE_PAR_TON_ANON_KEY',       // anon public key
+  supabaseUrl:  'https://ndfsanswsxxudmxolytx.supabase.co',
+  supabaseKey:  'sb_publishable_T5TB8oaZu1tses5Cmg_HJQ_2NX6_KXO',
 };
 
 /* Détection : si les valeurs sont remplies, le site utilisera Supabase.
