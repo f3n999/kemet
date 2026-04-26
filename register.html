@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Créer un compte — Kemet</title>
+<meta name="description" content="Créez votre compte Kemet pour accéder aux ebooks sur l'Égypte ancienne.">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="container nav" aria-label="Navigation principale">
+    <a href="index.html" class="brand"><span class="brand-mark">𓋹</span> KEMET</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="histoire.html">Récit</a></li>
+      <li><a href="chronologie.html">Chronologie</a></li>
+      <li><a href="pharaons.html">Figures</a></li>
+      <li><a href="theorie.html">Théories</a></li>
+      <li><a href="ebooks.html">Ebooks</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li id="nav-auth-item"><a href="login.html" class="nav-cta">Connexion</a></li>
+    </ul>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:60px;">
+    <div class="container" style="max-width:520px;">
+      <span class="eyebrow">Bibliothèque Kemet</span>
+      <h1 style="font-size:clamp(2rem,4vw,3.2rem);">Créer un compte</h1>
+      <p class="lead">Accédez aux ebooks gratuits immédiatement. Retrouvez vos achats à tout moment.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:0; padding-bottom:100px;">
+    <div class="container" style="max-width:480px;">
+
+      <form class="form" id="register-form" novalidate>
+        <h2 style="margin-bottom:6px; font-size:1.4rem;">Nouveau compte</h2>
+        <p class="muted" style="margin-bottom:0; font-size:.9rem;">Déjà inscrit ? <a href="login.html">Se connecter</a></p>
+
+        <label for="name">Prénom et nom</label>
+        <input id="name" name="name" type="text" autocomplete="name" required placeholder="Votre nom complet">
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required placeholder="votre@email.fr">
+
+        <label for="password">Mot de passe</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" required placeholder="8 caractères minimum">
+
+        <label for="confirm">Confirmer le mot de passe</label>
+        <input id="confirm" name="confirm" type="password" autocomplete="new-password" required placeholder="Répétez le mot de passe">
+
+        <div style="margin-top:28px;">
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;" id="submit-btn">
+            Créer mon compte
+          </button>
+        </div>
+
+        <div class="form-status" id="form-status" role="alert" aria-live="polite"></div>
+      </form>
+
+      <div style="margin-top:28px; padding:20px 24px; border:1px solid var(--line); background:rgba(250,243,224,.5);">
+        <h4 style="font-size:.78rem; letter-spacing:.2em; text-transform:uppercase; font-family:var(--serif-display); color:var(--gold); margin-bottom:12px;">Ce que vous obtenez</h4>
+        <ul style="list-style:none; font-size:.92rem; color:var(--ink-soft); display:flex; flex-direction:column; gap:8px;">
+          <li>𓋹 &nbsp;2 ebooks gratuits en accès immédiat</li>
+          <li>𓋹 &nbsp;Bibliothèque personnelle synchronisée</li>
+          <li>𓋹 &nbsp;Accès aux futurs ebooks dès leur sortie</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="color:var(--gold-bright);">
+          <span class="brand-mark" style="border-color:var(--gold-bright);color:var(--gold-bright);">𓋹</span> KEMET
+        </div>
+        <p style="margin-top:18px;">Le média de niche sur l'Égypte ancienne, pour lecteurs qui en savent déjà un peu et qui en veulent plus.</p>
+      </div>
+      <div><h4>Lire</h4><ul><li><a href="histoire.html">Récit long</a></li><li><a href="chronologie.html">Chronologie</a></li><li><a href="pharaons.html">Figures</a></li></ul></div>
+      <div><h4>Bibliothèque</h4><ul><li><a href="ebooks.html">Tous les ebooks</a></li><li><a href="dashboard.html">Mon compte</a></li></ul></div>
+      <div><h4>Le projet</h4><ul><li><a href="contact.html">Contact</a></li><li><a href="#">Mentions légales</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kemet. Tous droits réservés.</span>
+      <span>Média indépendant. Sources citées à chaque article.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  updateNavAuth();
+  if (getSession()) window.location.href = 'dashboard.html';
+
+  const form   = document.getElementById('register-form');
+  const status = document.getElementById('form-status');
+  const btn    = document.getElementById('submit-btn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    status.classList.remove('is-visible');
+
+    const name     = form.name.value.trim();
+    const email    = form.email.value.trim();
+    const password = form.password.value;
+    const confirm  = form.confirm.value;
+
+    if (!name) {
+      showError('Veuillez entrer votre nom.'); return;
+    }
+    if (password !== confirm) {
+      showError('Les mots de passe ne correspondent pas.'); return;
+    }
+
+    btn.textContent = 'Création en cours…';
+    btn.disabled = true;
+
+    try {
+      const user = await kemetRegister(name, email, password);
+      status.style.borderColor = 'var(--lapis)';
+      status.style.background  = 'rgba(31,58,138,.07)';
+      status.innerHTML = `<strong>Bienvenue, ${user.name} !</strong> Compte créé. Redirection…`;
+      status.classList.add('is-visible');
+      setTimeout(() => window.location.href = 'dashboard.html', 900);
+    } catch (err) {
+      showError(err.message);
+      btn.textContent = 'Créer mon compte';
+      btn.disabled = false;
+    }
+  });
+
+  function showError(msg) {
+    status.style.borderColor = 'var(--terracotta)';
+    status.style.background  = 'rgba(166,75,42,.07)';
+    status.innerHTML = msg;
+    status.classList.add('is-visible');
+  }
+});
+</script>
+</body>
+</html>

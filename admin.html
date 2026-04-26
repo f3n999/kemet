@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administration — Kemet</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.admin-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 36px;
+  align-items: start;
+}
+@media (max-width: 820px) { .admin-layout { grid-template-columns: 1fr; } }
+
+.admin-sidebar {
+  border: 1px solid var(--line);
+  background: var(--ink);
+  color: var(--papyrus);
+  padding: 24px 20px;
+  position: sticky;
+  top: 90px;
+}
+.admin-sidebar h3 {
+  color: var(--gold-bright);
+  font-family: var(--serif-display);
+  font-size: .72rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(243,232,206,.15);
+}
+.admin-nav { list-style: none; }
+.admin-nav li + li { margin-top: 4px; }
+.admin-nav a {
+  display: block;
+  padding: 10px 14px;
+  font-family: var(--serif-display);
+  font-size: .68rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(243,232,206,.65);
+  transition: all .2s;
+  border-radius: 2px;
+}
+.admin-nav a:hover { color: var(--papyrus-light); background: rgba(243,232,206,.08); }
+.admin-nav a.is-active { color: var(--gold-bright); background: rgba(192,138,46,.15); }
+
+.tab-panel { display: none; }
+.tab-panel.is-active { display: block; }
+
+/* Table */
+.data-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.data-table th {
+  font-family: var(--serif-display);
+  font-size: .66rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--line);
+}
+.data-table td { padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(250,243,224,.6); }
+.table-wrap { border: 1px solid var(--line); background: var(--papyrus-light); overflow-x: auto; }
+
+/* Price input */
+.price-input {
+  width: 80px;
+  padding: 6px 10px;
+  font-family: var(--serif-body);
+  font-size: .9rem;
+  border: 1px solid var(--line);
+  background: var(--papyrus);
+  color: var(--ink);
+  text-align: right;
+}
+.price-input:focus { outline: none; border-color: var(--lapis); }
+
+/* Badge */
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  font-family: var(--serif-display);
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.badge-free { border: 1px solid var(--lapis); color: var(--lapis); }
+.badge-paid { border: 1px solid var(--gold); color: var(--gold); }
+.badge-admin { border: 1px solid var(--terracotta); color: var(--terracotta); }
+
+/* Section header */
+.section-title {
+  font-family: var(--serif-display);
+  font-size: .75rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 36px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.section-title::after { content:''; flex:1; height:1px; background:var(--line); }
+
+/* Stat cards */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+  margin-bottom: 36px;
+}
+.admin-stat {
+  border: 1px solid var(--line);
+  background: var(--papyrus-light);
+  padding: 18px 16px;
+  text-align: center;
+}
+.admin-stat strong { display:block; font-family:var(--serif-display); font-size:1.8rem; color:var(--lapis); }
+.admin-stat span { font-size:.72rem; color:var(--ink-soft); }
+
+/* Access toggle */
+.access-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  font-family: var(--serif-display);
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all .2s;
+}
+.access-toggle.has-access { border-color: var(--terracotta); color: var(--terracotta); }
+.access-toggle.has-access:hover { background: var(--terracotta); color: var(--papyrus-light); }
+.access-toggle.no-access { border-color: var(--lapis); color: var(--lapis); }
+.access-toggle.no-access:hover { background: var(--lapis); color: var(--papyrus-light); }
+
+.save-flash {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: .78rem;
+  color: var(--lapis);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.save-flash.visible { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="container nav" aria-label="Navigation principale">
+    <a href="index.html" class="brand"><span class="brand-mark">𓋹</span> KEMET</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="ebooks.html">Ebooks</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li id="nav-auth-item"><a href="login.html" class="nav-cta">Connexion</a></li>
+    </ul>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+  </nav>
+</header>
+
+<main>
+  <section style="padding: clamp(30px,6vh,70px) 0 100px;">
+    <div class="container">
+
+      <header style="margin-bottom:36px;">
+        <span class="eyebrow">Back-office</span>
+        <h1 style="font-size:clamp(1.8rem,3vw,2.8rem);">Administration Kemet</h1>
+      </header>
+
+      <div class="admin-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+          <h3>Menu admin</h3>
+          <ul class="admin-nav">
+            <li><a href="#" class="is-active" data-tab="overview">𓂀 Vue d'ensemble</a></li>
+            <li><a href="#" data-tab="ebooks">𓁹 Ebooks & prix</a></li>
+            <li><a href="#" data-tab="users">𓆣 Utilisateurs</a></li>
+            <li><a href="#" data-tab="access">𓃭 Accès manuels</a></li>
+          </ul>
+        </aside>
+
+        <!-- CONTENU -->
+        <div>
+
+          <!-- TAB: VUE D'ENSEMBLE -->
+          <div class="tab-panel is-active" id="tab-overview">
+            <h2 style="font-size:1.6rem; margin-bottom:24px;">Vue d'ensemble</h2>
+            <div class="admin-stats" id="admin-stats">
+              <!-- rempli par JS -->
+            </div>
+            <div class="section-title">Activité récente</div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>Utilisateur</th><th>Email</th><th>Rôle</th><th>Inscription</th><th>Ebooks</th></tr></thead>
+                <tbody id="recent-users"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB: EBOOKS & PRIX -->
+          <div class="tab-panel" id="tab-ebooks">
+            <h2 style="font-size:1.6rem; margin-bottom:8px;">Catalogue & prix</h2>
+            <p class="muted" style="margin-bottom:24px; font-size:.9rem;">Modifiez les prix en euros. Saisir <strong>0</strong> rend l'ebook gratuit. Enregistrement automatique.</p>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Titre</th>
+                    <th>Catégorie</th>
+                    <th>Prix (€)</th>
+                    <th>Statut</th>
+                  </tr>
+                </thead>
+                <tbody id="ebooks-table"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB: UTILISATEURS -->
+          <div class="tab-panel" id="tab-users">
+            <h2 style="font-size:1.6rem; margin-bottom:24px;">Utilisateurs inscrits</h2>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Inscription</th><th>Ebooks achetés</th></tr></thead>
+                <tbody id="users-table"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- TAB: ACCÈS MANUELS -->
+          <div class="tab-panel" id="tab-access">
+            <h2 style="font-size:1.6rem; margin-bottom:8px;">Gestion des accès</h2>
+            <p class="muted" style="margin-bottom:24px; font-size:.9rem;">Accordez ou retirez l'accès à un ebook pour un utilisateur (en attendant l'intégration paiement).</p>
+
+            <div style="margin-bottom:20px; display:flex; gap:12px; flex-wrap:wrap; align-items:end;">
+              <div>
+                <label style="display:block; font-family:var(--serif-display); font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:6px;">Utilisateur</label>
+                <select id="access-user" style="padding:10px 14px; font-family:var(--serif-body); font-size:.9rem; border:1px solid var(--line); background:var(--papyrus); color:var(--ink); min-width:220px; outline:none;">
+                  <option value="">— choisir —</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block; font-family:var(--serif-display); font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:6px;">Ebook</label>
+                <select id="access-ebook" style="padding:10px 14px; font-family:var(--serif-body); font-size:.9rem; border:1px solid var(--line); background:var(--papyrus); color:var(--ink); min-width:260px; outline:none;">
+                  <option value="">— choisir —</option>
+                </select>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="btn btn-primary" id="btn-grant" onclick="doGrant()">Accorder</button>
+                <button class="btn" id="btn-revoke" onclick="doRevoke()" style="border-color:var(--terracotta); color:var(--terracotta);">Retirer</button>
+              </div>
+            </div>
+
+            <div id="access-feedback" style="display:none; padding:12px 16px; border:1px solid var(--lapis); background:rgba(31,58,138,.07); font-size:.9rem; margin-bottom:20px;"></div>
+
+            <div class="section-title">Matrice des accès</div>
+            <div class="table-wrap" id="access-matrix-wrap">
+              <!-- rempli par JS -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/auth.js"></script>
+<script>
+const EBOOKS = [
+  { id: 1, slug: 'akhenaton-pharaon-heretique',     title: 'Akhenaton : Le pharaon qui a effacé les dieux',                   category: 'Figures',     free: true  },
+  { id: 2, slug: 'pyramides-science',               title: 'Les pyramides de Gizeh : ce que la science sait vraiment',         category: 'Archéologie', free: false },
+  { id: 3, slug: 'nefertiti-enquete',               title: 'Néfertiti : enquête sur la reine disparue',                        category: 'Figures',     free: false },
+  { id: 4, slug: 'hatchepsout-regne-efface',        title: 'Hatchepsout : vingt ans de règne effacé de l\'histoire',           category: 'Figures',     free: false },
+  { id: 5, slug: 'ramses-propagande',               title: 'Ramsès II : le roi qui a réinventé la victoire',                   category: 'Figures',     free: false },
+  { id: 6, slug: 'momification-manuel',             title: 'La momification : manuel d\'éternité',                              category: 'Techniques',  free: false },
+  { id: 7, slug: 'toutankhamon-tresor',             title: 'Toutânkhamon : le trésor et les questions sans réponse',            category: 'Figures',     free: false },
+  { id: 8, slug: 'hieroglyphes-initiation',         title: 'Lire les hiéroglyphes : l\'initiation pour non-spécialistes',      category: 'Culture',     free: true  },
+  { id: 9, slug: 'voyager-egypte-guide',            title: 'Voyager en Égypte : le guide des sites archéologiques essentiels', category: 'Voyage',      free: false },
+  { id: 10, slug: 'cleopatre-derniere-pharaone',    title: 'Cléopâtre VII : la dernière pharaone face à Rome',                 category: 'Figures',     free: false },
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!requireAdmin('index.html')) return;
+  updateNavAuth();
+
+  // Tabs
+  document.querySelectorAll('.admin-nav a[data-tab]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelectorAll('.admin-nav a').forEach(x => x.classList.remove('is-active'));
+      document.querySelectorAll('.tab-panel').forEach(x => x.classList.remove('is-active'));
+      a.classList.add('is-active');
+      document.getElementById('tab-' + a.dataset.tab).classList.add('is-active');
+    });
+  });
+
+  renderAll();
+});
+
+function renderAll() {
+  renderStats();
+  renderEbooksTable();
+  renderUsersTable();
+  renderAccessTab();
+}
+
+function renderStats() {
+  const users  = getUsers();
+  const prices = getEbookPrices();
+  const paid   = Object.values(prices).filter(p => p > 0).length;
+  const stats  = document.getElementById('admin-stats');
+  stats.innerHTML = `
+    <div class="admin-stat"><strong>${users.length}</strong><span>utilisateurs</span></div>
+    <div class="admin-stat"><strong>${EBOOKS.length}</strong><span>ebooks au catalogue</span></div>
+    <div class="admin-stat"><strong>${EBOOKS.filter(b=>b.free).length}</strong><span>ebooks gratuits</span></div>
+    <div class="admin-stat"><strong>${paid}</strong><span>ebooks payants</span></div>
+  `;
+
+  const recent = document.getElementById('recent-users');
+  recent.innerHTML = users.slice(-10).reverse().map(u => `
+    <tr>
+      <td><strong>${u.name}</strong></td>
+      <td style="color:var(--ink-soft);">${u.email}</td>
+      <td><span class="badge ${u.role === 'admin' ? 'badge-admin' : 'badge-free'}">${u.role}</span></td>
+      <td style="color:var(--ink-soft); font-size:.82rem;">${new Date(u.createdAt).toLocaleDateString('fr-FR')}</td>
+      <td><strong>${u.purchases.length}</strong></td>
+    </tr>
+  `).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--ink-soft);padding:24px;">Aucun utilisateur.</td></tr>';
+}
+
+function renderEbooksTable() {
+  const prices = getEbookPrices();
+  const tbody  = document.getElementById('ebooks-table');
+  tbody.innerHTML = EBOOKS.map(b => {
+    const price = prices[b.slug] ?? 0;
+    const isFree = price === 0;
+    return `
+      <tr>
+        <td style="color:var(--ink-soft);">${b.id}</td>
+        <td><strong>${b.title}</strong></td>
+        <td><span class="badge badge-free">${b.category}</span></td>
+        <td>
+          <input type="number" class="price-input" min="0" max="99.99" step="0.01"
+            value="${price.toFixed(2)}"
+            data-slug="${b.slug}"
+            onchange="savePrice(this)"
+          >
+          <span class="save-flash" id="flash-${b.slug}">✓ enregistré</span>
+        </td>
+        <td><span class="badge ${isFree ? 'badge-free' : 'badge-paid'}" id="badge-${b.slug}">${isFree ? 'Gratuit' : price.toFixed(2) + ' €'}</span></td>
+      </tr>`;
+  }).join('');
+}
+
+function savePrice(input) {
+  const slug  = input.dataset.slug;
+  const price = parseFloat(input.value) || 0;
+  setEbookPrice(slug, price);
+
+  const badge = document.getElementById('badge-' + slug);
+  const flash = document.getElementById('flash-' + slug);
+  badge.className = 'badge ' + (price === 0 ? 'badge-free' : 'badge-paid');
+  badge.textContent = price === 0 ? 'Gratuit' : price.toFixed(2) + ' €';
+
+  flash.classList.add('visible');
+  setTimeout(() => flash.classList.remove('visible'), 1500);
+}
+
+function renderUsersTable() {
+  const users = getUsers();
+  const tbody = document.getElementById('users-table');
+  tbody.innerHTML = users.map(u => `
+    <tr>
+      <td><strong>${u.name}</strong></td>
+      <td style="color:var(--ink-soft);">${u.email}</td>
+      <td><span class="badge ${u.role === 'admin' ? 'badge-admin' : 'badge-free'}">${u.role}</span></td>
+      <td style="color:var(--ink-soft); font-size:.82rem;">${new Date(u.createdAt).toLocaleDateString('fr-FR')}</td>
+      <td>
+        ${u.purchases.length
+          ? u.purchases.map(slug => {
+              const b = EBOOKS.find(x => x.slug === slug);
+              return b ? `<span class="badge badge-paid" style="margin-right:4px;">${b.title.split(':')[0].trim()}</span>` : '';
+            }).join('')
+          : '<span style="color:var(--ink-soft);font-size:.82rem;">Aucun</span>'
+        }
+      </td>
+    </tr>
+  `).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--ink-soft);padding:24px;">Aucun utilisateur.</td></tr>';
+}
+
+function renderAccessTab() {
+  const users = getUsers().filter(u => u.role !== 'admin');
+
+  // Selects
+  const selUser  = document.getElementById('access-user');
+  const selEbook = document.getElementById('access-ebook');
+  selUser.innerHTML  = '<option value="">— choisir —</option>' + users.map(u => `<option value="${u.id}">${u.name} (${u.email})</option>`).join('');
+  selEbook.innerHTML = '<option value="">— choisir —</option>' + EBOOKS.map(b => `<option value="${b.slug}">${b.title}</option>`).join('');
+
+  // Matrice
+  renderMatrix(users);
+}
+
+function renderMatrix(users) {
+  const wrap = document.getElementById('access-matrix-wrap');
+  if (!users.length) { wrap.innerHTML = '<p style="padding:20px;color:var(--ink-soft);">Aucun utilisateur non-admin.</p>'; return; }
+
+  const header = EBOOKS.map(b => `<th style="font-size:.58rem;padding:8px 6px;white-space:nowrap;max-width:80px;overflow:hidden;text-overflow:ellipsis;" title="${b.title}">${b.id}</th>`).join('');
+  const rows = users.map(u => {
+    const cells = EBOOKS.map(b => {
+      const has = u.purchases.includes(b.slug) || b.free;
+      const cls = has ? 'has-access' : 'no-access';
+      const label = has ? '✓' : '+';
+      return `<td style="text-align:center;">
+        <button class="access-toggle ${cls}" data-uid="${u.id}" data-slug="${b.slug}" onclick="quickToggle(this)">${label}</button>
+      </td>`;
+    }).join('');
+    return `<tr><td><strong>${u.name}</strong><br><span style="font-size:.75rem;color:var(--ink-soft);">${u.email}</span></td>${cells}</tr>`;
+  }).join('');
+
+  wrap.innerHTML = `<table class="data-table" style="font-size:.82rem;">
+    <thead><tr><th>Utilisateur</th>${header}</tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+function quickToggle(btn) {
+  const uid  = btn.dataset.uid;
+  const slug = btn.dataset.slug;
+  const ebook = EBOOKS.find(b => b.slug === slug);
+  if (ebook && ebook.free) { alert('Cet ebook est gratuit — l\'accès est universel.'); return; }
+
+  if (btn.classList.contains('has-access')) {
+    revokeEbookAccess(uid, slug);
+    btn.className = 'access-toggle no-access';
+    btn.textContent = '+';
+  } else {
+    grantEbookAccess(uid, slug);
+    btn.className = 'access-toggle has-access';
+    btn.textContent = '✓';
+  }
+  renderStats();
+}
+
+function doGrant() {
+  const uid  = document.getElementById('access-user').value;
+  const slug = document.getElementById('access-ebook').value;
+  const feedback = document.getElementById('access-feedback');
+  if (!uid || !slug) { showFeedback('Sélectionnez un utilisateur et un ebook.', false); return; }
+  grantEbookAccess(uid, slug);
+  const user  = getUsers().find(u => u.id === uid);
+  const ebook = EBOOKS.find(b => b.slug === slug);
+  showFeedback(`✓ Accès accordé à <strong>${user?.name}</strong> pour <em>${ebook?.title}</em>.`, true);
+  renderAll();
+}
+
+function doRevoke() {
+  const uid  = document.getElementById('access-user').value;
+  const slug = document.getElementById('access-ebook').value;
+  if (!uid || !slug) { showFeedback('Sélectionnez un utilisateur et un ebook.', false); return; }
+  revokeEbookAccess(uid, slug);
+  const user  = getUsers().find(u => u.id === uid);
+  const ebook = EBOOKS.find(b => b.slug === slug);
+  showFeedback(`Accès retiré à <strong>${user?.name}</strong> pour <em>${ebook?.title}</em>.`, true);
+  renderAll();
+}
+
+function showFeedback(msg, ok) {
+  const el = document.getElementById('access-feedback');
+  el.style.display = 'block';
+  el.style.borderColor = ok ? 'var(--lapis)' : 'var(--terracotta)';
+  el.style.background  = ok ? 'rgba(31,58,138,.07)' : 'rgba(166,75,42,.07)';
+  el.innerHTML = msg;
+  setTimeout(() => el.style.display = 'none', 4000);
+}
+</script>
+</body>
+</html>
