@@ -115,51 +115,73 @@
 <script src="assets/js/kemet-config.js"></script>
 <script src="assets/js/auth.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  updateNavAuth();
+// Handler isolé — attaché directement, indépendant de main.js et auth.js
+(function () {
+  function initContactForm() {
+    const form   = document.getElementById('lead-form');
+    const status = document.getElementById('form-status');
+    if (!form || !status) return;
 
-  const form   = document.getElementById('lead-form');
-  const status = document.getElementById('form-status');
+    // Supprimer tout handler préexistant en remplaçant le nœud
+    const fresh = form.cloneNode(true);
+    form.parentNode.replaceChild(fresh, form);
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = form.querySelector('button[type="submit"]');
-    btn.disabled = true;
-    btn.textContent = 'Envoi en cours…';
-    status.textContent = '';
-    status.className = 'form-status';
+    fresh.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      e.stopImmediatePropagation(); // bloque tout autre listener sur ce form
 
-    const payload = {
-      prenom: document.getElementById('prenom').value.trim(),
-      email:  document.getElementById('email').value.trim(),
-      sujet:  document.getElementById('sujet').value,
-      envies: document.getElementById('envies').value.trim()
-    };
+      const btn = fresh.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Envoi en cours…';
+      status.textContent = '';
+      status.className = 'form-status';
 
-    try {
-      const res    = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const result = await res.json();
+      const payload = {
+        prenom: fresh.querySelector('#prenom').value.trim(),
+        email:  fresh.querySelector('#email').value.trim(),
+        sujet:  fresh.querySelector('#sujet').value,
+        envies: fresh.querySelector('#envies').value.trim()
+      };
 
-      if (res.ok) {
-        status.textContent = '✓ Message envoyé ! Nous vous répondrons sous 48 h ouvrées.';
-        status.classList.add('is-visible', 'is-success');
-        form.reset();
-      } else {
-        throw new Error(result.error || 'Erreur inattendue.');
+      try {
+        const res    = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+
+        if (res.ok) {
+          status.textContent = '✓ Message envoyé ! Nous vous répondrons sous 48 h ouvrées.';
+          status.classList.add('is-visible', 'is-success');
+          fresh.reset();
+        } else {
+          throw new Error(result.error || 'Erreur inattendue.');
+        }
+      } catch (err) {
+        status.textContent = err.message;
+        status.classList.add('is-visible', 'is-error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Envoyer';
       }
-    } catch (err) {
-      status.textContent = err.message;
-      status.classList.add('is-visible', 'is-error');
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Envoyer';
-    }
+    });
+  }
+
+  // Lance après le DOM + après que main.js ait eu le temps de s'attacher
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(initContactForm, 0);
+    });
+  } else {
+    setTimeout(initContactForm, 0);
+  }
+
+  // updateNavAuth séparé pour ne pas bloquer le form si ça plante
+  document.addEventListener('DOMContentLoaded', function () {
+    try { if (typeof updateNavAuth === 'function') updateNavAuth(); } catch(e) {}
   });
-});
+})();
 </script>
 </body>
 </html>
