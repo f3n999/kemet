@@ -114,6 +114,52 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/kemet-config.js"></script>
 <script src="assets/js/auth.js"></script>
-<script>document.addEventListener('DOMContentLoaded', () => updateNavAuth());</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  updateNavAuth();
+
+  const form   = document.getElementById('lead-form');
+  const status = document.getElementById('form-status');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+    status.textContent = '';
+    status.className = 'form-status';
+
+    const payload = {
+      prenom: document.getElementById('prenom').value.trim(),
+      email:  document.getElementById('email').value.trim(),
+      sujet:  document.getElementById('sujet').value,
+      envies: document.getElementById('envies').value.trim()
+    };
+
+    try {
+      const res    = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await res.json();
+
+      if (res.ok) {
+        status.textContent = '✓ Message envoyé ! Nous vous répondrons sous 48 h ouvrées.';
+        status.classList.add('is-visible', 'is-success');
+        form.reset();
+      } else {
+        throw new Error(result.error || 'Erreur inattendue.');
+      }
+    } catch (err) {
+      status.textContent = err.message;
+      status.classList.add('is-visible', 'is-error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Envoyer';
+    }
+  });
+});
+</script>
 </body>
 </html>
