@@ -131,24 +131,8 @@ function renderTimeline(){
   `).join('');
 }
 
-/* ---------- FORMULAIRE LEAD VOYAGE ---------- */
-function initLeadForm(){
-  const form = document.getElementById('lead-form');
-  if(!form) return;
-  const status = document.getElementById('form-status');
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(form).entries());
-    // Stockage local de secours en attendant un backend (Formspree, Netlify Forms, etc.)
-    try{
-      const all = JSON.parse(localStorage.getItem('kemet_leads') || '[]');
-      all.push({ ...data, ts: new Date().toISOString() });
-      localStorage.setItem('kemet_leads', JSON.stringify(all));
-    }catch(_){}
-    status.classList.add('is-visible');
-    status.innerHTML = '<strong>Merci ' + (data.prenom || '') + '.</strong> ' +
-      'Ta demande a bien été enregistrée. Tu recevras une proposition personnalisée sous 48 h. ' +
-      '<br><em style="font-size:.85rem;">(En attendant la connexion à un vrai backend, les demandes sont stockées localement dans ton navigateur.)</em>';
-    form.reset();
-  });
-}
+/* ---------- FORMULAIRE LEAD ---------- */
+// Le handler du formulaire contact est géré directement dans contact.html
+// (fetch vers /api/contact + Supabase). Cette fonction est conservée pour
+// ne pas casser les autres pages qui pourraient charger main.js.
+function initLeadForm(){}
