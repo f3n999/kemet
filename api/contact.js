@@ -3,7 +3,16 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { prenom, email, sujet, envies } = req.body;
+  // Parse body manually — Vercel static-output projects don't auto-parse JSON
+  let body = req.body;
+  if (typeof body === 'string') {
+    try { body = JSON.parse(body); } catch { body = {}; }
+  }
+  if (!body || typeof body !== 'object') {
+    body = {};
+  }
+
+  const { prenom, email, sujet, envies } = body;
 
   if (!prenom || !email || !sujet || !envies) {
     return res.status(400).json({ error: 'Tous les champs sont requis.' });
@@ -19,7 +28,7 @@ export default async function handler(req, res) {
     const supabaseKey  = process.env.SUPABASE_ANON_KEY;
 
     if (supabaseUrl && supabaseKey) {
-      await fetch(`${supabaseUrl}/rest/v1/contacts`, {
+      const sbRes = await fetch(`${supabaseUrl}/rest/v1/contacts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,6 +38,10 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({ prenom, email, sujet, message: envies })
       });
+      if (!sbRes.ok) {
+        const err = await sbRes.text();
+        console.error('Supabase insert error:', err);
+      }
     }
 
     return res.status(200).json({ success: true });
