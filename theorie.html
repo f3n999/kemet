@@ -41,217 +41,22 @@
   </section>
 
   <!-- ═══════════════════════════════════════════════════
-       PYRAMIDE DES CONNAISSANCES
+       PYRAMIDE REACT INTERACTIVE
   ════════════════════════════════════════════════════ -->
   <section style="padding-top:0; padding-bottom:60px;">
-    <style>
-    .pyramid-wrap {
-      max-width: 760px;
-      margin: 0 auto;
-      position: relative;
-      user-select: none;
-    }
-
-    /* ---- tiers ---- */
-    .ptier {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      text-align: center;
-      box-sizing: border-box;
-      position: relative;
-      transition: filter .25s ease, transform .2s ease;
-      cursor: pointer;
-    }
-    .ptier:hover { filter: brightness(1.13); transform: scaleY(1.02); z-index: 2; }
-
-    /* clip-path trapèzes — angle constant 9.2%/tier */
-    .pt0 {
-      min-height: 130px;
-      background: #c08a2e;           /* gold */
-      color: #14110d;
-      clip-path: polygon(46% 0%, 54% 0%, 63% 100%, 37% 100%);
-      padding: 0 38% 22px;
-      margin-bottom: -1px;
-    }
-    .pt1 {
-      min-height: 110px;
-      background: #2a5298;           /* lapis clair */
-      color: #f3e8ce;
-      clip-path: polygon(37% 0%, 63% 0%, 72% 100%, 28% 100%);
-      padding: 0 29% 20px;
-      margin-bottom: -1px;
-    }
-    .pt2 {
-      min-height: 110px;
-      background: #1f3a8a;           /* lapis foncé */
-      color: #e8d9b8;
-      clip-path: polygon(28% 0%, 72% 0%, 81% 100%, 19% 100%);
-      padding: 0 20% 20px;
-      margin-bottom: -1px;
-    }
-    .pt3 {
-      min-height: 120px;
-      background: #3d2b1f;           /* terre foncée */
-      color: #d4c4a0;
-      clip-path: polygon(19% 0%, 81% 0%, 90% 100%, 10% 100%);
-      padding: 0 11% 22px;
-      margin-bottom: -1px;
-    }
-    .pt4 {
-      min-height: 130px;
-      background: #14110d;           /* noir encre */
-      color: #a09070;
-      clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
-      padding: 0 2% 28px;
-    }
-
-    /* ---- content inside each tier ---- */
-    .ptier-label {
-      font-family: var(--serif-display);
-      font-size: .7rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      opacity: .7;
-      margin-bottom: 5px;
-    }
-    .ptier-title {
-      font-family: var(--serif-display);
-      font-size: 1rem;
-      font-weight: 700;
-      margin: 0 0 6px;
-      line-height: 1.2;
-    }
-    .ptier-items {
-      font-size: .8rem;
-      line-height: 1.55;
-      opacity: .85;
-      margin: 0;
-    }
-
-    /* ---- tooltip on hover ---- */
-    .ptier-tip {
-      display: none;
-      position: absolute;
-      bottom: calc(100% + 12px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--ink);
-      color: var(--papyrus-light);
-      font-size: .78rem;
-      line-height: 1.5;
-      max-width: 280px;
-      padding: 12px 16px;
-      border-radius: 4px;
-      white-space: normal;
-      text-align: left;
-      z-index: 10;
-      pointer-events: none;
-      box-shadow: 0 6px 24px rgba(0,0,0,.35);
-    }
-    .ptier-tip::after {
-      content: '';
-      position: absolute;
-      top: 100%; left: 50%;
-      transform: translateX(-50%);
-      border: 7px solid transparent;
-      border-top-color: var(--ink);
-    }
-    .ptier:hover .ptier-tip { display: block; }
-
-    /* ---- legend ---- */
-    .pyramid-legend {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      margin-top: 32px;
-      flex-wrap: wrap;
-      font-size: .78rem;
-    }
-    .pyramid-legend span {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      color: var(--ink-soft);
-    }
-    .pyramid-legend i {
-      width: 12px; height: 12px;
-      border-radius: 2px;
-      display: inline-block;
-      flex-shrink: 0;
-    }
-
-    /* ---- mobile: flatten slightly ---- */
-    @media (max-width: 600px) {
-      .pt0 { clip-path: polygon(42% 0%, 58% 0%, 66% 100%, 34% 100%); padding: 0 34% 16px; }
-      .pt1 { clip-path: polygon(34% 0%, 66% 0%, 74% 100%, 26% 100%); padding: 0 26% 16px; }
-      .pt2 { clip-path: polygon(26% 0%, 74% 0%, 82% 100%, 18% 100%); padding: 0 18% 16px; }
-      .pt3 { clip-path: polygon(18% 0%, 82% 0%, 91% 100%, 9% 100%);  padding: 0 9% 18px; }
-      .pt4 { clip-path: polygon(9% 0%, 91% 0%, 100% 100%, 0% 100%);  padding: 0 1% 22px; }
-      .ptier-items { display: none; }
-      .ptier-title { font-size: .9rem; }
-    }
-    </style>
-
-    <div class="container" style="max-width:880px; text-align:center;">
-      <span class="eyebrow">Visualisation</span>
+    <div class="container" style="max-width:1100px; text-align:center;">
+      <span class="eyebrow">Visualisation interactive</span>
       <h2 style="margin-bottom:8px;">La pyramide des savoirs</h2>
       <p class="muted" style="margin-bottom:36px; font-size:.92rem;">
         Du sommet (connu de tous) à la base (marges et pseudo-archéologie).<br>
-        Passez sur chaque niveau pour le détail.
+        <strong style="color: var(--gold);">Cliquez sur un niveau</strong> pour explorer son contenu en détail.
       </p>
 
-      <div class="pyramid-wrap">
-
-        <!-- NIVEAU 1 — SOMMET -->
-        <div class="ptier pt0">
-          <div class="ptier-tip">Ce que la culture générale retient : grandes figures, objets iconiques. Correct dans l'ensemble, souvent simplifié.</div>
-          <p class="ptier-label">Niveau 1</p>
-          <p class="ptier-title">Grand Public</p>
-          <p class="ptier-items">Pyramides · Toutânkhamon · Cléopâtre</p>
+      <div id="pyramid-root">
+        <div style="text-align:center; padding:60px 20px; color:#7a6a50;">
+          <div style="font-size:1.8rem; margin-bottom:12px; opacity:.5;">𓂀</div>
+          <p style="margin:0; font-size:.88rem;">Chargement de la pyramide…</p>
         </div>
-
-        <!-- NIVEAU 2 -->
-        <div class="ptier pt1">
-          <div class="ptier-tip">L'amateur éclairé qui a lu un livre, regardé Arte, fait un musée. Les faits sont solides, le contexte commence à apparaître.</div>
-          <p class="ptier-label">Niveau 2</p>
-          <p class="ptier-title">Amateur éclairé</p>
-          <p class="ptier-items">Akhenaton · Hatchepsout · Pierre de Rosette<br>Ramsès II &amp; Qadesh · Imhotep</p>
-        </div>
-
-        <!-- NIVEAU 3 -->
-        <div class="ptier pt2">
-          <div class="ptier-tip">Le passionné qui lit les revues, connaît les débats internes à l'égyptologie et distingue ce qui est établi de ce qui est encore en discussion.</div>
-          <p class="ptier-label">Niveau 3</p>
-          <p class="ptier-title">Passionné</p>
-          <p class="ptier-items">KV55 · Damnatio memoriae · Lettres d'Amarna<br>Deir el-Medina · Théologie d'Héliopolis · Papyrus Merer</p>
-        </div>
-
-        <!-- NIVEAU 4 -->
-        <div class="ptier pt3">
-          <div class="ptier-tip">Débats techniques entre spécialistes : questions de datation, d'ADN royal, d'interprétation de textes. Peu couvert dans les médias, très riche scientifiquement.</div>
-          <p class="ptier-label">Niveau 4</p>
-          <p class="ptier-title">Débats de spécialistes</p>
-          <p class="ptier-items">ADN momies royales · Hypothèse Reeves KV62 · C14 &amp; chronologie haute/basse<br>Identité des Hyksôs · Smenkhkarê vs Néfertiti · Origine proto-écriture</p>
-        </div>
-
-        <!-- NIVEAU 5 — BASE -->
-        <div class="ptier pt4">
-          <div class="ptier-tip">Zone à risque : mélange de vraies questions non résolues, de spéculation hors consensus, et de pseudo-archéologie commerciale. À lire avec le filtre de la règle des trois critères.</div>
-          <p class="ptier-label">Niveau 5</p>
-          <p class="ptier-title">Marges &amp; pseudo-archéologie</p>
-          <p class="ptier-items">Sphinx antédiluvien · Civilisation perdue · Ancient aliens<br>Pyramides = réacteurs énergétiques · Atlantide égyptienne · Chambre secrète de Gizeh</p>
-        </div>
-
-      </div>
-
-      <div class="pyramid-legend">
-        <span><i style="background:#c08a2e;"></i> Consensus solide</span>
-        <span><i style="background:#2a5298;"></i> Débats académiques</span>
-        <span><i style="background:#3d2b1f;"></i> Recherche active</span>
-        <span><i style="background:#14110d;"></i> Marges / pseudo</span>
       </div>
     </div>
   </section>
@@ -304,8 +109,7 @@
           <p>Culte exclusif d'Aton, oui. Mais monothéisme au sens strict
           (un seul dieu existe) ou hénothéisme de cour (un dieu est supérieur, les
           autres existent encore)&nbsp;? Les textes hymniques et les pratiques
-          populaires à Amarna suggèrent une réalité plus complexe que le récit
-          freudien hérité.</p>
+          populaires à Amarna suggèrent une réalité plus complexe.</p>
         </article>
 
         <article class="card">
@@ -353,8 +157,7 @@
           égyptien ne mentionne l'événement. Les dates traditionnelles (XVᵉ ou
           XIIIᵉ siècle av. J.-C.) ne concordent avec aucune couche archéologique
           massive au Levant. Consensus actuel&nbsp;: un fond historique possible
-          fortement amplifié par la tradition religieuse, mais rien d'historique
-          au sens strict.</p>
+          fortement amplifié par la tradition religieuse.</p>
         </article>
 
         <article class="card">
@@ -409,6 +212,264 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/kemet-config.js"></script>
 <script src="assets/js/auth.js"></script>
-<script>document.addEventListener('DOMContentLoaded', () => updateNavAuth());</script>
+<script>document.addEventListener('DOMContentLoaded', () => { try { updateNavAuth(); } catch(e) {} });</script>
+
+<!-- ── React 18 + Babel (pyramide interactive) ── -->
+<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const { useState } = React;
+
+/* ── Données ── */
+const TIERS = [
+  {
+    id: 'grandpublic', level: 0,
+    label: 'Niveau 1', title: 'Grand Public',
+    sub: 'Pyramides · Toutânkhamon · Cléopâtre',
+    bg: '#b8891f', fg: '#14110d',
+    clipPath: 'polygon(46% 0%, 54% 0%, 63% 100%, 37% 100%)',
+    padding: '0 38% 22px', minH: 130,
+    desc: "Ce que la culture générale retient : grandes figures, objets iconiques. Correct dans l'ensemble, mais souvent simplifié à l'extrême. Le point de départ de tout le monde.",
+    topics: [
+      { t: 'Les pyramides de Gizeh', d: "Construites sous la IVe dynastie (~2600–2500 av. J.-C.), elles restent les structures les mieux documentées de l'Antiquité. Trois pharaons : Kheops, Khéphren, Mykérinos. La Grande Pyramide est restée la plus haute construction du monde pendant 3 800 ans." },
+      { t: 'Toutânkhamon & la tombe KV62', d: "Le pharaon le plus célèbre de la culture pop, pourtant l'un des moins importants historiquement. Sa tombe intacte, découverte en 1922 par Howard Carter, a tout changé dans la perception du grand public — et déclenché la légende de la malédiction." },
+      { t: 'Cléopâtre VII', d: "Dernière reine de la dynastie lagide (ptolémaïque, donc grecque de Macédoine). Elle était la première de sa lignée à parler l'égyptien. Sa relation avec César puis Marc Antoine est historique. Hollywood en a surtout retenu les décors et la romance." },
+    ]
+  },
+  {
+    id: 'amateur', level: 1,
+    label: 'Niveau 2', title: 'Amateur éclairé',
+    sub: 'Akhenaton · Hatchepsout · Champollion',
+    bg: '#2a5298', fg: '#f3e8ce',
+    clipPath: 'polygon(37% 0%, 63% 0%, 72% 100%, 28% 100%)',
+    padding: '0 29% 20px', minH: 110,
+    desc: "L'amateur qui a lu un livre, regardé Arte, visité un musée. Les faits sont solides, le contexte commence à apparaître, les figures secondaires deviennent intéressantes.",
+    topics: [
+      { t: 'Akhenaton & la révolution atoniste', d: "Le pharaon hérétique (r. ~1353–1336 av. J.-C.) a imposé le culte exclusif d'Aton, fermé les temples, effacé les autres dieux. Sa nature — monothéisme ou hénothéisme de cour ? — reste un des grands débats de l'égyptologie (voir Niveau 4)." },
+      { t: 'Hatchepsout, femme pharaon', d: "XVIIIe dynastie. A régné ~20 ans sous le titre masculin de pharaon, commandé des expéditions commerciales au Pount (Corne de l'Afrique), fait ériger deux obélisques à Karnak. Effacée de la mémoire officielle après sa mort — probablement par Thoutmosis III." },
+      { t: 'Champollion et le déchiffrement', d: "En 1822, Jean-François Champollion déchiffre les hiéroglyphes à partir de la Pierre de Rosette (texte identique en hiéroglyphes, démotique et grec). Trois millénaires de textes égyptiens deviennent lisibles. Un des plus grands coups de la philologie mondiale." },
+    ]
+  },
+  {
+    id: 'passionne', level: 2,
+    label: 'Niveau 3', title: 'Passionné',
+    sub: 'Papyrus Merer · KV55 · Deir el-Medina',
+    bg: '#1f3a8a', fg: '#e8d9b8',
+    clipPath: 'polygon(28% 0%, 72% 0%, 81% 100%, 19% 100%)',
+    padding: '0 20% 20px', minH: 110,
+    desc: "Le passionné qui lit les revues spécialisées, connaît les débats internes et distingue ce qui est établi de ce qui est encore en discussion. Il cite ses sources.",
+    topics: [
+      { t: 'Papyrus Merer (découverte 2013)', d: "Découvert à Ouadi el-Jarf par Pierre Tallet, c'est le journal de chantier d'un officier de la IVe dynastie (~2560 av. J.-C.). Il décrit le transport de blocs calcaires pour la Grande Pyramide — confirmation archéologique directe du mode de construction. Document révolutionnaire." },
+      { t: 'Deir el-Medina : le village des artisans', d: "Le village des artisans de la Vallée des Rois a livré des milliers d'ostraca (éclats de calcaire) et papyrus. On y trouve les grèves de travail les plus anciennes connues (~1170 av. J.-C.), des procès, des lettres privées. Un trésor unique pour l'histoire sociale." },
+      { t: 'KV55 : la momie sans nom', d: "Tombeau découvert en 1907 : momie masculine, étiquettes martelées, mobilier d'Amarna. Akhenaton ? Smenkhkarê ? L'analyse ADN de 2010 pointe vers Akhenaton mais la méthodologie reste contestée. Le dossier est officiellement ouvert." },
+    ]
+  },
+  {
+    id: 'specialistes', level: 3,
+    label: 'Niveau 4', title: 'Débats de spécialistes',
+    sub: 'ADN royal · Hypothèse Reeves · Chronologie C14',
+    bg: '#3d2b1f', fg: '#d4c4a0',
+    clipPath: 'polygon(19% 0%, 81% 0%, 90% 100%, 10% 100%)',
+    padding: '0 11% 22px', minH: 120,
+    desc: "Débats techniques entre chercheurs : datation au carbone 14, ADN ancien, interprétation de textes, identification de momies. Peu couvert dans les médias, très riche scientifiquement.",
+    topics: [
+      { t: 'ADN des momies royales (JAMA, 2010)', d: "L'étude tente de reconstruire l'arbre généalogique de la famille d'Amarna. Résultats critiqués : état de conservation des ADN anciens, risque de contamination, méthodes statistiques discutables. La communauté scientifique reste divisée. Un exemple typique de science prometteuse mais fragile." },
+      { t: 'Hypothèse Reeves KV62 (2015)', d: "Nicholas Reeves propose que le tombeau de Toutânkhamon dissimule derrière ses parois nord une chambre contenant Néfertiti. Trois campagnes de géoradar (2016, 2018, 2020) donnent des résultats contradictoires selon les équipes. Ni prouvé ni réfuté à ce jour." },
+      { t: 'Chronologie haute vs chronologie basse', d: "L'égyptologie dispose de deux chronologies concurrentes pour l'Ancien et le Moyen Empire, décalées de 50 à 100 ans. Le carbone 14 seul ne suffit pas à trancher. Un débat en apparence technique mais aux implications majeures pour toute la chrono du Proche-Orient." },
+    ]
+  },
+  {
+    id: 'marges', level: 4,
+    label: 'Niveau 5', title: 'Marges & pseudo-archéologie',
+    sub: 'Ancient aliens · Sphinx antédiluvien · Atlantide',
+    bg: '#14110d', fg: '#a09070',
+    clipPath: 'polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)',
+    padding: '0 2% 28px', minH: 130,
+    desc: "Zone à risque : mélange de vraies questions non résolues, de spéculation hors consensus, et de pseudo-archéologie commerciale. À lire avec la règle des trois critères.",
+    topics: [
+      { t: 'Ancient aliens & Graham Hancock', d: "La thèse : les monuments égyptiens dépassaient les capacités humaines de l'époque, donc intervention extérieure ou civilisation perdue. Réfutée par le Papyrus Merer, la cité ouvrière de Gizeh, les outils découverts in situ. Repose fondamentalement sur un déni du génie égyptien." },
+      { t: 'Sphinx antédiluvien (Schoch, 1990s)', d: "Robert Schoch propose que l'érosion verticale du Sphinx serait due à des pluies intenses, donc datation à 10 000–7 000 av. J.-C. Non acceptée par les géologues ni les égyptologues publiant dans les revues à comité de lecture. Le Sphinx est de la IVe dynastie (~2500 av. J.-C.)." },
+      { t: 'Chambres secrètes de la Grande Pyramide', d: "ScanPyramids (2017) a détecté de vrais vides via les muons. Ces vides existent — les interpréter comme des archives, des réacteurs énergétiques ou des antennes cosmiques : extrapolation sans base archéologique. La recherche rigoureuse continue, sans agenda préconçu." },
+    ]
+  },
+];
+
+/* ── Couleurs légende ── */
+const LEGEND = [
+  { c: '#b8891f', l: 'Consensus solide' },
+  { c: '#2a5298', l: 'Débats académiques' },
+  { c: '#3d2b1f', l: 'Recherche active' },
+  { c: '#14110d', l: 'Marges / pseudo' },
+];
+
+/* ── Composant panneau détail ── */
+function DetailPanel({ tier, onClose }) {
+  return (
+    <div style={{
+      background: 'rgba(20, 17, 13, 0.97)',
+      border: '1px solid rgba(201, 168, 76, 0.22)',
+      borderRadius: '6px',
+      padding: '26px 22px',
+      position: 'sticky',
+      top: '24px',
+      textAlign: 'left',
+      animation: 'kSlideIn .2s ease',
+    }}>
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
+        <div>
+          <span style={{ fontFamily: 'Georgia, serif', fontSize: '.62rem', letterSpacing: '.18em', textTransform: 'uppercase', color: '#C9A84C', display: 'block', marginBottom: '5px' }}>
+            {tier.label}
+          </span>
+          <h3 style={{ margin: 0, fontSize: '1.2rem', fontFamily: 'Georgia, serif', color: '#F5F0E8', fontWeight: 700 }}>
+            {tier.title}
+          </h3>
+        </div>
+        <button
+          onClick={onClose}
+          aria-label="Fermer"
+          style={{ background: 'none', border: 'none', color: '#7a6a50', cursor: 'pointer', fontSize: '1.1rem', padding: '2px 8px', lineHeight: 1, flexShrink: 0 }}
+        >✕</button>
+      </div>
+
+      {/* Description */}
+      <p style={{ fontSize: '.87rem', lineHeight: 1.7, color: '#9a8a70', margin: '0 0 20px', paddingBottom: '18px', borderBottom: '1px solid rgba(255,255,255,.07)' }}>
+        {tier.desc}
+      </p>
+
+      {/* Topics */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+        {tier.topics.map((topic, i) => (
+          <div key={i}>
+            <p style={{ fontWeight: 600, margin: '0 0 5px', fontSize: '.84rem', color: '#C9A84C', fontFamily: 'Georgia, serif' }}>
+              {topic.t}
+            </p>
+            <p style={{ margin: 0, fontSize: '.81rem', lineHeight: 1.68, color: '#8a7a60' }}>
+              {topic.d}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── Composant pyramide principale ── */
+function PyramidApp() {
+  const [selected, setSelected] = useState(null);
+  const selectedTier = TIERS.find(t => t.id === selected);
+
+  const toggle = (id) => setSelected(prev => prev === id ? null : id);
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center' }}>
+
+        {/* ── Pyramide ── */}
+        <div style={{ flex: '0 0 auto', width: 'min(520px, 100%)' }}>
+          {TIERS.map(tier => {
+            const isSelected = selected === tier.id;
+            return (
+              <div
+                key={tier.id}
+                onClick={() => toggle(tier.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && toggle(tier.id)}
+                aria-pressed={isSelected}
+                aria-label={`${tier.label} — ${tier.title}`}
+                style={{
+                  width: '100%',
+                  minHeight: tier.minH,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  textAlign: 'center',
+                  boxSizing: 'border-box',
+                  background: tier.bg,
+                  color: tier.fg,
+                  clipPath: tier.clipPath,
+                  padding: tier.padding,
+                  marginBottom: '-1px',
+                  cursor: 'pointer',
+                  outline: 'none',
+                  position: 'relative',
+                  zIndex: isSelected ? 3 : 1,
+                  transition: 'filter .22s ease, transform .22s ease',
+                  filter: isSelected
+                    ? 'brightness(1.3) drop-shadow(0 0 14px rgba(201,168,76,.5))'
+                    : 'brightness(1)',
+                  transform: isSelected ? 'scaleY(1.04)' : 'scaleY(1)',
+                }}
+              >
+                <p style={{ fontFamily: 'Georgia, serif', fontSize: '.62rem', letterSpacing: '.18em', textTransform: 'uppercase', opacity: .72, margin: '0 0 3px', lineHeight: 1 }}>
+                  {tier.label}
+                </p>
+                <p style={{ fontFamily: 'Georgia, serif', fontSize: '1rem', fontWeight: 700, margin: '0 0 5px', lineHeight: 1.2 }}>
+                  {tier.title}
+                </p>
+                <p style={{ fontSize: '.76rem', opacity: .85, margin: 0, lineHeight: 1.4 }}>
+                  {tier.sub}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ── Panneau détail ── */}
+        <div style={{ flex: '1 1 280px', minWidth: '260px', maxWidth: '480px' }}>
+          {selectedTier ? (
+            <DetailPanel tier={selectedTier} onClose={() => setSelected(null)} />
+          ) : (
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minHeight: '340px',
+              border: '1px dashed rgba(201,168,76,.15)',
+              borderRadius: '6px',
+              color: '#7a6a50',
+              fontSize: '.87rem',
+              textAlign: 'center',
+              padding: '32px',
+              gap: '14px',
+            }}>
+              <span style={{ fontSize: '2.2rem', opacity: .35 }}>𓂀</span>
+              <p style={{ margin: 0, lineHeight: 1.65 }}>
+                Cliquez sur un niveau<br/>pour explorer son contenu
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── Légende ── */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '32px', flexWrap: 'wrap', fontSize: '.75rem' }}>
+        {LEGEND.map(({ c, l }) => (
+          <span key={l} style={{ display: 'flex', alignItems: 'center', gap: '7px', color: '#7a6a50' }}>
+            <span style={{ width: 11, height: 11, borderRadius: 2, background: c, border: '1px solid rgba(255,255,255,.12)', display: 'inline-block', flexShrink: 0 }}></span>
+            {l}
+          </span>
+        ))}
+      </div>
+
+      <style>{`
+        @keyframes kSlideIn {
+          from { opacity: 0; transform: translateX(14px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+        @media (max-width: 600px) {
+          #pyramid-root [aria-label] p:last-child { display: none; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('pyramid-root')).render(<PyramidApp />);
+</script>
 </body>
 </html>
