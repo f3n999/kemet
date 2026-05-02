@@ -513,16 +513,39 @@ function openModal(slug, type) {
   const actions = document.getElementById('modal-actions');
   title.textContent = b.title + ' : ' + b.subtitle;
 
+  // Pages de lecture disponibles pour les ebooks gratuits
+  const READER_PAGES = {
+    'akhenaton-pharaon-heretique': 'ebooks/akhenaton-pharaon-heretique.html',
+    'hieroglyphes-initiation':     'ebooks/hieroglyphes-initiation.html',
+  };
+
   if (type === 'access') {
-    body.innerHTML = `<strong>Vous avez accès à cet ebook.</strong> Le fichier est en préparation et sera disponible en téléchargement dès sa finalisation. Vous recevrez une notification par email.`;
-    actions.innerHTML = `<a href="dashboard.html" class="btn btn-primary">Ma bibliothèque</a><button class="btn" onclick="closeModal()">Fermer</button>`;
-  } else if (type === 'free') {
-    if (!s) {
-      body.innerHTML = `Cet ebook est gratuit. Créez un compte (gratuit, 30 secondes) pour y accéder et le retrouver dans votre bibliothèque.`;
-      actions.innerHTML = `<a href="register.html" class="btn btn-primary">Créer un compte gratuit</a><a href="login.html" class="btn">Se connecter</a>`;
+    const readerUrl = READER_PAGES[slug];
+    if (readerUrl) {
+      body.innerHTML = `<strong>Vous avez accès à cet ebook.</strong> Cliquez sur "Lire maintenant" pour ouvrir le texte complet.`;
+      actions.innerHTML = `<a href="${readerUrl}" class="btn btn-primary">Lire maintenant →</a><button class="btn" onclick="closeModal()">Fermer</button>`;
     } else {
-      body.innerHTML = `Cet ebook est gratuit et accessible dans votre bibliothèque. Le fichier sera disponible en téléchargement dès sa finalisation.`;
+      body.innerHTML = `<strong>Vous avez accès à cet ebook.</strong> Le fichier est en préparation et sera disponible en téléchargement dès sa finalisation. Vous recevrez une notification par email.`;
       actions.innerHTML = `<a href="dashboard.html" class="btn btn-primary">Ma bibliothèque</a><button class="btn" onclick="closeModal()">Fermer</button>`;
+    }
+  } else if (type === 'free') {
+    const readerUrl = READER_PAGES[slug];
+    if (!s) {
+      if (readerUrl) {
+        body.innerHTML = `Cet ebook est gratuit et accessible sans compte. Vous pouvez le lire directement, ou créer un compte pour le retrouver dans votre bibliothèque.`;
+        actions.innerHTML = `<a href="${readerUrl}" class="btn btn-primary">Lire maintenant →</a><a href="register.html" class="btn">Créer un compte</a>`;
+      } else {
+        body.innerHTML = `Cet ebook est gratuit. Créez un compte (gratuit, 30 secondes) pour y accéder et le retrouver dans votre bibliothèque.`;
+        actions.innerHTML = `<a href="register.html" class="btn btn-primary">Créer un compte gratuit</a><a href="login.html" class="btn">Se connecter</a>`;
+      }
+    } else {
+      if (readerUrl) {
+        body.innerHTML = `Cet ebook est gratuit et disponible en lecture immédiate.`;
+        actions.innerHTML = `<a href="${readerUrl}" class="btn btn-primary">Lire maintenant →</a><a href="dashboard.html" class="btn">Ma bibliothèque</a>`;
+      } else {
+        body.innerHTML = `Cet ebook est gratuit et accessible dans votre bibliothèque. Le fichier sera disponible en téléchargement dès sa finalisation.`;
+        actions.innerHTML = `<a href="dashboard.html" class="btn btn-primary">Ma bibliothèque</a><button class="btn" onclick="closeModal()">Fermer</button>`;
+      }
     }
   } else if (type === 'buy') {
     if (!s) {

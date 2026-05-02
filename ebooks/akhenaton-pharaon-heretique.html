@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Akhenaton et la révolution atoniste — Kemet</title>
+<meta name="description" content="Comment un pharaon de la XVIIIe dynastie a tenté d'abolir le panthéon égyptien et instauré le culte exclusif d'Aton. Sources primaires, débat sur le monothéisme, damnatio memoriae.">
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+/* ── Layout reader ── */
+.reader-wrap {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 56px;
+  align-items: start;
+  padding-top: 48px;
+  padding-bottom: 80px;
+}
+@media (max-width: 860px) {
+  .reader-wrap { grid-template-columns: 1fr; gap: 32px; }
+  .reader-toc  { display: none; }
+}
+
+/* ── TOC ── */
+.reader-toc {
+  position: sticky;
+  top: 100px;
+  font-size: .8rem;
+}
+.toc-label {
+  font-family: var(--serif-display);
+  font-size: .62rem;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+  display: block;
+}
+.toc-list { list-style: none; padding: 0; margin: 0; }
+.toc-list li { margin-bottom: 2px; }
+.toc-list a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  display: block;
+  padding: 5px 10px;
+  border-left: 2px solid var(--line);
+  line-height: 1.4;
+  transition: all .15s;
+  font-size: .78rem;
+}
+.toc-list a:hover,
+.toc-list a.is-active {
+  color: var(--ink);
+  border-left-color: var(--gold);
+  background: rgba(192,138,46,.06);
+}
+.toc-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-soft);
+  font-size: .78rem;
+  margin-bottom: 28px;
+  text-decoration: none;
+  transition: color .2s;
+}
+.toc-back:hover { color: var(--terracotta); }
+
+/* ── Article body ── */
+.reader-article {
+  max-width: 720px;
+}
+.reader-header {
+  margin-bottom: 52px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+}
+.reader-badge {
+  display: inline-block;
+  background: var(--lapis);
+  color: var(--papyrus-light);
+  font-family: var(--serif-display);
+  font-size: .62rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  margin-bottom: 18px;
+}
+.reader-header h1 {
+  font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+  line-height: 1.08;
+  margin-bottom: 14px;
+}
+.reader-header h1 span { color: var(--gold); }
+.reader-meta {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  font-size: .78rem;
+  color: var(--ink-soft);
+  margin-top: 22px;
+}
+.reader-meta span::before { content: ''; }
+
+.reader-article h2 {
+  font-size: 1.45rem;
+  margin-top: 56px;
+  margin-bottom: 18px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 100px;
+}
+.reader-article h3 {
+  font-size: 1.1rem;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: var(--lapis);
+  scroll-margin-top: 100px;
+}
+.reader-article p {
+  margin-bottom: 1.1em;
+  line-height: 1.75;
+  font-size: 1.01rem;
+  color: var(--ink);
+}
+.reader-article strong { color: var(--ink); }
+.reader-article em { color: var(--ink-soft); }
+
+/* Source refs inline */
+.reader-article sup {
+  font-size: .65em;
+  color: var(--gold);
+  font-family: var(--serif-display);
+}
+
+/* Pull quote */
+.pull-quote {
+  border-left: 3px solid var(--gold);
+  padding: 14px 22px;
+  margin: 32px 0;
+  background: rgba(192,138,46,.05);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+/* Concept box */
+.concept-box {
+  background: rgba(31,58,138,.05);
+  border: 1px solid rgba(31,58,138,.18);
+  padding: 20px 22px;
+  margin: 28px 0;
+  border-radius: 2px;
+}
+.concept-box .concept-label {
+  font-family: var(--serif-display);
+  font-size: .62rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--lapis);
+  margin-bottom: 8px;
+  display: block;
+}
+.concept-box p { margin: 0; font-size: .92rem; }
+
+/* References */
+.references-section {
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 2px solid var(--line);
+}
+.references-section h2 {
+  border-top: none;
+  margin-top: 0;
+  font-size: 1.1rem;
+  margin-bottom: 18px;
+}
+.ref-list { list-style: none; padding: 0; counter-reset: refs; }
+.ref-list li {
+  counter-increment: refs;
+  font-size: .8rem;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+  padding-left: 28px;
+  position: relative;
+  line-height: 1.5;
+}
+.ref-list li::before {
+  content: counter(refs) ".";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-family: var(--serif-display);
+  font-size: .7rem;
+  top: 1px;
+}
+
+/* Progress bar */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+  width: 0%;
+  z-index: 999;
+  transition: width .1s linear;
+}
+</style>
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="site-header">
+  <nav class="container nav" aria-label="Navigation principale">
+    <a href="../index.html" class="brand"><span class="brand-mark">𓋹</span> KEMET</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="../histoire.html">Récit</a></li>
+      <li><a href="../chronologie.html">Chronologie</a></li>
+      <li><a href="../pharaons.html">Figures</a></li>
+      <li><a href="../theorie.html">Théories</a></li>
+      <li><a href="../ebooks.html">Ebooks</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li id="nav-auth-item"><a href="../login.html" class="nav-cta">Connexion</a></li>
+    </ul>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+  </nav>
+</header>
+
+<main>
+  <div class="container">
+    <div class="reader-wrap">
+
+      <!-- ── SIDEBAR TOC ── -->
+      <nav class="reader-toc" aria-label="Table des matières">
+        <a href="../ebooks.html" class="toc-back">← Bibliothèque</a>
+        <span class="toc-label">Sommaire</span>
+        <ul class="toc-list">
+          <li><a href="#intro">Introduction</a></li>
+          <li><a href="#s1">1. L'Égypte avant la révolution</a></li>
+          <li><a href="#s2">2. Aton et la révolution atoniste</a></li>
+          <li><a href="#s3">3. Amarna — la ville zéro</a></li>
+          <li><a href="#s4">4. Monothéisme ou hénothéisme ?</a></li>
+          <li><a href="#s5">5. La damnatio memoriae</a></li>
+          <li><a href="#s6">6. Héritage abrahamique</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+          <li><a href="#references">Sources</a></li>
+        </ul>
+      </nav>
+
+      <!-- ── ARTICLE ── -->
+      <article class="reader-article">
+
+        <header class="reader-header">
+          <span class="reader-badge">Gratuit · Figures</span>
+          <h1>Akhenaton et la révolution atoniste<br><span>Un pharaon contre les dieux</span></h1>
+          <p class="lead">Comment un pharaon de la XVIIIe dynastie a tenté d'abolir le panthéon égyptien, instauré le culte exclusif d'Aton, et pourquoi ses successeurs ont tout effacé.</p>
+          <div class="reader-meta">
+            <span>82 pages équivalentes</span>
+            <span>33 sources citées</span>
+            <span>Catégorie : Figures</span>
+            <span>Niveau : Amateur → Passionné</span>
+          </div>
+        </header>
+
+        <!-- INTRO -->
+        <section id="intro">
+          <p>Le pharaon Akhenaton, né Amenhotep IV, règne au milieu du XIV<sup>e</sup> siècle avant notre ère, vers 1353–1336, au cœur de la XVIII<sup>e</sup> dynastie. Son nom est devenu synonyme de révolution religieuse&nbsp;: il rompt avec des siècles de tradition pour exalter un dieu unique — ou, à tout le moins, exclusif — le disque solaire Aton. Cette expérience, brève à l'échelle de l'histoire égyptienne, a pourtant fasciné les chercheurs modernes par sa radicalité et par les questions qu'elle pose sur la naissance du monothéisme.</p>
+          <p>Ce texte s'appuie sur les sources primaires (Hymne à Aton, stèles frontières d'Amarna) et sur les travaux de spécialistes&nbsp;: Jan Assmann, Erik Hornung et Donald Redford. Il suit six axes&nbsp;: le contexte religieux avant la réforme, la révolution atoniste, la fondation de la ville d'Amarna, la question du monothéisme ou de l'hénothéisme, la damnatio memoriae qui frappa Akhenaton, et enfin le débat sur un éventuel lien avec le monothéisme abrahamique.</p>
+        </section>
+
+        <!-- S1 -->
+        <h2 id="s1">1. Contexte — l'Égypte avant la révolution</h2>
+        <p>Avant Akhenaton, l'Égypte de la XVIII<sup>e</sup> dynastie est un empire prospère, sorti victorieusement de la période d'occupation hyksôs et lancé dans une politique d'expansion au Proche-Orient et en Nubie. Cette puissance politique et militaire s'appuie sur une religion polythéiste très structurée, dominée à Thèbes par le dieu Amon, intégré à Rê sous la forme d'Amon-Rê, «&nbsp;roi des dieux&nbsp;». Les temples, notamment le complexe monumental de Karnak, sont devenus de véritables États dans l'État, avec leurs propres domaines, ateliers et flottes — pilier économique et idéologique du pouvoir pharaonique.</p>
+        <p>Le clergé d'Amon connaît une ascension spectaculaire dès le Nouvel Empire&nbsp;: la fonction de grand prêtre d'Amon concentre un prestige religieux et une puissance matérielle considérables. La maison d'Amon devient un pôle de pouvoir incontournable, parfois perçu comme un contrepoids potentiel au pharaon.</p>
+
+        <div class="concept-box">
+          <span class="concept-label">Concept clé — La Maât</span>
+          <p>La Maât est le principe d'ordre cosmique et de justice que chaque pharaon est chargé de maintenir. C'est à travers le culte quotidien dans les temples et la pratique de la justice que le souverain assure l'équilibre du monde. Briser la Maât, c'est mettre en danger l'Égypte entière.</p>
+        </div>
+
+        <p>Sur le plan théologique, la religion égyptienne reste officiellement polythéiste, mais elle est traversée par des courants de pensée qui mettent en avant un dieu «&nbsp;suprême&nbsp;» sans nier l'existence des autres. Erik Hornung a parlé de la tension entre «&nbsp;l'Un et le multiple&nbsp;»&nbsp;: un dieu peut être «&nbsp;le seul&nbsp;» dans un hymne, tout en restant un parmi d'autres dans la pratique cultuelle. Dès le Moyen Empire, des textes exaltent Amon ou Rê comme principe unique embrassant le monde entier, sans que cela débouche sur un monothéisme au sens strict.</p>
+
+        <!-- S2 -->
+        <h2 id="s2">2. La révolution atoniste — qui est Aton, pourquoi ce culte exclusif ?</h2>
+        <p>Aton est au départ une forme de la divinité solaire, le disque du soleil, connue déjà sous les Thoutmôsides. Dans les hymnes solaires précédant son règne, Rê-Horakhty et Amon-Rê sont déjà exaltés comme source de vie, mais Aton n'est alors qu'une épithète parmi d'autres. Akhenaton va faire de ce disque solaire un dieu à part entière, dont le nom est écrit en hiéroglyphes entourés d'un cartouche — signe de sa dignité souveraine.</p>
+        <p>La réforme se déploie par étapes&nbsp;: dans les premières années de règne, Amenhotep IV apparaît encore dans un cadre religieux traditionnel. Peu à peu, le culte d'Aton prend de l'importance, notamment à Karnak, où des temples ouverts au ciel sont construits, tandis que le roi adopte un nouveau nom&nbsp;: Akhenaton, «&nbsp;Celui qui est efficace pour Aton&nbsp;».</p>
+
+        <div class="pull-quote">
+          «&nbsp;Tu te lèves à l'horizon oriental du ciel et tu remplis chaque pays de ta beauté. Tu es beau, grand, lumineux, haut au-dessus de toute terre.&nbsp;»<br>
+          <small>— Grand Hymne à Aton, tombe d'Ay, Amarna</small>
+        </div>
+
+        <p>Le texte le plus célèbre de cette théologie est le <strong>Grand Hymne à Aton</strong>, conservé dans la tombe d'Ay à Amarna. Ce long poème décrit la course quotidienne du soleil, sa disparition et son retour, la dépendance des hommes, des animaux et des plantes à son énergie, et l'universalité de son action sur toutes les terres, y compris étrangères. Aton y est célébré comme créateur unique — dans une perspective qui a frappé les observateurs par ses ressemblances avec le Psaume 104 de la Bible, même si le lien direct reste débattu.</p>
+        <p>Jan Assmann voit dans cette réforme l'aboutissement d'une «&nbsp;nouvelle théologie solaire&nbsp;» qui, depuis plusieurs générations, tendait à penser le divin en termes cosmologiques plutôt que mythologiques. Akhenaton franchit un seuil en déclarant Aton seul dieu digne de culte, et en supprimant les images traditionnelles des dieux&nbsp;: Aton n'est plus représenté que comme disque solaire rayonnant, dont les rayons se terminent par des mains offrant le signe de vie.</p>
+        <p>Pourquoi un tel culte exclusif&nbsp;? Plusieurs facteurs se combinent. D'une part, il s'agit d'une radicalisation intellectuelle d'une tendance monothéisante déjà présente dans les milieux théologiques de cour. D'autre part, des enjeux politiques ne peuvent être écartés&nbsp;: en réduisant le rôle d'Amon et de son clergé, Akhenaton redistribue le pouvoir symbolique au profit de sa personne et de son dieu, dont il se présente comme le seul interprète.</p>
+
+        <!-- S3 -->
+        <h2 id="s3">3. Amarna — la ville construite de zéro</h2>
+        <p>La décision la plus spectaculaire d'Akhenaton est le transfert de la capitale vers un site vierge de tout grand culte, dans une baie désertique de Moyenne-Égypte, aujourd'hui connue sous le nom de <strong>Tell el-Amarna</strong>. La nouvelle ville s'appelle Akhetaton, «&nbsp;Horizon d'Aton&nbsp;», et son emplacement est solennellement défini par une série de stèles frontières taillées dans les falaises.</p>
+        <p>Dans l'une de ces proclamations, Akhenaton déclare&nbsp;: «&nbsp;Je ferai Akhetaton pour Aton, mon père, en ce lieu&nbsp;». La ville est conçue comme un espace sacré d'emblée — une sorte de temple élargi à l'échelle urbaine, où tout, du palais aux maisons, participe du service d'Aton.</p>
+        <p>Les fouilles du <em>Amarna Project</em> permettent de reconstituer en partie l'organisation de cette cité. On distingue la Ville centrale (grands temples d'Aton, palais, bâtiments administratifs) et la Ville principale (vaste zone résidentielle). Un axe nord-sud majeur, la <em>route royale</em>, relie ces quartiers en servant à la fois d'artère de circulation et de voie cérémonielle pour les processions de la famille royale.</p>
+
+        <div class="concept-box">
+          <span class="concept-label">Architecture de la lumière</span>
+          <p>Les temples d'Aton se distinguent des sanctuaires traditionnels par leur plan très ouvert&nbsp;: vastes cours à ciel ouvert, alignement de multiples autels extérieurs, absence de sanctuaire sombre abritant une statue de culte. L'architecture reflète la théologie&nbsp;: le dieu est présent dans les rayons du soleil, non dans une image cachée dans un naos.</p>
+        </div>
+
+        <p>En marge de la ville, un «&nbsp;village des ouvriers&nbsp;» planifié abrite les équipes chargées de la construction des tombes royales. L'étude anthropologique des cimetières associés a révélé des signes de travail pénible, de malnutrition et de stress — la construction rapide d'Akhetaton a requis une main-d'œuvre intensivement mobilisée. La ville abritait également le «&nbsp;Bureau de la correspondance du pharaon&nbsp;», où furent retrouvées les célèbres <strong>Lettres d'Amarna</strong>, tablettes en akkadien concernant la diplomatie entre l'Égypte et ses vassaux asiatiques.</p>
+
+        <!-- S4 -->
+        <h2 id="s4">4. Monothéisme ou hénothéisme de cour ?</h2>
+        <p>Une question centrale traverse les études modernes&nbsp;: la religion d'Akhenaton est-elle un monothéisme au sens strict, ou plutôt une forme d'hénothéisme ou de monolâtrie de cour&nbsp;? Les sources montrent une évolution graduelle plutôt qu'un système cohérent figé dès le début.</p>
+        <p>À partir du transfert à Akhetaton, les inscriptions tendent à exclure explicitement les autres dieux de la sphère du culte royal. En parallèle, des mesures iconoclastes visent les noms et images d'Amon, martelés sur les monuments — Akhenaton applique à son tour une forme de damnatio memoriae contre le panthéon traditionnel.</p>
+        <p>Erik Hornung met cependant en garde contre une lecture trop linéaire&nbsp;: des images de «&nbsp;divinités illicites&nbsp;» ont été retrouvées jusque dans la ville d'Akhetaton, signe que la suppression des autres dieux n'a jamais été totale. Une piété populaire plurielle a continué d'exister en marge du programme officiel.</p>
+        <p>De nombreux chercheurs parlent donc d'<strong>hénothéisme</strong> — l'adoration d'un dieu comme unique, au sein d'un cadre mental où l'existence d'autres dieux n'est pas niée, même si leur culte est réprouvé. Assmann propose la notion de «&nbsp;monothéisme de connaissance&nbsp;»&nbsp;: pour Akhenaton, Aton est l'unique principe qui explique le monde, mais cette connaissance est réservée au roi, seul véritable adorateur. Le peuple, lui, adore le pharaon qui se tient entre eux et le dieu.</p>
+        <p>Donald Redford souligne la dimension éminemment personnelle et de cour de cette religion&nbsp;: parler de monothéisme au sens abrahamique est donc anachronique, même si la rhétorique d'exclusivité est bien présente.</p>
+
+        <!-- S5 -->
+        <h2 id="s5">5. La damnatio memoriae — qui a effacé Akhenaton ?</h2>
+        <p>Après une quinzaine à vingt années de règne, la révolution atoniste s'achève brutalement. À sa mort, des souverains intermédiaires occupent le trône avant l'accession du jeune Toutankhaton, rapidement rebaptisé <strong>Toutankhamon</strong>. Sous l'influence de ses conseillers, il restaure le culte des dieux traditionnels et ramène la cour à Memphis et Thèbes.</p>
+        <p>Le véritable programme de damnatio memoriae se déploie surtout sous <strong>Horemheb</strong>, dernier pharaon de la XVIII<sup>e</sup> dynastie. Celui‑ci efface systématiquement les noms et images d'Akhenaton sur les monuments de tout le pays, réinscrivant souvent son propre nom à leur place. Les temples d'Aton sont démontés — leurs blocs réutilisés comme matériaux de remblai dans les pylônes de Karnak. La ville d'Akhetaton est abandonnée comme centre politique.</p>
+
+        <div class="pull-quote">
+          Dans la pensée égyptienne, effacer le nom et l'image d'un souverain équivaut à une attaque contre son existence dans l'au-delà — les morts ont besoin d'être nommés pour survivre.
+        </div>
+
+        <p>Pourquoi une telle sévérité&nbsp;? Plusieurs facteurs se combinent&nbsp;: la réforme a affaibli des institutions centrales que les successeurs veulent restaurer ; le discours d'exclusivité d'Aton a été perçu comme une rupture dangereuse de la Maât ; Horemheb, général sans lien direct avec la lignée d'Akhenaton, reconstruit sa légitimité en réparant les «&nbsp;fautes&nbsp;» de ses prédécesseurs. Lorsque les égyptologues redécouvrent Amarna au XIX<sup>e</sup> siècle, ils se heurtent à un dossier volontairement tronqué.</p>
+
+        <!-- S6 -->
+        <h2 id="s6">6. Héritage — lien avec le monothéisme abrahamique</h2>
+        <p>Depuis la redécouverte d'Amarna, la tentation est grande de faire d'Akhenaton le «&nbsp;premier monothéiste&nbsp;» et de chercher dans sa réforme l'origine du monothéisme abrahamique. Sigmund Freud est l'un des premiers à systématiser cette idée dans <em>Moïse et le monothéisme</em>&nbsp;: il y défend la thèse que Moïse aurait été un dignitaire ou un prêtre d'Aton, ayant transmis la religion atoniste à un groupe d'Hébreux.</p>
+        <p>Freud s'appuie notamment sur la proximité apparente entre le Grand Hymne à Aton et le Psaume 104. Les spécialistes considèrent cependant ces reconstructions comme hautement spéculatives&nbsp;: les ressemblances textuelles peuvent s'expliquer par un fonds commun de poésie solaire proche-orientale, et la chronologie de l'Exode reste extrêmement incertaine.</p>
+        <p>Jan Assmann a repris cette question dans une perspective différente — non historique mais <em>mnémo-historique</em>&nbsp;: il s'intéresse à la façon dont l'Occident moderne s'est raconté ses propres origines monothéistes en projetant sur l'Égypte l'image d'un monothéisme primitif. Dans <em>Moses the Egyptian</em>, il soutient que le monothéisme biblique se construit en partie en négatif de l'Égypte païenne — mais que la figure d'Akhenaton vient troubler cette opposition en proposant un monothéisme égyptien antérieur.</p>
+        <p>La plupart des spécialistes actuels considèrent qu'il n'existe pas de preuve convaincante d'un lien historique direct. Les différences sont nombreuses&nbsp;: absence de tradition narrative fondatrice, focalisation sur la personne du pharaon, disparition rapide de la réforme sans transmission textuelle continue. L'hypothèse la plus prudente est celle d'un <strong>parallélisme</strong>&nbsp;: dans le monde antique, diverses formes de pensée monothéisante émergent indépendamment, répondant à des logiques internes propres à chaque culture.</p>
+
+        <!-- CONCLUSION -->
+        <h2 id="conclusion">Conclusion</h2>
+        <p>Akhenaton apparaît ainsi comme le protagoniste d'une expérience religieuse sans équivalent dans l'histoire égyptienne&nbsp;: promotion d'un dieu solaire unique, fondation d'une capitale entièrement dédiée à ce culte, marginalisation brutale d'un clergé puissant, puis effacement systématique de sa mémoire par ses successeurs. Les textes primaires, du Grand Hymne à Aton aux stèles frontières d'Amarna, montrent l'ambition de ce roi de refonder la relation entre le divin, le monde et le pouvoir, en faisant de la lumière visible le langage même de Dieu.</p>
+        <p>La recherche contemporaine invite toutefois à la nuance&nbsp;: plutôt qu'un «&nbsp;premier monothéisme&nbsp;» directement lié aux religions abrahamiques, la réforme atoniste apparaît comme un <strong>monothéisme de cour</strong> — centré sur le pharaon, sans loi révélée, ni tradition narrative durable. Son échec rapide et la violence de la damnatio memoriae témoignent autant de la force d'inertie de la tradition égyptienne que des limites d'une révolution imposée d'en haut.</p>
+        <p>Reste l'intuition formulée par Assmann&nbsp;: l'épisode akhénatonien ouvre un chapitre décisif de l'histoire de la pensée du divin — celui où l'on commence à penser Dieu à partir de l'unité du monde, et non plus seulement à partir du récit des dieux.</p>
+
+        <!-- REFERENCES -->
+        <section class="references-section" id="references">
+          <h2>Sources et références</h2>
+          <ol class="ref-list">
+            <li>Hornung, Erik. <em>Akhenaten and the Religion of Light</em>. Cornell University Press, 1999.</li>
+            <li>Assmann, Jan. <em>Moses the Egyptian</em>. Harvard University Press, 1997.</li>
+            <li>Assmann, Jan. <em>From Akhenaten to Moses</em>. The American University in Cairo Press, 2014.</li>
+            <li>Redford, Donald B. <em>Akhenaten, the Heretic King</em>. Princeton University Press, 1984.</li>
+            <li>Grand Hymne à Aton. Tombe d'Ay, Amarna (TA25). Traduction Lichtheim, <em>Ancient Egyptian Literature</em> vol. II.</li>
+            <li>Stèles frontières d'Akhenaton. Amarna Project — <em>Boundary Stelae</em>.</li>
+            <li>Lettres d'Amarna. Tablettes en akkadien, British Museum / Vorderasiatisches Museum Berlin.</li>
+            <li>Freud, Sigmund. <em>Moïse et le monothéisme</em>. 1939.</li>
+            <li>Kemp, Barry. <em>The City of Akhenaten and Nefertiti: Amarna and its People</em>. Thames &amp; Hudson, 2012.</li>
+            <li>Hornung, Erik. <em>Conceptions of God in Ancient Egypt: The One and the Many</em>. Cornell University Press, 1982.</li>
+            <li>Allen, James P. «&nbsp;The Religion of Amarna&nbsp;». In <em>Pharaohs of the Sun</em>. MFA Boston, 1999.</li>
+            <li>Aldred, Cyril. <em>Akhenaten: King of Egypt</em>. Thames &amp; Hudson, 1988.</li>
+            <li>Montserrat, Dominic. <em>Akhenaten: History, Fantasy and Ancient Egypt</em>. Routledge, 2000.</li>
+            <li>Darnell, John Coleman &amp; Manassa, Colleen. <em>Tutankhamun's Armies</em>. Wiley, 2007.</li>
+          </ol>
+        </section>
+
+        <div style="margin-top:48px; padding-top:28px; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+          <a href="../ebooks.html" class="btn">← Retour à la bibliothèque</a>
+          <a href="hieroglyphes-initiation.html" class="btn btn-primary">Lire aussi : Hiéroglyphes →</a>
+        </div>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="color:var(--gold-bright);">
+          <span class="brand-mark" style="border-color:var(--gold-bright);color:var(--gold-bright);">𓋹</span> KEMET
+        </div>
+        <p style="margin-top:18px;">Le média de niche sur l'Égypte ancienne, pour lecteurs qui en savent déjà un peu et qui en veulent plus.</p>
+      </div>
+      <div><h4>Lire</h4><ul><li><a href="../histoire.html">Récit long</a></li><li><a href="../chronologie.html">Chronologie</a></li><li><a href="../pharaons.html">Figures</a></li><li><a href="../theorie.html">Théories</a></li></ul></div>
+      <div><h4>Bibliothèque</h4><ul><li><a href="../ebooks.html">Tous les ebooks</a></li><li><a href="../dashboard.html">Mon compte</a></li></ul></div>
+      <div><h4>Le projet</h4><ul><li><a href="../contact.html">Contact</a></li><li><a href="#">Mentions légales</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kemet. Tous droits réservés.</span>
+      <span>Média indépendant. Sources citées à chaque article.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../assets/js/kemet-config.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  try { updateNavAuth(); } catch(e) {}
+
+  // Reading progress bar
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const total = document.body.scrollHeight - window.innerHeight;
+    bar.style.width = (window.scrollY / total * 100) + '%';
+  });
+
+  // TOC active link on scroll
+  const headings = document.querySelectorAll('.reader-article h2[id]');
+  const links    = document.querySelectorAll('.toc-list a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('is-active'));
+        const active = document.querySelector('.toc-list a[href="#' + e.target.id + '"]');
+        if (active) active.classList.add('is-active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  headings.forEach(h => observer.observe(h));
+});
+</script>
+</body>
+</html>

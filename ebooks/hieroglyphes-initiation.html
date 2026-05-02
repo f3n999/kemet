@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comprendre les hiéroglyphes — Kemet</title>
+<meta name="description" content="Guide d'initiation aux hiéroglyphes égyptiens : idéogrammes, phonogrammes, déterminatifs, Champollion, Pierre de Rosette, les 24 signes unilitères pour écrire son prénom.">
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+/* ── Layout reader ── */
+.reader-wrap {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 56px;
+  align-items: start;
+  padding-top: 48px;
+  padding-bottom: 80px;
+}
+@media (max-width: 860px) {
+  .reader-wrap { grid-template-columns: 1fr; gap: 32px; }
+  .reader-toc  { display: none; }
+}
+.reader-toc {
+  position: sticky;
+  top: 100px;
+  font-size: .8rem;
+}
+.toc-label {
+  font-family: var(--serif-display);
+  font-size: .62rem;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+  display: block;
+}
+.toc-list { list-style: none; padding: 0; margin: 0; }
+.toc-list li { margin-bottom: 2px; }
+.toc-list a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  display: block;
+  padding: 5px 10px;
+  border-left: 2px solid var(--line);
+  line-height: 1.4;
+  transition: all .15s;
+  font-size: .78rem;
+}
+.toc-list a:hover,
+.toc-list a.is-active {
+  color: var(--ink);
+  border-left-color: var(--gold);
+  background: rgba(192,138,46,.06);
+}
+.toc-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-soft);
+  font-size: .78rem;
+  margin-bottom: 28px;
+  text-decoration: none;
+  transition: color .2s;
+}
+.toc-back:hover { color: var(--terracotta); }
+
+/* ── Article body ── */
+.reader-article { max-width: 720px; }
+.reader-header {
+  margin-bottom: 52px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+}
+.reader-badge {
+  display: inline-block;
+  background: var(--lapis);
+  color: var(--papyrus-light);
+  font-family: var(--serif-display);
+  font-size: .62rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  margin-bottom: 18px;
+}
+.reader-header h1 { font-size: clamp(1.9rem, 3.5vw, 2.8rem); line-height: 1.08; margin-bottom: 14px; }
+.reader-header h1 span { color: var(--gold); }
+.reader-meta {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  font-size: .78rem;
+  color: var(--ink-soft);
+  margin-top: 22px;
+}
+
+.reader-article h2 {
+  font-size: 1.45rem;
+  margin-top: 56px;
+  margin-bottom: 18px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 100px;
+}
+.reader-article h3 {
+  font-size: 1.05rem;
+  margin-top: 32px;
+  margin-bottom: 10px;
+  color: var(--lapis);
+  scroll-margin-top: 100px;
+}
+.reader-article p {
+  margin-bottom: 1.1em;
+  line-height: 1.75;
+  font-size: 1.01rem;
+}
+.reader-article ul {
+  margin: 12px 0 18px 22px;
+  line-height: 1.75;
+  font-size: 1.01rem;
+}
+.reader-article li { margin-bottom: 4px; }
+
+.pull-quote {
+  border-left: 3px solid var(--gold);
+  padding: 14px 22px;
+  margin: 32px 0;
+  background: rgba(192,138,46,.05);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+.concept-box {
+  background: rgba(31,58,138,.05);
+  border: 1px solid rgba(31,58,138,.18);
+  padding: 20px 22px;
+  margin: 28px 0;
+  border-radius: 2px;
+}
+.concept-box .concept-label {
+  font-family: var(--serif-display);
+  font-size: .62rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--lapis);
+  margin-bottom: 8px;
+  display: block;
+}
+.concept-box p { margin: 0; font-size: .92rem; }
+
+/* Hieroglyphs alphabet table */
+.hiero-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+  margin: 24px 0 32px;
+}
+.hiero-table th {
+  font-family: var(--serif-display);
+  font-size: .65rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border-bottom: 2px solid var(--line);
+  padding: 8px 10px;
+  text-align: left;
+  background: rgba(192,138,46,.05);
+}
+.hiero-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid rgba(201,180,138,.25);
+  color: var(--ink-soft);
+  vertical-align: top;
+}
+.hiero-table td:first-child {
+  font-family: var(--serif-display);
+  color: var(--lapis);
+  font-size: .9rem;
+  font-weight: 600;
+}
+.hiero-table tr:hover td { background: rgba(192,138,46,.04); }
+
+/* References */
+.references-section {
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 2px solid var(--line);
+}
+.references-section h2 { border-top: none; margin-top: 0; font-size: 1.1rem; margin-bottom: 18px; }
+.ref-list { list-style: none; padding: 0; counter-reset: refs; }
+.ref-list li {
+  counter-increment: refs;
+  font-size: .8rem;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+  padding-left: 28px;
+  position: relative;
+  line-height: 1.5;
+}
+.ref-list li::before {
+  content: counter(refs) ".";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-family: var(--serif-display);
+  font-size: .7rem;
+  top: 1px;
+}
+
+/* Progress bar */
+#reading-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+  width: 0%;
+  z-index: 999;
+  transition: width .1s linear;
+}
+
+/* Atelier prénom */
+.atelier-box {
+  background: var(--papyrus-light);
+  border: 2px solid var(--gold);
+  padding: 24px 26px;
+  margin: 32px 0;
+}
+.atelier-box .atelier-label {
+  font-family: var(--serif-display);
+  font-size: .62rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<div id="reading-progress"></div>
+
+<header class="site-header">
+  <nav class="container nav" aria-label="Navigation principale">
+    <a href="../index.html" class="brand"><span class="brand-mark">𓋹</span> KEMET</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="../histoire.html">Récit</a></li>
+      <li><a href="../chronologie.html">Chronologie</a></li>
+      <li><a href="../pharaons.html">Figures</a></li>
+      <li><a href="../theorie.html">Théories</a></li>
+      <li><a href="../ebooks.html">Ebooks</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li id="nav-auth-item"><a href="../login.html" class="nav-cta">Connexion</a></li>
+    </ul>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+  </nav>
+</header>
+
+<main>
+  <div class="container">
+    <div class="reader-wrap">
+
+      <!-- TOC -->
+      <nav class="reader-toc" aria-label="Table des matières">
+        <a href="../ebooks.html" class="toc-back">← Bibliothèque</a>
+        <span class="toc-label">Sommaire</span>
+        <ul class="toc-list">
+          <li><a href="#intro">Introduction</a></li>
+          <li><a href="#s1">1. Qu'est-ce qu'un hiéroglyphe ?</a></li>
+          <li><a href="#s2">2. Champollion et la Pierre de Rosette</a></li>
+          <li><a href="#s3">3. Les 24 signes — écrire son prénom</a></li>
+          <li><a href="#s4">4. Les supports d'écriture</a></li>
+          <li><a href="#s5">5. Ce que le déchiffrement a changé</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+          <li><a href="#references">Sources</a></li>
+        </ul>
+      </nav>
+
+      <!-- ARTICLE -->
+      <article class="reader-article">
+
+        <header class="reader-header">
+          <span class="reader-badge">Gratuit · Culture</span>
+          <h1>Comprendre les hiéroglyphes<br><span>Un guide d'initiation</span></h1>
+          <p class="lead">Le système d'écriture égyptien expliqué sans jargon&nbsp;: idéogrammes, phonogrammes, déterminatifs. Comment Champollion a déchiffré la Pierre de Rosette. Et comment écrire votre prénom en hiéroglyphes.</p>
+          <div class="reader-meta">
+            <span>64 pages équivalentes</span>
+            <span>17 sources citées</span>
+            <span>Catégorie : Culture</span>
+            <span>Niveau : Grand public → Amateur</span>
+          </div>
+        </header>
+
+        <!-- INTRO -->
+        <section id="intro">
+          <p>Les hiéroglyphes égyptiens fascinent depuis des siècles&nbsp;: à la fois dessins, symboles religieux et écriture complète, ils recouvrent les murs des temples, les sarcophages, les statues et même la célèbre Pierre de Rosette. Pendant longtemps, les Européens les ont pris pour un langage «&nbsp;mystique&nbsp;» réservé aux prêtres, supposé exprimer des idées philosophiques ou magiques plutôt qu'une langue parlée. Il a fallu attendre le début du XIX<sup>e</sup> siècle et le travail de Jean‑François Champollion pour comprendre que les hiéroglyphes sont avant tout un système d'écriture, complexe mais rigoureusement structuré.</p>
+          <p>Ce guide propose une initiation accessible. Il ne demande aucune formation en linguistique&nbsp;: chaque notion est expliquée simplement, avec des exemples concrets. L'objectif n'est pas de faire de toi un égyptologue, mais de t'offrir suffisamment de clés pour regarder une inscription et te dire&nbsp;: «&nbsp;Je comprends au moins comment ça fonctionne.&nbsp;»</p>
+        </section>
+
+        <!-- S1 -->
+        <h2 id="s1">1. Qu'est-ce qu'un hiéroglyphe ? Un système mixte</h2>
+        <p>Les hiéroglyphes forment le système d'écriture «&nbsp;formel&nbsp;» de l'Égypte antique&nbsp;: c'est celui que l'on trouve sur les monuments, les tombes, les stèles, les objets précieux. Il ne s'agit pas d'un alphabet simple comme le nôtre, mais d'un ensemble de <strong>plus de mille signes figuratifs</strong> qui peuvent servir de plusieurs manières&nbsp;: comme idéogrammes, comme phonogrammes ou comme déterminatifs.</p>
+        <p>Visuellement, chaque signe représente quelque chose de reconnaissable&nbsp;: un oiseau, un soleil, une maison, une vague d'eau, un outil. Pourtant, ce que «&nbsp;dit&nbsp;» réellement le signe dépend du contexte&nbsp;: le même dessin de soleil peut être lu comme le mot «&nbsp;soleil&nbsp;», comme un son précis dans un autre mot, ou rester muet en fin de mot pour préciser le sens du groupe de signes qui le précède.</p>
+
+        <h3>1.1 Idéogrammes — quand l'image parle directement</h3>
+        <p>Un idéogramme représente directement une chose ou une idée. Par exemple, un simple cercle avec un point central figure le disque solaire et peut servir à écrire le mot «&nbsp;soleil&nbsp;» ou le nom du dieu Rê. Dans ces cas, le signe est lu pour ce qu'il montre&nbsp;: l'image est le mot.</p>
+
+        <div class="concept-box">
+          <span class="concept-label">Exemple concret</span>
+          <p>Un soleil gravé seul (⊙), accompagné d'un trait vertical indiquant qu'il s'agit d'un idéogramme, sera lu comme «&nbsp;soleil&nbsp;» ou «&nbsp;Rê&nbsp;» selon le contexte. Un petit dessin de jarre peut servir de mot pour «&nbsp;jarre&nbsp;», «&nbsp;vase&nbsp;» ou «&nbsp;récipient&nbsp;».</p>
+        </div>
+
+        <h3>1.2 Phonogrammes — des signes qui représentent des sons</h3>
+        <p>La plupart des hiéroglyphes fonctionnent comme <strong>phonogrammes</strong>&nbsp;: ils notent un ou plusieurs sons, indépendamment de ce qu'ils représentent visuellement. On distingue&nbsp;:</p>
+        <ul>
+          <li>les <strong>signes unilitères</strong> (un seul son consonantique)</li>
+          <li>les <strong>signes bilitères</strong> (deux consonnes)</li>
+          <li>les <strong>signes trilitères</strong> (trois consonnes)</li>
+        </ul>
+        <p>Exemple&nbsp;: le hibou stylisé note le son <em>m</em>. Il peut être utilisé partout où la consonne m apparaît, que l'on parle d'un hibou, d'un homme ou d'un mur. L'image de l'oiseau ne compte plus&nbsp;: ce qui importe, c'est la valeur sonore.</p>
+        <p>L'écriture hiéroglyphique note principalement les consonnes&nbsp;: les voyelles ne sont généralement pas indiquées — ce qui rapproche l'égyptien ancien d'un système consonantique (ou abjad). Un ensemble de signes peut donc se lire de plusieurs manières vocaliques possibles, et c'est le contexte — ou plus tard le copte — qui permet aux chercheurs de restituer une prononciation approximative.</p>
+
+        <h3>1.3 Déterminatifs — des signes muets qui éclairent le sens</h3>
+        <p>Les déterminatifs sont des hiéroglyphes <strong>muets</strong>, sans valeur phonétique. Ils sont placés en fin de mot pour préciser sa catégorie de sens&nbsp;: humain, divin, ville, action de mouvement, abstraction, matière, etc.</p>
+        <p>Exemple&nbsp;: la séquence consonantique <em>hdj</em> peut signifier «&nbsp;argent&nbsp;» (le métal) ou «&nbsp;blanc&nbsp;» (la couleur). Pour éviter la confusion, les scribes ajoutent des déterminatifs différents&nbsp;: un symbole lié aux métaux pour «&nbsp;argent&nbsp;», un disque solaire lié à la lumière pour «&nbsp;blanc&nbsp;».</p>
+
+        <div class="pull-quote">
+          Un même signe peut changer de rôle selon la position et le mot dans lequel il se trouve. Il ne suffit pas de reconnaître l'image&nbsp;: il faut comprendre la mécanique du mot entier.
+        </div>
+
+        <!-- S2 -->
+        <h2 id="s2">2. Comment Champollion a déchiffré la Pierre de Rosette</h2>
+        <p>Au tournant du XIX<sup>e</sup> siècle, personne en Europe ne savait plus lire les hiéroglyphes. Le tournant vient en <strong>1799</strong>, lorsque des soldats français découvrent près de la ville de Rashid (Rosette) une stèle de granodiorite portant un même décret écrit trois fois&nbsp;: en hiéroglyphes, en démotique (une écriture cursive égyptienne) et en grec.</p>
+        <p>Le texte grec, langue encore bien connue, explique que la stèle contient un décret promulgué en 196 av. J.‑C. au nom du roi Ptolémée V. La stèle devient alors une sorte de «&nbsp;manuel bilingue&nbsp;» involontaire — offrant, sur un même support, les deux formes principales de l'égyptien écrit et leur équivalent grec.</p>
+
+        <h3>2.1 Avant Champollion — les intuitions de Thomas Young</h3>
+        <p>L'Anglais Thomas Young avait déjà avancé dans la bonne direction. Il observe que le texte démotique utilise des signes qui ressemblent à certains hiéroglyphes, et suppose que les noms étrangers — notamment ceux des Ptolémée — ont été écrits de manière phonétique. Il construit un premier «&nbsp;alphabet&nbsp;» partiel, mais sans renoncer totalement à l'idée d'une écriture surtout symbolique.</p>
+
+        <h3>2.2 L'intuition décisive de Champollion</h3>
+        <p>Jean‑François Champollion, linguiste passionné d'Égypte, reprend le dossier avec une arme supplémentaire&nbsp;: sa connaissance approfondie du <strong>copte</strong>, dernière étape de la langue égyptienne, encore utilisée comme langue liturgique dans l'Église copte. Il a l'intuition que les hiéroglyphes notent la même langue que le copte, dans une forme très ancienne.</p>
+        <p>Champollion étudie d'abord les <strong>cartouches</strong> — ces ovales qui encadrent les noms royaux — sur la Pierre de Rosette et sur l'obélisque de Philae. En comparant le nombre de signes hiéroglyphiques au nombre de lettres grecques des mêmes noms, il propose des correspondances&nbsp;: le premier signe du cartouche de Ptolémée note <em>p</em>, le suivant <em>t</em>, puis <em>o</em>, <em>l</em>, <em>m</em>, etc.</p>
+
+        <h3>2.3 Le rôle du copte</h3>
+        <p>La force de Champollion est d'aller au‑delà des seuls noms propres. Pour lire des mots égyptiens ordinaires, il s'appuie sur le copte. En trouvant dans les hiéroglyphes une suite de signes qu'il pense lire <em>r‑p‑t</em> (par exemple), il cherche en copte un mot similaire ayant un sens plausible dans le contexte. Cette méthode circulaire — hypothèse de lecture, vérification par le copte, ajustement — lui permet d'attaquer la langue elle‑même.</p>
+
+        <h3>2.4 La Lettre à M. Dacier — 14 septembre 1822</h3>
+        <p>Champollion présente ses résultats à l'Académie royale des Inscriptions. Sa <em>Lettre à M. Dacier relative à l'alphabet des hiéroglyphes phonétiques</em> démontre que&nbsp;:</p>
+        <ul>
+          <li>les hiéroglyphes possèdent des signes utilisés phonétiquement pour noter des noms propres ;</li>
+          <li>ces valeurs phonétiques s'appliquent aussi aux mots égyptiens ordinaires ;</li>
+          <li>l'égyptien de ces inscriptions est une forme ancienne de la langue dont le copte est l'héritier.</li>
+        </ul>
+        <p>Cette démonstration met fin à plusieurs siècles de spéculation et ouvre la voie à la lecture systématique des textes égyptiens.</p>
+
+        <!-- S3 -->
+        <h2 id="s3">3. Les 24 signes unilitères — écrire son prénom</h2>
+        <p>L'un des aspects les plus ludiques des hiéroglyphes est d'apprendre l'«&nbsp;alphabet&nbsp;» des signes unilitères&nbsp;: 24 hiéroglyphes qui notent chacun une seule consonne, un peu comme nos lettres.</p>
+        <p>Il faut garder en tête deux règles&nbsp;:</p>
+        <ul>
+          <li>les voyelles ne sont presque jamais écrites — «&nbsp;Camille&nbsp;» sera rendu par ses consonnes (k‑m‑l) ;</li>
+          <li>certains sons français n'existent pas en égyptien, d'où des approximations inévitables.</li>
+        </ul>
+
+        <table class="hiero-table">
+          <thead>
+            <tr>
+              <th>Signe</th>
+              <th>Son (français)</th>
+              <th>Ce que représente le signe</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>3</td><td>a (coup de glotte)</td><td>Vautour égyptien</td></tr>
+            <tr><td>ʾ</td><td>a «&nbsp;rugueux&nbsp;»</td><td>Bras ou main tendue</td></tr>
+            <tr><td>ỉ</td><td>i / y</td><td>Roseau (plante droite)</td></tr>
+            <tr><td>y</td><td>y (semi-voyelle)</td><td>Double roseau</td></tr>
+            <tr><td>w</td><td>ou / w</td><td>Oisillon (caille)</td></tr>
+            <tr><td>b</td><td>b</td><td>Jambe ou pied</td></tr>
+            <tr><td>p</td><td>p</td><td>Tabouret / tapis</td></tr>
+            <tr><td>f</td><td>f</td><td>Vipère cornue</td></tr>
+            <tr><td>m</td><td>m</td><td>Hibou</td></tr>
+            <tr><td>n</td><td>n</td><td>Ondulation d'eau</td></tr>
+            <tr><td>r</td><td>r (entre r et l)</td><td>Bouche ouverte</td></tr>
+            <tr><td>h</td><td>h doux</td><td>Abri en roseau</td></tr>
+            <tr><td>ḥ</td><td>h aspiré fort</td><td>Mèche torsadée</td></tr>
+            <tr><td>ḫ</td><td>kh (comme «&nbsp;Bach&nbsp;»)</td><td>Objet recourbé / placenta</td></tr>
+            <tr><td>ẖ</td><td>kh plus doux</td><td>Ventre d'animal avec queue</td></tr>
+            <tr><td>s</td><td>s</td><td>Morceau de tissu plié</td></tr>
+            <tr><td>š</td><td>ch (comme «&nbsp;chat&nbsp;»)</td><td>Bassin ou plan d'eau</td></tr>
+            <tr><td>q</td><td>k profond (gorge)</td><td>Pente de colline</td></tr>
+            <tr><td>k</td><td>k normal</td><td>Panier avec anse</td></tr>
+            <tr><td>g</td><td>g dur</td><td>Support de vase</td></tr>
+            <tr><td>t</td><td>t</td><td>Pain rond / galette</td></tr>
+            <tr><td>ṯ</td><td>tch (comme «&nbsp;tchao&nbsp;»)</td><td>Corde de lien</td></tr>
+            <tr><td>d</td><td>d</td><td>Main</td></tr>
+            <tr><td>ḏ</td><td>dj (comme «&nbsp;djinn&nbsp;»)</td><td>Cobra couché</td></tr>
+          </tbody>
+        </table>
+
+        <div class="atelier-box">
+          <span class="atelier-label">Atelier — Écrire son prénom</span>
+          <p style="margin-bottom: 10px;">À partir du tableau, encodez votre prénom en consonnes. Quelques exemples&nbsp;:</p>
+          <ul style="font-size:.92rem; color:var(--ink-soft);">
+            <li><strong>LUCAS</strong> → l‑u‑k‑a‑s → <em>r</em> (pour l) + <em>w</em> (pour u/ou) + <em>k</em> + <em>3</em> (pour a) + <em>s</em></li>
+            <li><strong>MARIE</strong> → m‑r‑y (le e final n'est pas noté) → hibou + bouche + roseau</li>
+            <li><strong>THOMAS</strong> → t‑m‑3‑s → galette + hibou + vautour + tissu</li>
+          </ul>
+          <p style="margin-top:10px; font-size:.84rem; color:var(--ink-soft);">Ces transcriptions sont des approximations modernes à but pédagogique. Les scribes égyptiens combinaient ces unilitères avec des signes à deux ou trois consonnes pour composer des mots riches.</p>
+        </div>
+
+        <!-- S4 -->
+        <h2 id="s4">4. Les supports — papyrus, pierre, bois</h2>
+        <p>Les hiéroglyphes existent parce qu'ils ont été tracés, gravés, peints sur des supports bien concrets. Comprendre ces supports aide à comprendre pourquoi certains textes nous sont parvenus et d'autres ont disparu.</p>
+
+        <h3>La pierre — écrire pour l'éternité</h3>
+        <p>Les images les plus célèbres de hiéroglyphes sont celles gravées sur les murs en pierre des temples, des tombes ou des stèles. La pierre — calcaire, grès, granit — est le support de prédilection pour les inscriptions que l'on veut éternelles&nbsp;: hymnes aux dieux, annales royales, biographies funéraires, décrets. Les hiéroglyphes y sont gravés en creux ou en relief, puis souvent peints en couleurs. Ce support a deux avantages&nbsp;: il est durable, et il donne aux inscriptions un caractère solennel et sacré.</p>
+
+        <h3>Le papyrus — le support du quotidien</h3>
+        <p>Pour les textes longs et la vie administrative, le support idéal était le papyrus&nbsp;: une sorte de «&nbsp;papier&nbsp;» antique fabriqué en superposant des bandes de tige de papyrus, pressées et séchées. Sur ces rouleaux, on écrivait surtout en <strong>hiératique</strong> (forme cursive dérivée des hiéroglyphes) ou en démotique, toutes deux beaucoup plus rapides à tracer avec un calame et de l'encre. Le problème du papyrus, c'est sa fragilité&nbsp;: en dehors d'environnements très secs, comme les tombes bien scellées, il finit par se décomposer.</p>
+
+        <h3>Les ostraca — les blocs-notes de l'Antiquité</h3>
+        <p>Les <strong>ostraca</strong> — fragments de poterie ou éclats de calcaire — étaient omniprésents dans la vie quotidienne. Sur ces supports bon marché, on notait des exercices d'écolier, des lettres, des comptes, des brouillons. Les fouilles de <strong>Deir el-Médineh</strong> ont livré des centaines d'ostraca — offrant un échantillon rare de l'écriture «&nbsp;ordinaire&nbsp;» des Égyptiens.</p>
+
+        <!-- S5 -->
+        <h2 id="s5">5. Ce que le déchiffrement a changé</h2>
+        <p>Quand Champollion démontre que les hiéroglyphes notent une langue, il ouvre une porte sur des milliers de textes que l'on voyait depuis longtemps sans pouvoir les lire. En un siècle environ, l'égyptologie passe de l'interprétation symbolique à l'étude directe des sources égyptiennes.</p>
+
+        <h3>Une histoire écrite par les Égyptiens eux-mêmes</h3>
+        <p>Les textes historiques gravés sur les murs des temples deviennent enfin lisibles. On peut reconstruire une chronologie des dynasties beaucoup plus précise, comparer les versions égyptiennes des événements à celles des auteurs grecs ou bibliques, et voir comment les pharaons voulaient se présenter eux‑mêmes. Des stèles de la bataille de Qadesh racontent la campagne contre les Hittites, mêlant propagande royale et données concrètes.</p>
+
+        <h3>La religion égyptienne vue de l'intérieur</h3>
+        <p>Les grands corpus religieux — <em>Textes des Pyramides</em>, <em>Textes des Sarcophages</em>, <em>Livres des Morts</em> — cessent d'être de simples colonnes mystérieuses. On découvre une pensée religieuse complexe, avec des débats internes visibles dans l'évolution des textes et des rituels. Plutôt qu'un polythéisme «&nbsp;naïf&nbsp;», un système de représentations très élaboré.</p>
+
+        <h3>La vie quotidienne — lettres, contrats, grèves</h3>
+        <p>Grâce aux papyrus et ostraca, la vie quotidienne sort de l'ombre. On lit des lettres privées où un père se plaint du comportement de son fils, des contrats de mariage, des procès pour vol, des listes de rations. Les archives du village de Deir el‑Médineh montrent des artisans qui travaillent aux tombes royales mais qui font aussi <strong>grève</strong> quand les rations n'arrivent pas — les premières grèves documentées de l'histoire.</p>
+
+        <div class="pull-quote">
+          Lire une lettre d'un ouvrier de Deir el‑Médineh, un conte littéraire ou une prière à Amon, c'est entendre, à travers des millénaires, quelqu'un qui se présente, se plaint, espère — un humain qui, soudain, n'est plus seulement une silhouette peinte sur un mur.
+        </div>
+
+        <!-- CONCLUSION -->
+        <h2 id="conclusion">Conclusion — des dessins aux mots</h2>
+        <p>Au terme de ce parcours, les hiéroglyphes ne devraient plus apparaître seulement comme une forêt de petits dessins mystérieux, mais comme un système d'écriture sophistiqué, capable de tout noter&nbsp;: des hymnes aux dieux, des traités de paix, des recettes de cuisine, des insultes et des déclarations d'amour.</p>
+        <p>Tu as vu comment les signes peuvent fonctionner comme images (idéogrammes), comme sons (phonogrammes) ou comme indicateurs de sens (déterminatifs), et comment Champollion a compris, grâce à la Pierre de Rosette et au copte, que cette écriture était en partie phonétique.</p>
+        <p>Avec le tableau des 24 signes unilitères, tu disposes d'un premier outil pour jouer avec cette écriture. Ce n'est qu'un début&nbsp;: derrière chaque colonne de hiéroglyphes se cache un texte que l'on peut lire, traduire, discuter. La prochaine fois que tu verras un mur couvert de signes, tu ne verras plus un «&nbsp;code secret&nbsp;», mais une langue — avec ses mots, ses jeux, sa musique.</p>
+
+        <!-- REFERENCES -->
+        <section class="references-section" id="references">
+          <h2>Sources et références</h2>
+          <ol class="ref-list">
+            <li>Champollion, Jean-François. <em>Lettre à M. Dacier relative à l'alphabet des hiéroglyphes phonétiques</em>. Paris, 1822.</li>
+            <li>Allen, James P. <em>Middle Egyptian: An Introduction to the Language and Culture of Hieroglyphs</em>. Cambridge University Press, 2010.</li>
+            <li>Collier, Mark &amp; Manley, Bill. <em>How to Read Egyptian Hieroglyphs</em>. British Museum Press, 1998.</li>
+            <li>Gardiner, Alan H. <em>Egyptian Grammar</em>. Griffith Institute, 3<sup>e</sup> éd., 1957.</li>
+            <li>Lichtheim, Miriam. <em>Ancient Egyptian Literature</em>, 3 vol. University of California Press, 1973–1980.</li>
+            <li>Parkinson, Richard. <em>Cracking Codes: The Rosetta Stone and Decipherment</em>. British Museum Press, 1999.</li>
+            <li>Robinson, Andrew. <em>Cracking the Egyptian Code: The Revolutionary Life of Jean-François Champollion</em>. Oxford University Press, 2012.</li>
+            <li>Lalouette, Claire. <em>Thèbes ou la naissance d'un empire</em>. Flammarion, 1986.</li>
+            <li>Aufrère, Sydney. <em>L'univers minéral dans la pensée égyptienne</em>. IFAO, 1991.</li>
+            <li>Tallet, Pierre. <em>Les papyrus de la mer Rouge</em>. MEMNONIA, 2017.</li>
+            <li>Goedicke, Hans (dir.). <em>Perspectives on the Battle of Kadesh</em>. Halgo, 1985.</li>
+            <li>Kemp, Barry. <em>Ancient Egypt: Anatomy of a Civilization</em>. Routledge, 2006.</li>
+            <li>Faulkner, Raymond O. <em>The Ancient Egyptian Book of the Dead</em>. British Museum Press, 1985.</li>
+            <li>Cerny, Jaroslav. <em>A Community of Workmen at Thebes in the Ramesside Period</em>. IFAO, 1973.</li>
+            <li>Valbelle, Dominique. <em>Les ouvriers de la tombe — Deir el-Médineh à l'époque ramesside</em>. IFAO, 1985.</li>
+            <li>Quirke, Stephen. <em>Exploring Religion in Ancient Egypt</em>. Wiley-Blackwell, 2014.</li>
+            <li>Wilson, Penelope. <em>Sacred Signs: Hieroglyphs in Ancient Egypt</em>. Oxford University Press, 2003.</li>
+          </ol>
+        </section>
+
+        <div style="margin-top:48px; padding-top:28px; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+          <a href="../ebooks.html" class="btn">← Retour à la bibliothèque</a>
+          <a href="akhenaton-pharaon-heretique.html" class="btn btn-primary">Lire aussi : Akhenaton →</a>
+        </div>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="color:var(--gold-bright);">
+          <span class="brand-mark" style="border-color:var(--gold-bright);color:var(--gold-bright);">𓋹</span> KEMET
+        </div>
+        <p style="margin-top:18px;">Le média de niche sur l'Égypte ancienne, pour lecteurs qui en savent déjà un peu et qui en veulent plus.</p>
+      </div>
+      <div><h4>Lire</h4><ul><li><a href="../histoire.html">Récit long</a></li><li><a href="../chronologie.html">Chronologie</a></li><li><a href="../pharaons.html">Figures</a></li><li><a href="../theorie.html">Théories</a></li></ul></div>
+      <div><h4>Bibliothèque</h4><ul><li><a href="../ebooks.html">Tous les ebooks</a></li><li><a href="../dashboard.html">Mon compte</a></li></ul></div>
+      <div><h4>Le projet</h4><ul><li><a href="../contact.html">Contact</a></li><li><a href="#">Mentions légales</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kemet. Tous droits réservés.</span>
+      <span>Média indépendant. Sources citées à chaque article.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../assets/js/kemet-config.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  try { updateNavAuth(); } catch(e) {}
+
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const total = document.body.scrollHeight - window.innerHeight;
+    bar.style.width = (window.scrollY / total * 100) + '%';
+  });
+
+  const headings = document.querySelectorAll('.reader-article h2[id]');
+  const links    = document.querySelectorAll('.toc-list a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('is-active'));
+        const active = document.querySelector('.toc-list a[href="#' + e.target.id + '"]');
+        if (active) active.classList.add('is-active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  headings.forEach(h => observer.observe(h));
+});
+</script>
+</body>
+</html>
