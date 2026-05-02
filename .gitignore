@@ -17,3 +17,14 @@ Desktop.ini
 
 # Téléchargements temporaires
 Téléchargements
+
+# Fichiers source images bruts (trop lourds)
+img/
+
+# Scripts de build locaux
+compress-images.js
+node_modules/
+
+# Fichiers MD temporaires
+*.md
+!README.md

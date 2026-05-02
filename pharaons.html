@@ -6,6 +6,82 @@
 <title>Les pharaons d'Égypte — Kemet</title>
 <meta name="description" content="Portraits des pharaons qui ont marqué l'histoire de l'Égypte ancienne : Khéops, Hatchepsout, Akhenaton, Toutânkhamon, Ramsès II, Cléopâtre.">
 <link rel="stylesheet" href="assets/css/style.css">
+<style>
+/* ── Pharaon cards with photo ── */
+.pharaon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+}
+.pharaon-card {
+  border: 1px solid var(--line);
+  background: var(--papyrus-light);
+  display: flex;
+  flex-direction: column;
+  transition: transform .3s ease, box-shadow .3s ease;
+  overflow: hidden;
+}
+.pharaon-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px -16px rgba(20,17,13,.35);
+}
+.pharaon-photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: sepia(18%) contrast(1.05) brightness(0.97);
+  transition: filter .3s ease, transform .4s ease;
+}
+.pharaon-card:hover .pharaon-photo {
+  filter: sepia(8%) contrast(1.08) brightness(1.02);
+  transform: scale(1.03);
+}
+.pharaon-photo-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.pharaon-photo-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(transparent, var(--papyrus-light));
+  pointer-events: none;
+}
+.pharaon-body {
+  padding: 18px 20px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.pharaon-date {
+  font-family: var(--serif-display);
+  font-size: .62rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 7px;
+}
+.pharaon-body h3 { margin-bottom: 10px; font-size: 1.12rem; }
+.pharaon-body p  { font-size: .88rem; color: var(--ink-soft); line-height: 1.6; flex: 1; }
+.pharaon-body .read-more {
+  margin-top: 16px;
+  font-size: .8rem;
+  font-family: var(--serif-display);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--lapis);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color .2s, gap .2s;
+}
+.pharaon-body .read-more:hover { color: var(--terracotta); gap: 10px; }
+.pharaon-body .read-more::after { content: '→'; }
+</style>
 </head>
 <body>
 
@@ -38,69 +114,123 @@
 
   <section style="padding-top:0;">
     <div class="container">
-      <div class="grid-3">
+      <div class="pharaon-grid">
 
-        <article class="card">
-          <span class="num">vers −2670 av. J.-C.</span>
-          <h3>Djéser</h3>
-          <p>IIIᵉ dynastie. Avec son architecte Imhotep, il fait construire la pyramide à degrés de Saqqara, premier monument monumental en pierre de toute l'humanité.</p>
-          <a class="read-more" href="figures/djoser.html">Lire la fiche</a>
+        <article class="pharaon-card">
+          <div class="pharaon-photo-wrap">
+            <img class="pharaon-photo" src="assets/img/pharaon-djeser.jpg"
+                 alt="Djéser — IIIe dynastie" loading="lazy" width="800" height="600">
+          </div>
+          <div class="pharaon-body">
+            <div class="pharaon-date">vers −2670 av. J.-C.</div>
+            <h3>Djéser</h3>
+            <p>IIIᵉ dynastie. Avec son architecte Imhotep, il fait construire la pyramide à degrés de Saqqara, premier monument monumental en pierre de toute l'humanité.</p>
+            <a class="read-more" href="figures/djoser.html">Lire la fiche</a>
+          </div>
         </article>
 
-        <article class="card">
-          <span class="num">vers −2580 av. J.-C.</span>
-          <h3>Khéops (Khoufou)</h3>
-          <p>IVᵉ dynastie. Bâtisseur de la grande pyramide de Gizeh, plus haute construction humaine pendant près de 4 000 ans. Peu de traces du souverain, beaucoup de sa machine d'État.</p>
-          <a class="read-more" href="figures/kheops.html">Lire la fiche</a>
+        <article class="pharaon-card">
+          <div class="pharaon-photo-wrap">
+            <img class="pharaon-photo" src="assets/img/pharaon-kheops.jpg"
+                 alt="Khéops — IVe dynastie" loading="lazy" width="800" height="600">
+          </div>
+          <div class="pharaon-body">
+            <div class="pharaon-date">vers −2580 av. J.-C.</div>
+            <h3>Khéops (Khoufou)</h3>
+            <p>IVᵉ dynastie. Bâtisseur de la grande pyramide de Gizeh, plus haute construction humaine pendant près de 4 000 ans. Peu de traces du souverain, beaucoup de sa machine d'État.</p>
+            <a class="read-more" href="figures/kheops.html">Lire la fiche</a>
+          </div>
         </article>
 
-        <article class="card">
-          <span class="num">vers −1479 av. J.-C.</span>
-          <h3>Hatchepsout</h3>
-          <p>XVIIIᵉ dynastie. D'abord régente, puis pharaon à part entière. Expédition au pays de Pount, temple de Deir el-Bahari, vingt ans de paix — puis un effacement posthume méthodique.</p>
-          <a class="read-more" href="figures/hatchepsout.html">Lire la fiche</a>
+        <article class="pharaon-card">
+          <div class="pharaon-photo-wrap">
+            <img class="pharaon-photo" src="assets/img/pharaon-hatchepsout.jpg"
+                 alt="Hatchepsout — XVIIIe dynastie" loading="lazy" width="800" height="600">
+          </div>
+          <div class="pharaon-body">
+            <div class="pharaon-date">vers −1479 av. J.-C.</div>
+            <h3>Hatchepsout</h3>
+            <p>XVIIIᵉ dynastie. D'abord régente, puis pharaon à part entière. Expédition au pays de Pount, temple de Deir el-Bahari, vingt ans de paix — puis un effacement posthume méthodique.</p>
+            <a class="read-more" href="figures/hatchepsout.html">Lire la fiche</a>
+          </div>
         </article>
 
-        <article class="card">
-          <span class="num">vers −1479 av. J.-C.</span>
-          <h3>Thoutmôsis III</h3>
-          <p>XVIIIᵉ dynastie. Surnommé le « Napoléon de l'Égypte ». Dix-sept campagnes, victoire à Megiddo, empire jusqu'à l'Euphrate. Le premier général dont on possède les carnets.</p>
-          <a class="read-more" href="figures/thoutmosis-iii.html">Lire la fiche</a>
+        <article class="pharaon-card">
+          <div class="pharaon-photo-wrap">
+            <img class="pharaon-photo" src="assets/img/pharaon-thoutmosis.jpg"
+                 alt="Thoutmôsis III — XVIIIe dynastie" loading="lazy" width="800" height="600">
+          </div>
+          <div class="pharaon-body">
+            <div class="pharaon-date">vers −1479 av. J.-C.</div>
+            <h3>Thoutmôsis III</h3>
+            <p>XVIIIᵉ dynastie. Surnommé le « Napoléon de l'Égypte ». Dix-sept campagnes, victoire à Megiddo, empire jusqu'à l'Euphrate. Le premier général dont on possède les carnets.</p>
+            <a class="read-more" href="figures/thoutmosis-iii.html">Lire la fiche</a>
+          </div>
         </article>
 
-        <article class="card">
-          <span class="num">vers −1353 av. J.-C.</span>
-          <h3>Akhenaton</h3>
-          <p>XVIIIᵉ dynastie. L'iconoclaste. Culte exclusif d'Aton, nouvelle capitale à Amarna, rupture artistique totale. Effacé à sa mort, redécouvert par l'archéologie.</p>
-          <a class="read-more" href="figures/akhenaton.html">Lire la fiche</a>
+        <article class="pharaon-card">
+          <div class="pharaon-photo-wrap">
+            <img class="pharaon-photo" src="assets/img/pharaon-akhenaton.jpg"
+                 alt="Akhenaton — XVIIIe dynastie" loading="lazy" width="800" height="600">
+          </div>
+          <div class="pharaon-body">
+            <div class="pharaon-date">vers −1353 av. J.-C.</div>
+            <h3>Akhenaton</h3>
+            <p>XVIIIᵉ dynastie. L'iconoclaste. Culte exclusif d'Aton, nouvelle capitale à Amarna, rupture artistique totale. Effacé à sa mort, redécouvert par l'archéologie.</p>
+            <a class="read-more" href="figures/akhenaton.html">Lire la fiche</a>
+          </div>
         </article>
 
-        <article class="card">
-          <span class="num">vers −1332 av. J.-C.</span>
-          <h3>Toutânkhamon</h3>
-          <p>XVIIIᵉ dynastie. Mort à 19 ans, oublié pendant 32 siècles, redécouvert en 1922. Un règne bref, un tombeau presque intact, et l'image la plus iconique de toute l'Égypte antique.</p>
-          <a class="read-more" href="figures/toutankhamon.html">Lire la fiche</a>
+        <article class="pharaon-card">
+          <div class="pharaon-photo-wrap">
+            <img class="pharaon-photo" src="assets/img/pharaon-toutankhamon.jpg"
+                 alt="Toutânkhamon — XVIIIe dynastie" loading="lazy" width="800" height="600">
+          </div>
+          <div class="pharaon-body">
+            <div class="pharaon-date">vers −1332 av. J.-C.</div>
+            <h3>Toutânkhamon</h3>
+            <p>XVIIIᵉ dynastie. Mort à 19 ans, oublié pendant 32 siècles, redécouvert en 1922. Un règne bref, un tombeau presque intact, et l'image la plus iconique de toute l'Égypte antique.</p>
+            <a class="read-more" href="figures/toutankhamon.html">Lire la fiche</a>
+          </div>
         </article>
 
-        <article class="card">
-          <span class="num">vers −1279 av. J.-C.</span>
-          <h3>Ramsès II</h3>
-          <p>XIXᵉ dynastie. 66 ans de règne, Qadesh contre les Hittites, premier traité de paix écrit, et une emprise monumentale sur tout le pays — de Pi-Ramsès à Abou Simbel.</p>
-          <a class="read-more" href="figures/ramses-ii.html">Lire la fiche</a>
+        <article class="pharaon-card">
+          <div class="pharaon-photo-wrap">
+            <img class="pharaon-photo" src="assets/img/pharaon-ramses.jpg"
+                 alt="Ramsès II — XIXe dynastie" loading="lazy" width="800" height="600">
+          </div>
+          <div class="pharaon-body">
+            <div class="pharaon-date">vers −1279 av. J.-C.</div>
+            <h3>Ramsès II</h3>
+            <p>XIXᵉ dynastie. 66 ans de règne, Qadesh contre les Hittites, premier traité de paix écrit, et une emprise monumentale sur tout le pays — de Pi-Ramsès à Abou Simbel.</p>
+            <a class="read-more" href="figures/ramses-ii.html">Lire la fiche</a>
+          </div>
         </article>
 
-        <article class="card">
-          <span class="num">−305 av. J.-C.</span>
-          <h3>Ptolémée Iᵉʳ Sôter</h3>
-          <p>Dynastie lagide. Ancien général d'Alexandre, il fonde la dynastie ptolémaïque, fait d'Alexandrie la capitale culturelle du monde et lance la Bibliothèque.</p>
-          <a class="read-more" href="figures/ptolemee-i.html">Lire la fiche</a>
+        <article class="pharaon-card">
+          <div class="pharaon-photo-wrap">
+            <img class="pharaon-photo" src="assets/img/pharaon-ptolemee.jpg"
+                 alt="Ptolémée Ier — Dynastie lagide" loading="lazy" width="800" height="600">
+          </div>
+          <div class="pharaon-body">
+            <div class="pharaon-date">−305 av. J.-C.</div>
+            <h3>Ptolémée Iᵉʳ Sôter</h3>
+            <p>Dynastie lagide. Ancien général d'Alexandre, il fonde la dynastie ptolémaïque, fait d'Alexandrie la capitale culturelle du monde et lance la Bibliothèque.</p>
+            <a class="read-more" href="figures/ptolemee-i.html">Lire la fiche</a>
+          </div>
         </article>
 
-        <article class="card">
-          <span class="num">−51 av. J.-C.</span>
-          <h3>Cléopâtre VII</h3>
-          <p>Dernière souveraine lagide, dernière pharaon de l'Égypte indépendante. Polyglotte, stratège, négociatrice — et victime de la propagande romaine posthume.</p>
-          <a class="read-more" href="figures/cleopatre-vii.html">Lire la fiche</a>
+        <article class="pharaon-card">
+          <div class="pharaon-photo-wrap">
+            <img class="pharaon-photo" src="assets/img/pharaon-cleopatre.jpg"
+                 alt="Cléopâtre VII — Dernière pharaone" loading="lazy" width="800" height="600">
+          </div>
+          <div class="pharaon-body">
+            <div class="pharaon-date">−51 av. J.-C.</div>
+            <h3>Cléopâtre VII</h3>
+            <p>Dernière souveraine lagide, dernière pharaon de l'Égypte indépendante. Polyglotte, stratège, négociatrice — et victime de la propagande romaine posthume.</p>
+            <a class="read-more" href="figures/cleopatre-vii.html">Lire la fiche</a>
+          </div>
         </article>
 
       </div>

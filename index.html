@@ -32,8 +32,11 @@
 <main>
 
   <!-- HERO -->
-  <section class="hero">
-    <div class="container hero-grid">
+  <section class="hero" style="position:relative; overflow:hidden;">
+    <img src="assets/img/hero-index.jpg" alt="Pyramides de Gizeh au lever du soleil"
+         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 60%;opacity:.18;pointer-events:none;z-index:0;"
+         loading="eager" fetchpriority="high">
+    <div class="container hero-grid" style="position:relative;z-index:1;">
       <div class="fade-up">
         <span class="eyebrow">Média indépendant • Histoire de l'Égypte ancienne</span>
         <h1>
