@@ -91,6 +91,7 @@
         <h4>Bibliothèque</h4>
         <ul>
           <li><a href="${prefix}ebooks.html">Tous les ebooks</a></li>
+          <li><a href="${prefix}commande.html">Ebook sur mesure</a></li>
           <li><a href="${prefix}dashboard.html">Mon compte</a></li>
         </ul>
       </div>
