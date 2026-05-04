@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ebook sur mesure — Kemet</title>
+<meta name="description" content="Commandez un ebook Kemet sur n'importe quel sujet d'Égypte ancienne. Dites-nous ce que vous voulez explorer, ou laissez-nous vous surprendre.">
+<link rel="icon" href="assets/img/logo.jpg" type="image/jpeg">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+
+/* ── Hero ── */
+.commande-hero {
+  background: var(--ink);
+  color: var(--papyrus-light);
+  padding: 80px 0 70px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.commande-hero::before {
+  content: '𓂀';
+  position: absolute;
+  font-size: 18rem;
+  opacity: .04;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  line-height: 1;
+}
+.commande-hero .eyebrow { color: var(--gold-bright); }
+.commande-hero h1 { color: var(--papyrus-light); margin-bottom: 16px; }
+.commande-hero .lead { color: var(--papyrus-deep); max-width: 620px; margin: 0 auto; }
+
+/* ── Champ de commande principal ── */
+.commande-wrap {
+  max-width: 740px;
+  margin: 0 auto;
+}
+
+.commande-field {
+  position: relative;
+  margin-bottom: 20px;
+}
+.commande-prefix {
+  display: block;
+  font-family: var(--serif-display);
+  font-size: .75rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.commande-textarea {
+  width: 100%;
+  min-height: 130px;
+  padding: 20px 22px;
+  border: 2px solid var(--line);
+  background: var(--papyrus-light);
+  font-family: var(--serif-body);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--ink);
+  resize: vertical;
+  transition: border-color .2s, box-shadow .2s;
+  box-sizing: border-box;
+}
+.commande-textarea:focus {
+  outline: none;
+  border-color: var(--lapis);
+  box-shadow: 0 0 0 3px rgba(27,58,107,.1);
+}
+.commande-textarea::placeholder { color: var(--ink-soft); font-style: italic; }
+
+/* ── Suggestions ── */
+.suggestions-label {
+  font-family: var(--serif-display);
+  font-size: .68rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+  display: block;
+}
+.suggestions-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.suggestion-chip {
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  background: var(--papyrus-light);
+  font-family: var(--serif-display);
+  font-size: .75rem;
+  letter-spacing: .06em;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all .2s;
+}
+.suggestion-chip:hover {
+  border-color: var(--lapis);
+  color: var(--lapis);
+  background: rgba(27,58,107,.05);
+}
+.suggestion-chip.is-selected {
+  background: var(--lapis);
+  border-color: var(--lapis);
+  color: var(--papyrus-light);
+}
+
+/* ── Bouton Surprends-moi ── */
+.surprise-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  background: var(--papyrus);
+  border: 2px solid var(--gold);
+  color: var(--ink);
+  font-family: var(--serif-display);
+  font-size: .82rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .25s;
+  position: relative;
+  overflow: hidden;
+}
+.surprise-btn:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -8px rgba(201,168,76,.5);
+}
+.surprise-btn:active { transform: translateY(0); }
+.surprise-btn .surprise-icon {
+  font-size: 1.1rem;
+  transition: transform .4s;
+}
+.surprise-btn:hover .surprise-icon { transform: rotate(20deg) scale(1.2); }
+
+/* Animation sparkle sur "Surprends-moi" */
+@keyframes sparkle {
+  0%   { opacity: 0; transform: scale(0) rotate(0deg); }
+  50%  { opacity: 1; transform: scale(1.4) rotate(180deg); }
+  100% { opacity: 0; transform: scale(0) rotate(360deg); }
+}
+.surprise-btn.is-sparkling::after {
+  content: '✦';
+  position: absolute;
+  top: 6px; right: 8px;
+  color: var(--gold-bright);
+  font-size: .8rem;
+  animation: sparkle .5s ease forwards;
+}
+
+/* ── Séparateur ── */
+.commande-or {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--ink-soft);
+  font-family: var(--serif-display);
+  font-size: .72rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  margin: 0 0 20px;
+}
+.commande-or::before,
+.commande-or::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ── Formulaire email + submit ── */
+.commande-form-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: start;
+  margin-top: 28px;
+}
+@media (max-width: 600px) {
+  .commande-form-row { grid-template-columns: 1fr; }
+}
+.commande-input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid var(--line);
+  background: var(--papyrus-light);
+  font-family: var(--serif-body);
+  font-size: .95rem;
+  color: var(--ink);
+  box-sizing: border-box;
+  transition: border-color .2s;
+}
+.commande-input:focus {
+  outline: none;
+  border-color: var(--lapis);
+}
+.commande-input::placeholder { color: var(--ink-soft); }
+
+/* ── Promesse livraison ── */
+.livraison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: 48px;
+}
+.livraison-item {
+  background: var(--papyrus-light);
+  padding: 22px 20px;
+  text-align: center;
+}
+.livraison-item strong {
+  display: block;
+  font-family: var(--serif-display);
+  font-size: 1.5rem;
+  color: var(--lapis);
+  margin-bottom: 4px;
+}
+.livraison-item span {
+  font-size: .78rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+/* ── Message succès ── */
+.commande-success {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+}
+.commande-success.is-visible { display: block; }
+.commande-success .success-mark {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 16px;
+}
+.commande-success h3 { margin-bottom: 10px; }
+.commande-success p { color: var(--ink-soft); font-size: .95rem; }
+
+/* ── Exemples passés (social proof) ── */
+.exemples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+.exemple-card {
+  border: 1px solid var(--line);
+  background: var(--papyrus-light);
+  padding: 20px;
+}
+.exemple-topic {
+  font-family: var(--serif-display);
+  font-size: .88rem;
+  font-style: italic;
+  color: var(--lapis);
+  margin-bottom: 8px;
+}
+.exemple-meta {
+  font-size: .72rem;
+  color: var(--ink-soft);
+  letter-spacing: .04em;
+}
+</style>
+</head>
+<body>
+
+<div id="kemet-header" data-active="ebooks"></div>
+
+<main>
+
+  <!-- HERO -->
+  <section class="commande-hero">
+    <div class="container" style="position:relative; z-index:1;">
+      <span class="eyebrow">Service exclusif</span>
+      <h1>Un ebook taillé<br><span style="color:var(--gold);">pour vous.</span></h1>
+      <p class="lead">
+        Il y a un angle que personne n'a traité, une question qui vous obsède depuis
+        des années, un sujet que les livres effleurent sans jamais creuser.
+        Dites-nous ce que vous voulez — on l'écrit.
+      </p>
+    </div>
+  </section>
+
+  <!-- FORMULAIRE PRINCIPAL -->
+  <section>
+    <div class="container">
+      <div class="commande-wrap">
+
+        <!-- Champ sujet -->
+        <div class="commande-field">
+          <span class="commande-prefix">Votre sujet</span>
+          <textarea
+            class="commande-textarea"
+            id="commande-sujet"
+            placeholder="Je veux comprendre comment les scribes apprenaient leur métier dans l'Égypte ancienne, depuis l'enfance jusqu'aux grandes fonctions administratives…"
+            maxlength="800"
+          ></textarea>
+          <div style="text-align:right; font-size:.72rem; color:var(--ink-soft); margin-top:4px;">
+            <span id="char-count">0</span>/800 caractères
+          </div>
+        </div>
+
+        <!-- Suggestions rapides -->
+        <span class="suggestions-label">Ou choisissez une piste</span>
+        <div class="suggestions-chips" id="suggestion-chips">
+          <!-- rempli par JS -->
+        </div>
+
+        <!-- Séparateur -->
+        <div class="commande-or">ou</div>
+
+        <!-- Bouton Surprends-moi -->
+        <div style="text-align:center; margin-bottom: 8px;">
+          <button class="surprise-btn" id="surprise-btn" type="button">
+            <span class="surprise-icon">𓇳</span>
+            Surprends-moi
+          </button>
+          <p style="font-size:.78rem; color:var(--ink-soft); margin-top:10px; margin-bottom:0;">
+            On choisit un angle rare pour vous. Vous pouvez modifier avant d'envoyer.
+          </p>
+        </div>
+
+        <!-- Séparateur vers formulaire -->
+        <div style="height: 1px; background: var(--line); margin: 36px 0;"></div>
+
+        <!-- Formulaire -->
+        <div id="commande-form-wrap">
+          <span class="commande-prefix">Votre email</span>
+          <div class="commande-form-row">
+            <input
+              type="email"
+              id="commande-email"
+              class="commande-input"
+              placeholder="votre@email.com"
+              autocomplete="email"
+            >
+            <button class="btn btn-gold" id="commande-submit" type="button">
+              Envoyer la demande →
+            </button>
+          </div>
+          <p style="font-size:.78rem; color:var(--ink-soft); margin-top:10px;">
+            Pas de spam. On vous contacte uniquement pour valider le sujet et vous envoyer l'ebook.
+            Délai moyen&nbsp;: 3 à 5 semaines.
+          </p>
+        </div>
+
+        <!-- Succès -->
+        <div class="commande-success" id="commande-success">
+          <span class="success-mark">𓂀</span>
+          <h3>Demande reçue.</h3>
+          <p>
+            Nous avons enregistré votre commande. Nous vous contacterons dans les 48h
+            pour confirmer le sujet et les modalités.
+          </p>
+          <a href="ebooks.html" class="btn btn-primary" style="margin-top:20px; display:inline-block;">
+            Retour au catalogue
+          </a>
+        </div>
+
+        <!-- Chiffres -->
+        <div class="livraison-grid">
+          <div class="livraison-item">
+            <strong>3–5</strong>
+            <span>semaines de délai moyen</span>
+          </div>
+          <div class="livraison-item">
+            <strong>60–120</strong>
+            <span>pages, format PDF optimisé</span>
+          </div>
+          <div class="livraison-item">
+            <strong>12+</strong>
+            <span>sources citées minimum</span>
+          </div>
+          <div class="livraison-item">
+            <strong>100%</strong>
+            <span>relu par un spécialiste</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EXEMPLES PASSÉS -->
+  <section style="background: var(--papyrus);">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Inspirations</span>
+        <h2>Des sujets déjà commandés</h2>
+        <p class="lead">Ces angles n'existent pas encore dans le catalogue. Ils sont en cours ou en attente.</p>
+      </header>
+      <div class="exemples-grid">
+        <div class="exemple-card">
+          <div class="exemple-topic">« La musique dans l'Égypte ancienne : instruments, functions et transmission »</div>
+          <div class="exemple-meta">Demande reçue · Culture</div>
+        </div>
+        <div class="exemple-card">
+          <div class="exemple-topic">« Les femmes médecins dans l'Égypte ancienne : mythes et réalités »</div>
+          <div class="exemple-meta">Demande reçue · Société</div>
+        </div>
+        <div class="exemple-card">
+          <div class="exemple-topic">« Le commerce en Méditerranée à l'époque ramesside »</div>
+          <div class="exemple-meta">En cours de rédaction · Économie</div>
+        </div>
+        <div class="exemple-card">
+          <div class="exemple-topic">« Les enfants dans l'Égypte ancienne : éducation, jeux et droits »</div>
+          <div class="exemple-meta">Demande reçue · Société</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="container" style="max-width: 680px;">
+      <header class="section-head">
+        <span class="eyebrow">Questions fréquentes</span>
+        <h2>Ce que vous voulez savoir</h2>
+      </header>
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        <div>
+          <h4 style="font-size:.95rem; margin-bottom:6px;">C'est payant ?</h4>
+          <p style="color:var(--ink-soft); font-size:.9rem; margin:0;">
+            Oui. Le prix est fixé après validation du sujet (généralement entre 9 € et 15 €
+            selon la complexité). Vous recevez un devis avant toute facturation.
+          </p>
+        </div>
+        <div>
+          <h4 style="font-size:.95rem; margin-bottom:6px;">Et si le sujet est trop précis ou trop large ?</h4>
+          <p style="color:var(--ink-soft); font-size:.9rem; margin:0;">
+            On vous répond dans les 48h pour affiner ensemble. La demande n'engage à rien.
+          </p>
+        </div>
+        <div>
+          <h4 style="font-size:.95rem; margin-bottom:6px;">Le bouton "Surprends-moi" fait quoi exactement ?</h4>
+          <p style="color:var(--ink-soft); font-size:.9rem; margin:0;">
+            Il tire au sort un angle rare de notre liste de 50 sujets qu'on rêve d'écrire.
+            Vous pouvez l'accepter, le modifier, ou en tirer un autre.
+          </p>
+        </div>
+        <div>
+          <h4 style="font-size:.95rem; margin-bottom:6px;">Puis-je demander un sujet déjà couvert dans le catalogue ?</h4>
+          <p style="color:var(--ink-soft); font-size:.9rem; margin:0;">
+            Non — mais vous pouvez demander un angle spécifique que l'ebook existant
+            ne traite pas. Dans ce cas on discute ensemble de ce qui fait sens.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="kemet-footer"></div>
+
+<script src="assets/js/components.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/kemet-config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script>
+
+/* ── Sujets surprise (50 angles rares) ── */
+const SURPRISE_TOPICS = [
+  "Je veux comprendre le rôle des scribes dans l'administration égyptienne : recrutement, formation, hiérarchie et quotidien.",
+  "Quel était le statut juridique des femmes dans l'Égypte ancienne — contrats, propriétés, divorces ?",
+  "Comment fonctionnait la médecine égyptienne ? Papyrus Edwin Smith, chirurgie, magie et limites du savoir.",
+  "La police dans l'Égypte ancienne : les Medjay, leur organisation, leurs méthodes et leurs procès connus.",
+  "Les enfants dans l'Égypte ancienne : jouets archéologiques, éducation, mortalité infantile et rites.",
+  "Qu'est-ce que le Livre des Morts réellement ? Analyse des formules, des variantes et de leur usage réel.",
+  "Comment les Égyptiens construisaient-ils sans roue ? Logistique, rampes, ouvriers et organisation du chantier.",
+  "La bière et le pain dans l'Égypte ancienne : agriculture du Nil, alimentation quotidienne et rations officielles.",
+  "Amarna abandonnée : que sait-on de ce que les habitants ont laissé derrière eux en partant ?",
+  "Le commerce égyptien avec Pount : route, marchandises, fréquence et débat sur la localisation du pays.",
+  "Les artisans de Deir el-Médineh : vie de village, grèves, procès et archives exceptionnelles.",
+  "La religion nubienne face à la religion égyptienne : emprunts, résistances et syncrétismes.",
+  "Qu'est-ce que la Douat ? Géographie de l'au-delà égyptien selon les Textes des Pyramides et Textes des Sarcophages.",
+  "Les animaux sacrés dans l'Égypte ancienne : ibis, chats, crocodiles — culte, nécropoles et économie du temple.",
+  "Sésostris III : le pharaon guerrier de la XIIe dynastie et sa politique de centralisation.",
+  "La musique en Égypte ancienne : harpes, sistre, cithares — instruments retrouvés et fonctions rituelles.",
+  "Le papyrus : de la plante à la feuille. Comment fabriquait-on le support d'écriture le plus important de l'Antiquité ?",
+  "Les pirates de la Méditerranée à l'époque égyptienne : les Peuples de la Mer, leurs origines et la crise de 1200 av. J.-C.",
+  "Qu'est-ce que le ka et le ba ? Les composantes de l'âme égyptienne expliquées sans simplification.",
+  "La royauté féminine en Égypte : Néithhotep, Sobeknéferu, Hatchepsout — similarités et différences.",
+  "Comment les hiéroglyphes ont-ils été oubliés ? Du dernier usage connu à Champollion.",
+  "La palme d'Abydos : le culte d'Osiris, les fêtes, les pèlerinages et la Passion d'Osiris.",
+  "Les momies royales de la cachette de Deir el-Bahari : découverte, transfert, identifications et controverses.",
+  "L'archéologie sous-marine en Égypte : Alexandrie engloutie, Hérakléion et les ports antiques.",
+  "Imhotep : architecte, médecin, sage — comment un homme est devenu un dieu après sa mort.",
+  "La stèle de Mérenptah et la première mention d'Israël : contexte, débat et signification historique.",
+  "Les oasis du désert égyptien : rôle stratégique, populations, routes caravanières et sites méconnus.",
+  "Les taureaux sacrés — Apis, Mnevis, Boukhis : localisation des sérapéums et pratiques funéraires animales.",
+  "Le droit en Égypte ancienne : tribunaux locaux, Grande Cour de Justice, preuves et peines.",
+  "L'Égypte et la Grèce : Naucratis, les mercenaires grecs et les échanges intellectuels avec Hérodote.",
+  "Comment mourait-on en Égypte ancienne ? Causes de décès, autopsies modernes et paléopathologie.",
+  "Les jardins de l'Égypte ancienne : botanique, irrigation, exotisme et jardins royaux de Karnak.",
+  "Thot, le dieu de l'écriture : mythologie, iconographie et rôle dans le jugement des morts.",
+  "Les colosses de Memnon : qui était Amenhotep III, pourquoi ces statues et quel était leur rôle ?",
+  "La littérature égyptienne : conte de Sinouhé, Dialogue du désespéré, satires — genres et réception.",
+  "L'astronomie égyptienne : horloge d'eau, calendrier civil, décans et alignements astronomiques des temples.",
+  "Les Hyksos : envahisseurs ou immigrants ? Relectures archéologiques récentes de leur arrivée.",
+  "La Nubie sous tutelle égyptienne : administration, égyptianisation et résistances locales.",
+  "Les fêtes et calendrier religieux égyptien : Opet, Vallée, Sokar — rythme annuel et processions.",
+  "Quel était le quotidien d'un soldat égyptien ? Équipement, rations, prise de guerre et retraite.",
+  "L'or de Nubie : extraction, transport, fonderies et impact sur l'économie de l'Empire Nouveau.",
+  "Les vizirs de l'Égypte ancienne : fonction, pouvoir, conflits avec le pharaon — cas de Rekhmirê.",
+  "La pierre de Rosette : contexte de sa rédaction en 196 av. J.-C., contenu réel et redécouverte.",
+  "Cléopâtre et la langue égyptienne : pourquoi elle est la seule souveraine ptolémaïque à l'avoir apprise.",
+  "Les Ptolémées entre Égypte et Grèce : comment la dynastie a adapté son image selon l'audience.",
+  "Le natron : mineral sacré, agent de momification et usage quotidien dans l'Égypte ancienne.",
+  "Les fouilles illégales en Égypte : trafic d'antiquités, marché noir et patrimoine menacé.",
+  "La palme de Karnak : complexe, évolution architecturale sur 2000 ans, financement et sens politique.",
+  "Le rêve de Thoutmôsis IV et le Sphinx de Gizeh : la stèle du Songe et ce qu'elle nous dit vraiment.",
+  "Les temples rupestres d'Abou Simbel : ingénierie, iconographie politique et sauvetage de l'UNESCO.",
+];
+
+/* ── Pistes rapides (chips) ── */
+const CHIP_TOPICS = [
+  "Les scribes et l'administration",
+  "Statut juridique des femmes",
+  "Médecine et magie",
+  "La police égyptienne (Medjay)",
+  "Le Livre des Morts",
+  "Construction sans machines modernes",
+  "Deir el-Médineh : le village des artisans",
+  "Les Peuples de la Mer",
+  "Imhotep : homme devenu dieu",
+  "L'astronomie égyptienne",
+  "Thot et l'écriture",
+  "Les Hyksos revisités",
+];
+
+let selectedChip = null;
+
+function initChips() {
+  const container = document.getElementById('suggestion-chips');
+  container.innerHTML = CHIP_TOPICS.map((t, i) =>
+    `<button class="suggestion-chip" data-index="${i}" onclick="selectChip(this, '${t.replace(/'/g, "\\'")}')">${t}</button>`
+  ).join('');
+}
+
+function selectChip(btn, topic) {
+  document.querySelectorAll('.suggestion-chip').forEach(c => c.classList.remove('is-selected'));
+  btn.classList.add('is-selected');
+  document.getElementById('commande-sujet').value = topic;
+  updateCharCount();
+  selectedChip = topic;
+}
+
+function updateCharCount() {
+  const val = document.getElementById('commande-sujet').value;
+  document.getElementById('char-count').textContent = val.length;
+}
+
+/* ── Surprise ── */
+let lastSurpriseIndex = -1;
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateNavAuth();
+  initChips();
+
+  document.getElementById('commande-sujet').addEventListener('input', () => {
+    updateCharCount();
+    document.querySelectorAll('.suggestion-chip').forEach(c => c.classList.remove('is-selected'));
+  });
+
+  /* Surprends-moi */
+  document.getElementById('surprise-btn').addEventListener('click', () => {
+    let idx;
+    do { idx = Math.floor(Math.random() * SURPRISE_TOPICS.length); }
+    while (idx === lastSurpriseIndex && SURPRISE_TOPICS.length > 1);
+    lastSurpriseIndex = idx;
+
+    const textarea = document.getElementById('commande-sujet');
+    textarea.value = SURPRISE_TOPICS[idx];
+    updateCharCount();
+
+    /* Déselectionner les chips */
+    document.querySelectorAll('.suggestion-chip').forEach(c => c.classList.remove('is-selected'));
+
+    /* Animation sparkle */
+    const btn = document.getElementById('surprise-btn');
+    btn.classList.add('is-sparkling');
+    setTimeout(() => btn.classList.remove('is-sparkling'), 600);
+
+    /* Scroll vers le textarea sur mobile */
+    textarea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    textarea.focus();
+  });
+
+  /* Pré-remplir l'email si connecté */
+  const s = getSession();
+  if (s && s.email) {
+    document.getElementById('commande-email').value = s.email;
+  }
+
+  /* Submit */
+  document.getElementById('commande-submit').addEventListener('click', submitCommande);
+});
+
+async function submitCommande() {
+  const sujet = document.getElementById('commande-sujet').value.trim();
+  const email = document.getElementById('commande-email').value.trim();
+
+  if (!sujet) {
+    document.getElementById('commande-sujet').focus();
+    document.getElementById('commande-sujet').style.borderColor = 'var(--terracotta)';
+    setTimeout(() => {
+      document.getElementById('commande-sujet').style.borderColor = '';
+    }, 2000);
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    document.getElementById('commande-email').focus();
+    document.getElementById('commande-email').style.borderColor = 'var(--terracotta)';
+    setTimeout(() => {
+      document.getElementById('commande-email').style.borderColor = '';
+    }, 2000);
+    return;
+  }
+
+  const btn = document.getElementById('commande-submit');
+  btn.disabled    = true;
+  btn.textContent = 'Envoi…';
+
+  try {
+    const res = await fetch('/api/ebook-commande', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        email,
+        sujet,
+        is_surprise: SURPRISE_TOPICS.includes(sujet),
+        source: 'commande-page',
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+
+    /* Afficher le succès */
+    document.getElementById('commande-form-wrap').style.display = 'none';
+    document.getElementById('commande-success').classList.add('is-visible');
+
+  } catch (err) {
+    btn.disabled    = false;
+    btn.textContent = 'Envoyer la demande →';
+    alert('Impossible d\'envoyer votre demande : ' + err.message + '\n\nVeuillez réessayer ou nous contacter par email.');
+  }
+}
+</script>
+</body>
+</html>
