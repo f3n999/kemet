@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mon compte — Kemet</title>
 <meta name="description" content="Votre bibliothèque Kemet — ebooks et compte personnel.">
+<link rel="icon" href="assets/img/logo.jpg" type="image/jpeg">
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
 .dashboard-grid {
@@ -149,22 +150,7 @@
 </head>
 <body>
 
-<header class="site-header">
-  <nav class="container nav" aria-label="Navigation principale">
-    <a href="index.html" class="brand"><span class="brand-mark">𓋹</span> KEMET</a>
-    <ul class="nav-links">
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="histoire.html">Récit</a></li>
-      <li><a href="chronologie.html">Chronologie</a></li>
-      <li><a href="pharaons.html">Figures</a></li>
-      <li><a href="theorie.html">Théories</a></li>
-      <li><a href="ebooks.html">Ebooks</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li id="nav-auth-item"><a href="login.html" class="nav-cta">Connexion</a></li>
-    </ul>
-    <button class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>
-  </nav>
-</header>
+<div id="kemet-header" data-active="dashboard"></div>
 
 <main>
   <section style="padding:clamp(40px,8vh,90px) 0;">
@@ -226,43 +212,16 @@
   </section>
 </main>
 
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <div class="brand" style="color:var(--gold-bright);">
-          <span class="brand-mark" style="border-color:var(--gold-bright);color:var(--gold-bright);">𓋹</span> KEMET
-        </div>
-        <p style="margin-top:18px;">Le média de niche sur l'Égypte ancienne.</p>
-      </div>
-      <div><h4>Lire</h4><ul><li><a href="histoire.html">Récit long</a></li><li><a href="chronologie.html">Chronologie</a></li><li><a href="pharaons.html">Figures</a></li></ul></div>
-      <div><h4>Bibliothèque</h4><ul><li><a href="ebooks.html">Tous les ebooks</a></li><li><a href="dashboard.html">Mon compte</a></li></ul></div>
-      <div><h4>Le projet</h4><ul><li><a href="contact.html">Contact</a></li><li><a href="#">Mentions légales</a></li></ul></div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 Kemet. Tous droits réservés.</span>
-      <span>Média indépendant. Sources citées à chaque article.</span>
-    </div>
-  </div>
-</footer>
+<div id="kemet-footer"></div>
 
+<script src="assets/js/components.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/kemet-config.js"></script>
 <script src="assets/js/auth.js"></script>
+<script src="assets/js/ebooks-data.js"></script>
 <script>
-const EBOOKS = [
-  { id: 1, slug: 'akhenaton-pharaon-heretique',     title: 'Akhenaton : Le pharaon qui a effacé les dieux',        category: 'Figures',      free: true,  color1: '#1f3a8a', color2: '#14245a' },
-  { id: 2, slug: 'pyramides-science',               title: 'Les pyramides de Gizeh : ce que la science sait vraiment', category: 'Archéologie', free: false, color1: '#a64b2a', color2: '#7a3520' },
-  { id: 3, slug: 'nefertiti-enquete',               title: 'Néfertiti : enquête sur la reine disparue',            category: 'Figures',      free: false, color1: '#2a5298', color2: '#1a3568' },
-  { id: 4, slug: 'hatchepsout-regne-efface',        title: 'Hatchepsout : vingt ans de règne effacé de l\'histoire', category: 'Figures',    free: false, color1: '#6b4c9a', color2: '#4a3470' },
-  { id: 5, slug: 'ramses-propagande',               title: 'Ramsès II : le roi qui a réinventé la victoire',       category: 'Figures',      free: false, color1: '#c08a2e', color2: '#8a6020' },
-  { id: 6, slug: 'momification-manuel',             title: 'La momification : manuel d\'éternité',                  category: 'Techniques',   free: false, color1: '#3a6b4a', color2: '#264a34' },
-  { id: 7, slug: 'toutankhamon-tresor',             title: 'Toutânkhamon : le trésor et les questions sans réponse', category: 'Figures',    free: false, color1: '#8a4a1a', color2: '#5a3010' },
-  { id: 8, slug: 'hieroglyphes-initiation',         title: 'Lire les hiéroglyphes : l\'initiation pour non-spécialistes', category: 'Culture', free: true, color1: '#14110d', color2: '#3b342a' },
-  { id: 9, slug: 'voyager-egypte-guide',            title: 'Voyager en Égypte : le guide des sites archéologiques essentiels', category: 'Voyage', free: false, color1: '#1a6b6a', color2: '#104848' },
-  { id: 10, slug: 'cleopatre-derniere-pharaone',    title: 'Cléopâtre VII : la dernière pharaone face à Rome',     category: 'Figures',      free: false, color1: '#8a1a3a', color2: '#5a1028' },
-];
+const EBOOKS = window.KEMET_EBOOKS;
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!requireAuth('login.html?next=dashboard.html')) return;

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Administration — Kemet</title>
 <meta name="robots" content="noindex">
+<link rel="icon" href="assets/img/logo.jpg" type="image/jpeg">
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
 .admin-layout {
@@ -157,18 +158,7 @@
 </head>
 <body>
 
-<header class="site-header">
-  <nav class="container nav" aria-label="Navigation principale">
-    <a href="index.html" class="brand"><span class="brand-mark">𓋹</span> KEMET</a>
-    <ul class="nav-links">
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="ebooks.html">Ebooks</a></li>
-      <li><a href="dashboard.html">Dashboard</a></li>
-      <li id="nav-auth-item"><a href="login.html" class="nav-cta">Connexion</a></li>
-    </ul>
-    <button class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>
-  </nav>
-</header>
+<div id="kemet-header" data-active="admin" data-variant="admin"></div>
 
 <main>
   <section style="padding: clamp(30px,6vh,70px) 0 100px;">
@@ -279,23 +269,14 @@
   </section>
 </main>
 
+<script src="assets/js/components.js"></script>
 <script src="assets/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/kemet-config.js"></script>
 <script src="assets/js/auth.js"></script>
+<script src="assets/js/ebooks-data.js"></script>
 <script>
-const EBOOKS = [
-  { id: 1, slug: 'akhenaton-pharaon-heretique',     title: 'Akhenaton : Le pharaon qui a effacé les dieux',                   category: 'Figures',     free: true  },
-  { id: 2, slug: 'pyramides-science',               title: 'Les pyramides de Gizeh : ce que la science sait vraiment',         category: 'Archéologie', free: false },
-  { id: 3, slug: 'nefertiti-enquete',               title: 'Néfertiti : enquête sur la reine disparue',                        category: 'Figures',     free: false },
-  { id: 4, slug: 'hatchepsout-regne-efface',        title: 'Hatchepsout : vingt ans de règne effacé de l\'histoire',           category: 'Figures',     free: false },
-  { id: 5, slug: 'ramses-propagande',               title: 'Ramsès II : le roi qui a réinventé la victoire',                   category: 'Figures',     free: false },
-  { id: 6, slug: 'momification-manuel',             title: 'La momification : manuel d\'éternité',                              category: 'Techniques',  free: false },
-  { id: 7, slug: 'toutankhamon-tresor',             title: 'Toutânkhamon : le trésor et les questions sans réponse',            category: 'Figures',     free: false },
-  { id: 8, slug: 'hieroglyphes-initiation',         title: 'Lire les hiéroglyphes : l\'initiation pour non-spécialistes',      category: 'Culture',     free: true  },
-  { id: 9, slug: 'voyager-egypte-guide',            title: 'Voyager en Égypte : le guide des sites archéologiques essentiels', category: 'Voyage',      free: false },
-  { id: 10, slug: 'cleopatre-derniere-pharaone',    title: 'Cléopâtre VII : la dernière pharaone face à Rome',                 category: 'Figures',     free: false },
-];
+const EBOOKS = window.KEMET_EBOOKS;
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!requireAdmin('index.html')) return;

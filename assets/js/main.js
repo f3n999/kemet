@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initActiveLink();
   initFadeIn();
   initTimeline();
-  initLeadForm();
 });
 
 /* ---------- NAV ---------- */
@@ -131,8 +130,3 @@ function renderTimeline(){
   `).join('');
 }
 
-/* ---------- FORMULAIRE LEAD ---------- */
-// Le handler du formulaire contact est géré directement dans contact.html
-// (fetch vers /api/contact + Supabase). Cette fonction est conservée pour
-// ne pas casser les autres pages qui pourraient charger main.js.
-function initLeadForm(){}
