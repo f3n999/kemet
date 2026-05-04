@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paiement confirmé — Kemet</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/img/logo.jpg" type="image/jpeg">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.success-wrap {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+.success-card {
+  max-width: 540px;
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--papyrus-light);
+  padding: 48px 40px;
+  text-align: center;
+  position: relative;
+}
+.success-card::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright), var(--gold));
+  position: absolute;
+  top: 0; left: 0; right: 0;
+}
+.success-icon {
+  font-size: 3.2rem;
+  margin-bottom: 20px;
+  display: block;
+}
+.success-card h1 {
+  font-size: 1.6rem;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+.success-card p {
+  color: var(--ink-soft);
+  font-size: .95rem;
+  line-height: 1.65;
+  margin-bottom: 0;
+}
+.success-ebook {
+  background: var(--papyrus);
+  border: 1px solid var(--line);
+  padding: 14px 18px;
+  margin: 22px 0;
+  font-family: var(--serif-display);
+  font-size: .88rem;
+  color: var(--lapis);
+  letter-spacing: .03em;
+}
+.success-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+</style>
+</head>
+<body>
+
+<div id="kemet-header" data-active="ebooks"></div>
+
+<main>
+  <div class="success-wrap">
+    <div class="success-card">
+      <span class="success-icon">𓂀</span>
+      <h1>Paiement confirmé</h1>
+      <div class="success-ebook" id="ebook-name">Votre ebook Kemet</div>
+      <p>
+        Votre accès a été activé. Rendez-vous dans votre bibliothèque pour
+        lire votre ebook immédiatement.
+      </p>
+      <p style="margin-top:12px;">
+        Une confirmation a été envoyée à l'adresse associée à votre compte Stripe.
+        Si vous ne la recevez pas dans les 10 minutes, vérifiez vos spams.
+      </p>
+      <div class="success-actions">
+        <a href="dashboard.html" class="btn btn-primary">Ma bibliothèque →</a>
+        <a href="ebooks.html" class="btn">Retour au catalogue</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="kemet-footer"></div>
+
+<script src="assets/js/components.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/kemet-config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/ebooks-data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  updateNavAuth();
+
+  const params = new URLSearchParams(location.search);
+  const slug   = params.get('slug');
+
+  if (slug && window.KEMET_EBOOKS) {
+    const book = window.KEMET_EBOOKS.find(b => b.slug === slug);
+    if (book) {
+      document.getElementById('ebook-name').textContent =
+        book.title + ' : ' + book.subtitle;
+    }
+  }
+});
+</script>
+</body>
+</html>
