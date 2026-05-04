@@ -546,16 +546,18 @@ let selectedChip = null;
 function initChips() {
   const container = document.getElementById('suggestion-chips');
   container.innerHTML = CHIP_TOPICS.map((t, i) =>
-    `<button class="suggestion-chip" data-index="${i}" onclick="selectChip(this, '${t.replace(/'/g, "\\'")}')">${t}</button>`
+    `<button class="suggestion-chip" data-index="${i}">${t}</button>`
   ).join('');
-}
-
-function selectChip(btn, topic) {
-  document.querySelectorAll('.suggestion-chip').forEach(c => c.classList.remove('is-selected'));
-  btn.classList.add('is-selected');
-  document.getElementById('commande-sujet').value = topic;
-  updateCharCount();
-  selectedChip = topic;
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.suggestion-chip');
+    if (!btn) return;
+    document.querySelectorAll('.suggestion-chip').forEach(c => c.classList.remove('is-selected'));
+    btn.classList.add('is-selected');
+    const topic = CHIP_TOPICS[parseInt(btn.dataset.index, 10)];
+    document.getElementById('commande-sujet').value = topic;
+    updateCharCount();
+    selectedChip = topic;
+  });
 }
 
 function updateCharCount() {
@@ -611,12 +613,6 @@ document.addEventListener('DOMContentLoaded', () => {
     textarea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     textarea.focus();
   });
-
-  /* Pré-remplir l'email si connecté */
-  const s = getSession();
-  if (s && s.email) {
-    document.getElementById('commande-email').value = s.email;
-  }
 
   /* Submit */
   document.getElementById('commande-submit').addEventListener('click', submitCommande);
