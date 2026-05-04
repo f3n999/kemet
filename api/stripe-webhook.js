@@ -42,7 +42,35 @@ export default async function handler(req, res) {
   /* ── Paiement confirmé ── */
   if (event.type === 'checkout.session.completed') {
     const session  = event.data.object;
-    const { slug, email } = session.metadata || {};
+    const { type, request_id, slug, email } = session.metadata || {};
+
+    /* ── Commande sur mesure ── */
+    if (type === 'custom_order' && request_id) {
+      const supabaseUrl = process.env.SUPABASE_URL;
+      const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+      if (supabaseUrl && supabaseKey) {
+        try {
+          await fetch(`${supabaseUrl}/rest/v1/ebook_requests?id=eq.${request_id}`, {
+            method:  'PATCH',
+            headers: {
+              'Content-Type':  'application/json',
+              'apikey':        supabaseKey,
+              'Authorization': `Bearer ${supabaseKey}`,
+              'Prefer':        'return=minimal',
+            },
+            body: JSON.stringify({
+              status:         'paid',
+              stripe_session: session.id,
+              paid_at:        new Date().toISOString(),
+            }),
+          });
+          console.log(`✓ Commande sur mesure payée : ${request_id}`);
+        } catch (err) {
+          console.error('Webhook custom order error:', err);
+        }
+      }
+      return res.status(200).json({ received: true });
+    }
 
     if (!slug || !email) {
       console.error('Metadata manquante dans la session Stripe');

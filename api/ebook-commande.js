@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { email, sujet, is_surprise, source } = req.body || {};
+  const { email, sujet, user_id, is_surprise, source } = req.body || {};
 
   /* Validation */
   if (!email || !sujet) {
@@ -37,12 +37,13 @@ export default async function handler(req, res) {
         'Prefer':        'return=minimal',
       },
       body: JSON.stringify({
-        email:         email.toLowerCase().trim(),
-        sujet:         sujet.trim(),
-        is_surprise:   Boolean(is_surprise),
-        source:        source || 'web',
-        status:        'pending',
-        created_at:    new Date().toISOString(),
+        email:       email.toLowerCase().trim(),
+        sujet:       sujet.trim(),
+        user_id:     user_id || null,
+        is_surprise: Boolean(is_surprise),
+        source:      source || 'web',
+        status:      'pending',
+        created_at:  new Date().toISOString(),
       }),
     });
 

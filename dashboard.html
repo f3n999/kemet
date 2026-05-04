@@ -164,7 +164,8 @@
           <div class="user-email" id="user-email">—</div>
           <span class="user-role" id="user-role">Lecteur</span>
           <ul class="sidebar-nav">
-            <li><a href="#bibliotheque" class="is-active">𓂀 &nbsp;Ma bibliothèque</a></li>
+            <li><a href="#" class="is-active" data-section="bibliotheque">𓂀 &nbsp;Ma bibliothèque</a></li>
+            <li><a href="#" data-section="commandes">𓁛 &nbsp;Mes commandes</a></li>
             <li><a href="ebooks.html">𓁹 &nbsp;Catalogue ebooks</a></li>
             <li><a href="#" id="logout-btn">𓆣 &nbsp;Se déconnecter</a></li>
           </ul>
@@ -206,6 +207,26 @@
             <a href="ebooks.html" class="btn" style="margin-top:16px;">Voir le catalogue</a>
           </div>
         </div>
+
+        <!-- SECTION COMMANDES SUR MESURE -->
+        <div id="section-commandes" style="display:none; grid-column:2;">
+          <header style="margin-bottom:32px; border-bottom:1px solid var(--line); padding-bottom:20px;">
+            <span class="eyebrow">Service sur mesure</span>
+            <h1 style="font-size:clamp(1.8rem,3vw,2.8rem);">Mes commandes</h1>
+          </header>
+          <div id="commandes-list">
+            <div class="empty-state">
+              <h3>Chargement…</h3>
+            </div>
+          </div>
+          <div style="margin-top:32px; padding:24px; border:1px dashed var(--line);">
+            <p style="color:var(--ink-soft); font-size:.9rem; margin:0;">
+              Vous voulez un ebook sur un sujet précis ?
+              <a href="commande.html" style="color:var(--lapis);">Commander un ebook sur mesure →</a>
+            </p>
+          </div>
+        </div>
+      </div>
       </div>
 
     </div>
@@ -223,6 +244,15 @@
 <script>
 const EBOOKS = window.KEMET_EBOOKS;
 
+const STATUS_LABELS = {
+  pending:     { label: 'En attente',       color: 'var(--ink-soft)' },
+  accepted:    { label: 'Acceptée',         color: 'var(--lapis)' },
+  in_progress: { label: 'En rédaction',     color: 'var(--gold)' },
+  paid:        { label: 'Payée ✓',          color: '#2a7a4a' },
+  delivered:   { label: 'Livrée ✓',         color: '#2a7a4a' },
+  rejected:    { label: 'Non retenue',      color: 'var(--terracotta)' },
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   if (!requireAuth('login.html?next=dashboard.html')) return;
   const s = getSession();
@@ -238,6 +268,28 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     kemetLogout();
   });
+
+  // Navigation sidebar
+  document.querySelectorAll('.sidebar-nav a[data-section]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.querySelectorAll('.sidebar-nav a').forEach(x => x.classList.remove('is-active'));
+      a.classList.add('is-active');
+      const sec = a.dataset.section;
+      document.querySelector('.dashboard-grid > div:not([id])').style.display =
+        sec === 'bibliotheque' ? '' : 'none';
+      document.getElementById('section-commandes').style.display =
+        sec === 'commandes' ? 'block' : 'none';
+      if (sec === 'commandes') loadCommandes();
+    });
+  });
+
+  // Vérifier si retour de paiement commande
+  if (new URLSearchParams(location.search).get('commande') === 'paid') {
+    setTimeout(() => {
+      document.querySelector('.sidebar-nav a[data-section="commandes"]')?.click();
+    }, 300);
+  }
 
   // Ebooks accessibles
   const prices       = getEbookPrices();
@@ -279,6 +331,74 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function notifyPrep() {
   alert('Cet ebook est en préparation. Vous recevrez un email dès qu\'il sera disponible en téléchargement.');
+}
+
+async function loadCommandes() {
+  const s    = getSession();
+  const list = document.getElementById('commandes-list');
+  list.innerHTML = '<div class="empty-state"><h3>Chargement…</h3></div>';
+
+  try {
+    const res  = await fetch('/api/mes-commandes', {
+      headers: { 'x-user-email': s.email, 'x-user-id': s.userId || '' }
+    });
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || 'Erreur');
+    if (!data.length) {
+      list.innerHTML = `<div class="empty-state">
+        <h3>Aucune commande</h3>
+        <p>Vous n'avez pas encore commandé d'ebook sur mesure.</p>
+        <a href="commande.html" class="btn" style="margin-top:16px;">Commander maintenant →</a>
+      </div>`;
+      return;
+    }
+
+    list.innerHTML = data.map(c => {
+      const st      = STATUS_LABELS[c.status] || STATUS_LABELS.pending;
+      const canPay  = c.status === 'accepted' && c.price > 0;
+      const isPaid  = c.status === 'paid' || c.status === 'delivered';
+      return `
+      <div style="border:1px solid var(--line); background:var(--papyrus-light); padding:22px 24px; margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+          <span style="font-family:var(--serif-display); font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:${st.color};">
+            ${st.label}
+          </span>
+          <span style="font-size:.75rem; color:var(--ink-soft);">
+            ${new Date(c.created_at).toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'})}
+          </span>
+        </div>
+        <p style="font-size:.92rem; color:var(--ink); line-height:1.55; margin-bottom:14px;">${c.sujet}</p>
+        ${c.price ? `<p style="font-family:var(--serif-display); font-size:1.1rem; color:var(--lapis); margin-bottom:12px;">${parseFloat(c.price).toFixed(2)} €</p>` : ''}
+        ${canPay ? `<button class="btn btn-gold" onclick="payerCommande('${c.id}', '${s.email}')">Payer ${parseFloat(c.price).toFixed(2)} € →</button>` : ''}
+        ${isPaid ? `<span style="color:#2a7a4a; font-family:var(--serif-display); font-size:.8rem; letter-spacing:.1em;">✓ Paiement reçu — votre ebook est en préparation</span>` : ''}
+        ${c.status === 'pending' ? `<span style="color:var(--ink-soft); font-size:.82rem;">Nous vous contacterons dans les 48h pour valider le sujet et fixer le prix.</span>` : ''}
+        ${c.admin_note ? `<div style="margin-top:10px; padding:10px 14px; border-left:3px solid var(--gold); font-size:.85rem; color:var(--ink-soft);">${c.admin_note}</div>` : ''}
+      </div>`;
+    }).join('');
+  } catch (err) {
+    list.innerHTML = `<div class="empty-state"><h3>Erreur</h3><p>${err.message}</p></div>`;
+  }
+}
+
+async function payerCommande(requestId, email) {
+  const btn = event.target;
+  btn.disabled    = true;
+  btn.textContent = 'Redirection…';
+  try {
+    const res  = await fetch('/api/create-custom-checkout', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ request_id: requestId, email }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.url) throw new Error(data.error || 'Erreur');
+    window.location.href = data.url;
+  } catch (err) {
+    btn.disabled    = false;
+    btn.textContent = 'Payer →';
+    alert('Erreur : ' + err.message);
+  }
 }
 </script>
 </body>

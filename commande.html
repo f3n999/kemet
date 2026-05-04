@@ -567,8 +567,21 @@ function updateCharCount() {
 let lastSurpriseIndex = -1;
 
 document.addEventListener('DOMContentLoaded', () => {
+  /* Compte obligatoire */
+  if (!requireAuth('login.html?next=commande.html')) return;
+
   updateNavAuth();
   initChips();
+
+  /* Masquer le champ email (on l'a via la session) */
+  const s = getSession();
+  const emailField = document.getElementById('commande-email');
+  if (s && s.email) {
+    emailField.value    = s.email;
+    emailField.readOnly = true;
+    emailField.style.opacity = '.6';
+    emailField.style.cursor  = 'not-allowed';
+  }
 
   document.getElementById('commande-sujet').addEventListener('input', () => {
     updateCharCount();
@@ -637,12 +650,14 @@ async function submitCommande() {
   btn.textContent = 'Envoi…';
 
   try {
+    const s = getSession();
     const res = await fetch('/api/ebook-commande', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
         email,
         sujet,
+        user_id:    s?.userId || null,
         is_surprise: SURPRISE_TOPICS.includes(sujet),
         source: 'commande-page',
       }),
