@@ -473,18 +473,33 @@ async function marquerLivre(id) {
   } catch (err) { alert('Erreur : ' + err.message); }
 }
 
-function renderAll() {
-  renderStats();
-  renderEbooksTable();
-  renderUsersTable();
-  renderAccessTab();
+/* ── Chargement données admin ── */
+async function loadUsers() {
+  try {
+    const s = getSession();
+    if (!s) return [];
+    const res = await fetch('/api/admin-users', {
+      headers: { 'x-user-email': s.email }
+    });
+    if (!res.ok) return [];
+    return await res.json();
+  } catch { return []; }
 }
 
-function renderStats() {
-  const users  = getUsers();
-  const prices = getEbookPrices();
-  const paid   = Object.values(prices).filter(p => p > 0).length;
-  const stats  = document.getElementById('admin-stats');
+async function renderAll() {
+  const [users, prices] = await Promise.all([
+    loadUsers(),
+    getEbookPricesAsync(),
+  ]);
+  renderStats(users, prices);
+  renderEbooksTable(prices);
+  renderUsersTable(users);
+  renderAccessTab(users);
+}
+
+function renderStats(users, prices) {
+  const paid  = Object.values(prices).filter(p => p > 0).length;
+  const stats = document.getElementById('admin-stats');
   stats.innerHTML = `
     <div class="admin-stat"><strong>${users.length}</strong><span>utilisateurs</span></div>
     <div class="admin-stat"><strong>${EBOOKS.length}</strong><span>ebooks au catalogue</span></div>
@@ -504,11 +519,10 @@ function renderStats() {
   `).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--ink-soft);padding:24px;">Aucun utilisateur.</td></tr>';
 }
 
-function renderEbooksTable() {
-  const prices = getEbookPrices();
-  const tbody  = document.getElementById('ebooks-table');
+function renderEbooksTable(prices) {
+  const tbody = document.getElementById('ebooks-table');
   tbody.innerHTML = EBOOKS.map(b => {
-    const price = prices[b.slug] ?? 0;
+    const price  = prices[b.slug] ?? 0;
     const isFree = price === 0;
     return `
       <tr>
@@ -542,8 +556,7 @@ function savePrice(input) {
   setTimeout(() => flash.classList.remove('visible'), 1500);
 }
 
-function renderUsersTable() {
-  const users = getUsers();
+function renderUsersTable(users) {
   const tbody = document.getElementById('users-table');
   tbody.innerHTML = users.map(u => `
     <tr>
@@ -564,17 +577,17 @@ function renderUsersTable() {
   `).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--ink-soft);padding:24px;">Aucun utilisateur.</td></tr>';
 }
 
-function renderAccessTab() {
-  const users = getUsers().filter(u => u.role !== 'admin');
+function renderAccessTab(users) {
+  const nonAdmins = users.filter(u => u.role !== 'admin');
 
   // Selects
   const selUser  = document.getElementById('access-user');
   const selEbook = document.getElementById('access-ebook');
-  selUser.innerHTML  = '<option value="">— choisir —</option>' + users.map(u => `<option value="${u.id}">${u.name} (${u.email})</option>`).join('');
+  selUser.innerHTML  = '<option value="">— choisir —</option>' + nonAdmins.map(u => `<option value="${u.id}">${u.name} (${u.email})</option>`).join('');
   selEbook.innerHTML = '<option value="">— choisir —</option>' + EBOOKS.map(b => `<option value="${b.slug}">${b.title}</option>`).join('');
 
   // Matrice
-  renderMatrix(users);
+  renderMatrix(nonAdmins);
 }
 
 function renderMatrix(users) {
@@ -615,27 +628,28 @@ function quickToggle(btn) {
     btn.className = 'access-toggle has-access';
     btn.textContent = '✓';
   }
-  renderStats();
+  renderAll();
 }
 
-function doGrant() {
+async function doGrant() {
   const uid  = document.getElementById('access-user').value;
   const slug = document.getElementById('access-ebook').value;
-  const feedback = document.getElementById('access-feedback');
   if (!uid || !slug) { showFeedback('Sélectionnez un utilisateur et un ebook.', false); return; }
-  grantEbookAccess(uid, slug);
-  const user  = getUsers().find(u => u.id === uid);
+  await grantEbookAccess(uid, slug);
+  const users = await loadUsers();
+  const user  = users.find(u => u.id === uid);
   const ebook = EBOOKS.find(b => b.slug === slug);
   showFeedback(`✓ Accès accordé à <strong>${user?.name}</strong> pour <em>${ebook?.title}</em>.`, true);
   renderAll();
 }
 
-function doRevoke() {
+async function doRevoke() {
   const uid  = document.getElementById('access-user').value;
   const slug = document.getElementById('access-ebook').value;
   if (!uid || !slug) { showFeedback('Sélectionnez un utilisateur et un ebook.', false); return; }
-  revokeEbookAccess(uid, slug);
-  const user  = getUsers().find(u => u.id === uid);
+  await revokeEbookAccess(uid, slug);
+  const users = await loadUsers();
+  const user  = users.find(u => u.id === uid);
   const ebook = EBOOKS.find(b => b.slug === slug);
   showFeedback(`Accès retiré à <strong>${user?.name}</strong> pour <em>${ebook?.title}</em>.`, true);
   renderAll();
