@@ -214,6 +214,7 @@ class EgyptScene {
     this._addNile();
     this._addPyramids();
     this._addCities();
+    this._addSeaLabels();
     this._addCompass();
   }
 
@@ -717,6 +718,108 @@ class EgyptScene {
     group.add(nLabel);
 
     this.scene.add(group);
+  }
+
+  _addSeaLabels() {
+    /* Étiquettes géographiques flottantes sur les mers et la péninsule.
+       Sprites billboards (face caméra) avec texte canvas.               */
+    const makeLabel = (text, x, y, z, opts = {}) => {
+      const {
+        fontSize  = 52,
+        color     = 'rgba(130, 190, 255, 0.80)',
+        shadow    = true,
+        scale     = [38, 9, 1],
+        italic    = true,
+      } = opts;
+
+      const c   = document.createElement('canvas');
+      c.width   = 512;
+      c.height  = 128;
+      const ctx = c.getContext('2d');
+
+      // Fond très légèrement transparent pour la lisibilité
+      ctx.fillStyle = 'rgba(0,0,0,0)';
+      ctx.fillRect(0, 0, 512, 128);
+
+      const style = italic ? `italic 600 ${fontSize}px` : `600 ${fontSize}px`;
+      ctx.font = `${style} "Cinzel", "Cormorant Garamond", Georgia, serif`;
+      ctx.textAlign    = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.letterSpacing = '0.12em';
+
+      if (shadow) {
+        ctx.shadowColor   = 'rgba(0,0,0,0.9)';
+        ctx.shadowBlur    = 18;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+      }
+
+      ctx.fillStyle = color;
+      ctx.fillText(text, 256, 64);
+
+      const tex = new THREE.CanvasTexture(c);
+      tex.minFilter = THREE.LinearFilter;
+      const mat = new THREE.SpriteMaterial({
+        map: tex, transparent: true, depthTest: false, depthWrite: false,
+      });
+      const sprite = new THREE.Sprite(mat);
+      sprite.position.set(x, y, z);
+      sprite.scale.set(...scale);
+      sprite.renderOrder = 997;
+      return sprite;
+    };
+
+    // ── Mer Méditerranée (nord) ──────────────────────────────────
+    this.scene.add(makeLabel('MER MÉDITERRANÉE', -6, 2, -155, {
+      fontSize: 48,
+      color:   'rgba(110, 175, 245, 0.78)',
+      scale:   [60, 11, 1],
+    }));
+
+    // ── Mer Rouge (est) ──────────────────────────────────────────
+    // Texte vertical — deux mots empilés
+    this.scene.add(makeLabel('MER', 95, 2, 0, {
+      fontSize: 42,
+      color:   'rgba(110, 175, 245, 0.78)',
+      scale:   [24, 9, 1],
+    }));
+    this.scene.add(makeLabel('ROUGE', 95, 2, 14, {
+      fontSize: 42,
+      color:   'rgba(110, 175, 245, 0.78)',
+      scale:   [28, 9, 1],
+    }));
+
+    // ── Golfe de Suez (petit, entre Égypte et Sinaï) ─────────────
+    this.scene.add(makeLabel('Golfe de Suez', 30, 1.5, -68, {
+      fontSize: 26,
+      color:   'rgba(110, 175, 245, 0.62)',
+      scale:   [26, 5.5, 1],
+      italic:  true,
+    }));
+
+    // ── Péninsule du Sinaï ───────────────────────────────────────
+    this.scene.add(makeLabel('SINAÏ', 50, 2, -73, {
+      fontSize: 34,
+      color:   'rgba(230, 195, 130, 0.78)',
+      scale:   [20, 6, 1],
+      italic:  false,
+    }));
+
+    // ── Nubie (sud) ──────────────────────────────────────────────
+    this.scene.add(makeLabel('NUBIE', 18, 2, 80, {
+      fontSize: 30,
+      color:   'rgba(230, 195, 130, 0.55)',
+      scale:   [22, 6, 1],
+      italic:  true,
+    }));
+
+    // ── Libye (ouest) ────────────────────────────────────────────
+    this.scene.add(makeLabel('LIBYE', -58, 2, 10, {
+      fontSize: 30,
+      color:   'rgba(230, 195, 130, 0.48)',
+      scale:   [22, 6, 1],
+      italic:  true,
+    }));
   }
 
   _makeMiniLabel(letter) {
