@@ -3,11 +3,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const email  = req.headers['x-user-email'];
-  const userId = req.headers['x-user-id'];
+  const email = req.headers['x-user-email'];
+  const adminEmail = (process.env.ADMIN_EMAIL || 'admin@kemet.fr').toLowerCase();
 
-  if (!email) {
-    return res.status(401).json({ error: 'Non authentifié' });
+  if (!email || email.toLowerCase() !== adminEmail) {
+    return res.status(403).json({ error: 'Accès refusé' });
   }
 
   const supabaseUrl = process.env.SUPABASE_URL;
@@ -18,20 +18,15 @@ export default async function handler(req, res) {
   }
 
   try {
-    /* Chercher par user_id OU par email */
-    let url = `${supabaseUrl}/rest/v1/ebook_requests?select=id,sujet,status,price,is_surprise,created_at,paid_at,admin_note&order=created_at.desc`;
-    if (userId) {
-      url += `&or=(user_id.eq.${userId},email.eq.${encodeURIComponent(email)})`;
-    } else {
-      url += `&email=eq.${encodeURIComponent(email.toLowerCase())}`;
-    }
-
-    const sbRes = await fetch(url, {
-      headers: {
-        'apikey':        supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
+    const sbRes = await fetch(
+      `${supabaseUrl}/rest/v1/ebook_requests?select=id,email,sujet,status,price,is_surprise,created_at,paid_at,admin_note&order=created_at.desc`,
+      {
+        headers: {
+          'apikey':        supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+        }
       }
-    });
+    );
 
     if (!sbRes.ok) {
       const err = await sbRes.text();
@@ -43,7 +38,7 @@ export default async function handler(req, res) {
     return res.status(200).json(data || []);
 
   } catch (err) {
-    console.error('mes-commandes API:', err);
+    console.error('admin-commandes error:', err);
     return res.status(500).json({ error: 'Erreur serveur' });
   }
 }

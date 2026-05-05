@@ -312,54 +312,75 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ── COMMANDES SUR MESURE (admin) ── */
-const ADMIN_STATUS_OPTIONS = ['pending','accepted','in_progress','paid','delivered','rejected'];
+const ADMIN_STATUS_OPTIONS = [
+  { value: 'pending',     label: 'En attente' },
+  { value: 'accepted',    label: 'Acceptée' },
+  { value: 'in_progress', label: 'En rédaction' },
+  { value: 'paid',        label: 'Payée' },
+  { value: 'delivered',   label: 'Livrée' },
+  { value: 'rejected',    label: 'Non retenue' },
+];
+
+function adminHeaders() {
+  const s = getSession();
+  return { 'Content-Type': 'application/json', 'x-user-email': s.email };
+}
+
+async function patchCommande(id, fields) {
+  const res = await fetch('/api/admin-update-commande', {
+    method:  'PATCH',
+    headers: adminHeaders(),
+    body:    JSON.stringify({ id, ...fields }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+  return data;
+}
 
 async function loadCommandesAdmin() {
   const el = document.getElementById('commandes-admin-list');
   el.innerHTML = '<p style="color:var(--ink-soft);">Chargement…</p>';
 
   try {
-    const supabaseUrl = window.KEMET_CONFIG?.supabaseUrl;
-    const supabaseKey = window.KEMET_CONFIG?.supabaseKey;
-    if (!supabaseUrl || !supabaseKey) { el.innerHTML = '<p>Config Supabase manquante.</p>'; return; }
-
-    const sb   = supabase.createClient(supabaseUrl, supabaseKey);
-    const { data, error } = await sb
-      .from('ebook_requests')
-      .select('id,email,sujet,status,price,is_surprise,created_at,paid_at,admin_note')
-      .order('created_at', { ascending: false });
-
-    if (error) throw error;
-    if (!data?.length) { el.innerHTML = '<div class="empty-state"><h3>Aucune commande reçue.</h3></div>'; return; }
+    const res  = await fetch('/api/admin-commandes', { headers: adminHeaders() });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Erreur');
+    if (!data.length) {
+      el.innerHTML = '<div class="empty-state"><h3>Aucune commande reçue.</h3></div>';
+      return;
+    }
 
     el.innerHTML = data.map(c => `
-      <div style="border:1px solid var(--line); background:var(--papyrus-light); padding:20px 24px; margin-bottom:14px;">
+      <div style="border:1px solid var(--line); background:var(--papyrus-light); padding:20px 24px; margin-bottom:14px;" id="card-${c.id}">
         <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
           <span style="font-family:var(--serif-display); font-size:.7rem; letter-spacing:.15em; color:var(--ink-soft);">
             ${new Date(c.created_at).toLocaleString('fr-FR')}
             ${c.is_surprise ? ' · 🎲 Surprise' : ''}
+            ${c.paid_at ? ` · <span style="color:#2a7a4a;">✓ Payé le ${new Date(c.paid_at).toLocaleDateString('fr-FR')}</span>` : ''}
           </span>
           <strong style="font-size:.85rem;">${c.email}</strong>
         </div>
         <p style="font-size:.92rem; line-height:1.55; margin-bottom:14px; color:var(--ink);">${c.sujet}</p>
         <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
-          <select onchange="updateCommandeStatus('${c.id}', this.value)"
+
+          <select id="status-${c.id}"
             style="padding:7px 12px; font-family:var(--serif-body); border:1px solid var(--line); background:var(--papyrus); color:var(--ink); font-size:.85rem;">
-            ${ADMIN_STATUS_OPTIONS.map(s => `<option value="${s}" ${c.status===s?'selected':''}>${s}</option>`).join('')}
+            ${ADMIN_STATUS_OPTIONS.map(o => `<option value="${o.value}" ${c.status===o.value?'selected':''}>${o.label}</option>`).join('')}
           </select>
+          <button onclick="updateCommandeStatus('${c.id}')" class="btn" style="padding:7px 14px; font-size:.75rem;">Statut</button>
+
           <div style="display:flex; align-items:center; gap:6px;">
-            <input type="number" min="0" max="99.99" step="0.01"
-              value="${c.price || ''}"
-              placeholder="Prix €"
-              id="price-${c.id}"
-              style="width:90px; padding:7px 10px; border:1px solid var(--line); background:var(--papyrus); font-size:.9rem; text-align:right;"
-            >
-            <button onclick="updateCommandePrice('${c.id}')" class="btn" style="padding:7px 14px; font-size:.75rem;">Fixer</button>
+            <input type="number" min="0" max="999.99" step="0.01"
+              value="${c.price || ''}" placeholder="Prix €" id="price-${c.id}"
+              style="width:90px; padding:7px 10px; border:1px solid var(--line); background:var(--papyrus); font-size:.9rem; text-align:right;">
+            <button onclick="updateCommandePrice('${c.id}')" class="btn btn-gold" style="padding:7px 14px; font-size:.75rem;">Fixer prix</button>
           </div>
-          <input type="text" placeholder="Note admin…" id="note-${c.id}" value="${c.admin_note || ''}"
+
+          <input type="text" placeholder="Note pour le client…" id="note-${c.id}" value="${c.admin_note || ''}"
             style="flex:1; min-width:180px; padding:7px 12px; border:1px solid var(--line); background:var(--papyrus); font-size:.85rem;">
           <button onclick="updateCommandeNote('${c.id}')" class="btn" style="padding:7px 14px; font-size:.75rem;">Note</button>
-          ${c.paid_at ? `<span style="color:#2a7a4a; font-size:.8rem;">✓ Payé le ${new Date(c.paid_at).toLocaleDateString('fr-FR')}</span>` : ''}
+
+          <span id="flash-${c.id}" style="color:#2a7a4a; font-size:.8rem; display:none;">✓ Enregistré</span>
         </div>
       </div>
     `).join('');
@@ -368,27 +389,39 @@ async function loadCommandesAdmin() {
   }
 }
 
-async function updateCommandeStatus(id, status) {
-  const sb = supabase.createClient(window.KEMET_CONFIG.supabaseUrl, window.KEMET_CONFIG.supabaseKey);
-  const { error } = await sb.from('ebook_requests').update({ status }).eq('id', id);
-  if (error) alert('Erreur : ' + error.message);
+function showFlash(id) {
+  const f = document.getElementById('flash-' + id);
+  if (!f) return;
+  f.style.display = 'inline';
+  setTimeout(() => { f.style.display = 'none'; }, 2000);
+}
+
+async function updateCommandeStatus(id) {
+  const status = document.getElementById('status-' + id).value;
+  try {
+    await patchCommande(id, { status });
+    showFlash(id);
+  } catch (err) { alert('Erreur : ' + err.message); }
 }
 
 async function updateCommandePrice(id) {
   const price = parseFloat(document.getElementById('price-' + id).value);
-  if (isNaN(price) || price <= 0) { alert('Prix invalide'); return; }
-  const sb = supabase.createClient(window.KEMET_CONFIG.supabaseUrl, window.KEMET_CONFIG.supabaseKey);
-  const { error } = await sb.from('ebook_requests').update({ price, status: 'accepted' }).eq('id', id);
-  if (error) alert('Erreur : ' + error.message);
-  else { alert(`✓ Prix fixé à ${price.toFixed(2)} € — statut passé à "accepted"`); loadCommandesAdmin(); }
+  if (isNaN(price) || price <= 0) { alert('Prix invalide (doit être > 0)'); return; }
+  try {
+    await patchCommande(id, { price, status: 'accepted' });
+    // Mettre à jour le select visuellement
+    const sel = document.getElementById('status-' + id);
+    if (sel) sel.value = 'accepted';
+    showFlash(id);
+  } catch (err) { alert('Erreur : ' + err.message); }
 }
 
 async function updateCommandeNote(id) {
-  const note = document.getElementById('note-' + id).value.trim();
-  const sb = supabase.createClient(window.KEMET_CONFIG.supabaseUrl, window.KEMET_CONFIG.supabaseKey);
-  const { error } = await sb.from('ebook_requests').update({ admin_note: note }).eq('id', id);
-  if (error) alert('Erreur : ' + error.message);
-  else alert('✓ Note enregistrée');
+  const admin_note = document.getElementById('note-' + id).value.trim();
+  try {
+    await patchCommande(id, { admin_note });
+    showFlash(id);
+  } catch (err) { alert('Erreur : ' + err.message); }
 }
 
 function renderAll() {
