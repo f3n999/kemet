@@ -1,0 +1,298 @@
+/* =========================================================
+   KEMET — egypt-map.css
+   Carte interactive de l'Égypte (rendu React)
+   ========================================================= */
+
+.egypt-map-section {
+  background:
+    radial-gradient(ellipse at top right, rgba(192,138,46,0.08), transparent 60%),
+    radial-gradient(ellipse at bottom left, rgba(31,58,138,0.10), transparent 55%),
+    linear-gradient(180deg, var(--ink) 0%, #1a1410 100%);
+  color: var(--papyrus);
+  padding: 90px 0 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.egypt-map-section::before {
+  content: '𓋹 𓂀 𓍿 𓊪 𓃭 𓆎';
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  letter-spacing: 0.4em;
+  font-size: 0.9rem;
+  color: rgba(192,138,46,0.18);
+  pointer-events: none;
+}
+
+.egypt-map-section .section-head .eyebrow { color: var(--gold-bright); }
+.egypt-map-section .section-head h2       { color: var(--papyrus-light); }
+.egypt-map-section .section-head .lead    { color: var(--papyrus-deep); }
+
+.map-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 36px;
+  margin-top: 48px;
+  align-items: stretch;
+}
+@media (max-width: 900px) {
+  .map-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* ───── SVG wrapper ───── */
+.map-svg-wrap {
+  background: rgba(243,232,206,0.03);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 2px;
+  position: relative;
+  min-height: 620px;
+  display: flex;
+  align-items: stretch;
+}
+.map-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 620px;
+}
+
+/* ───── Map elements ───── */
+.sea {
+  fill: rgba(31,58,138,0.18);
+}
+.sea-label {
+  fill: rgba(110,160,200,0.45);
+  font-family: var(--serif-display);
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.egypt-land {
+  fill: url(#kemet-sand-pattern);
+  stroke: rgba(201,168,76,0.55);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.desert-shade {
+  fill: rgba(212,184,150,0.05);
+  pointer-events: none;
+}
+
+/* ───── Nile river ───── */
+.nile-base {
+  fill: none;
+  stroke: rgba(31,58,138,0.55);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.nile-flow {
+  fill: none;
+  stroke: rgba(120,170,210,0.95);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 6 9;
+  animation: kemet-nile-flow 3.5s linear infinite;
+}
+@keyframes kemet-nile-flow {
+  to { stroke-dashoffset: -30; }
+}
+.nile-glow {
+  fill: none;
+  stroke: rgba(31,58,138,0.25);
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: blur(2px);
+}
+
+/* ───── Pyramid icons ───── */
+.pyramid-group { pointer-events: none; }
+.pyramid-face {
+  fill: var(--gold-bright);
+  stroke: rgba(0,0,0,0.4);
+  stroke-width: 0.4;
+}
+.pyramid-shadow {
+  fill: rgba(0,0,0,0.35);
+}
+
+/* ───── City markers ───── */
+.city-marker {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.city-marker:hover { transform: scale(1.08); }
+
+.city-dot {
+  fill: var(--gold);
+  stroke: var(--papyrus-light);
+  stroke-width: 1.5;
+  transition: fill 0.2s, r 0.2s;
+}
+.city-marker:hover .city-dot { fill: var(--gold-bright); }
+.city-marker.is-selected .city-dot { fill: var(--gold-bright); }
+
+.city-pulse {
+  fill: none;
+  stroke: var(--gold-bright);
+  stroke-width: 1.5;
+  opacity: 0;
+}
+.city-marker.is-selected .city-pulse {
+  animation: kemet-city-pulse 1.8s ease-out infinite;
+}
+@keyframes kemet-city-pulse {
+  0%   { r: 6;  opacity: 0.85; }
+  100% { r: 22; opacity: 0; }
+}
+
+.city-label {
+  fill: rgba(243,232,206,0.78);
+  font-family: var(--serif-display);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+  transition: fill 0.2s;
+  paint-order: stroke;
+  stroke: rgba(20,17,13,0.7);
+  stroke-width: 3;
+}
+.city-marker:hover .city-label,
+.city-marker.is-selected .city-label {
+  fill: var(--gold-bright);
+}
+
+/* ───── Compass / decorative ───── */
+.compass {
+  fill: none;
+  stroke: rgba(201,168,76,0.4);
+  stroke-width: 0.8;
+}
+.compass-text {
+  fill: rgba(201,168,76,0.7);
+  font-family: var(--serif-display);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+}
+
+/* ───── City info panel ───── */
+.city-panel {
+  background: rgba(243,232,206,0.04);
+  border: 1px solid rgba(201,168,76,0.25);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 620px;
+}
+.city-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-bright) 50%, var(--gold) 100%);
+  opacity: 0.6;
+}
+
+.city-panel-empty {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.city-panel-empty .glyph {
+  font-size: 56px;
+  color: var(--gold);
+  margin-bottom: 18px;
+  line-height: 1;
+}
+.city-panel-empty p {
+  color: var(--papyrus-deep);
+  max-width: 320px;
+  font-size: 0.95rem;
+}
+
+.city-panel h3 {
+  color: var(--gold-bright);
+  font-family: var(--serif-display);
+  font-size: 1.7rem;
+  letter-spacing: 0.04em;
+  margin: 0 0 6px 0;
+}
+.city-ancient {
+  color: rgba(243,232,206,0.6);
+  font-style: italic;
+  font-size: 0.88rem;
+  margin-bottom: 18px;
+}
+.city-era {
+  display: inline-block;
+  border: 1px solid var(--gold);
+  color: var(--gold-bright);
+  padding: 5px 14px;
+  font-family: var(--serif-display);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+  align-self: flex-start;
+}
+.city-description {
+  color: var(--papyrus);
+  font-size: 0.94rem;
+  line-height: 1.7;
+  margin-bottom: 26px;
+}
+
+.monument-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid rgba(201,168,76,0.18);
+}
+.monument-list li {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(201,168,76,0.12);
+  position: relative;
+  padding-left: 26px;
+}
+.monument-list li::before {
+  content: '𓊪';
+  position: absolute;
+  left: 0;
+  top: 14px;
+  color: var(--gold);
+  font-size: 1.1rem;
+}
+.monument-list li:last-child { border-bottom: none; }
+
+.monument-name {
+  color: var(--gold-bright);
+  font-family: var(--serif-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.monument-desc {
+  color: rgba(243,232,206,0.78);
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+/* ───── Loading / error ───── */
+.map-loading {
+  min-height: 620px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--papyrus-deep);
+  font-style: italic;
+}

@@ -7,6 +7,7 @@
 <meta name="description" content="Kemet raconte l'Égypte ancienne avec rigueur et sans jargon : figures, lieux, objets, controverses, techniques. Un média indépendant pour lecteurs passionnés.">
 <link rel="icon" href="assets/img/logo.jpg" type="image/jpeg">
 <link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/egypt-map.css">
 </head>
 <body>
 
@@ -50,6 +51,23 @@
           <div><strong>04</strong><span>Controverses d'égyptologie</span></div>
         </div>
       </aside>
+    </div>
+  </section>
+
+  <!-- CARTE INTERACTIVE D'ÉGYPTE -->
+  <section class="egypt-map-section" id="egypt-map">
+    <div class="container">
+      <header class="section-head">
+        <span class="eyebrow">Cartographie vivante</span>
+        <h2>L'Égypte, ville par ville</h2>
+        <p class="lead">
+          Suivez le Nil du sud au nord. Cliquez sur une ville pour découvrir
+          ses monuments, son époque et son rôle dans l'histoire pharaonique.
+        </p>
+      </header>
+      <div id="egypt-map-root">
+        <div class="map-loading">Chargement de la carte…</div>
+      </div>
     </div>
   </section>
 
@@ -137,5 +155,11 @@
 <script src="assets/js/kemet-config.js"></script>
 <script src="assets/js/auth.js"></script>
 <script>document.addEventListener('DOMContentLoaded', () => updateNavAuth());</script>
+
+<!-- React + htm pour la carte interactive (chargé en defer pour ne pas bloquer le LCP) -->
+<script defer src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.js"></script>
+<script defer src="assets/js/egypt-map.js"></script>
 </body>
 </html>
