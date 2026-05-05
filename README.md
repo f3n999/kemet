@@ -1,101 +1,242 @@
 # Kemet — Média indépendant sur l'Égypte ancienne
 
-**Direction verrouillée : A — contenu pur, aucun voyage, aucun lead capture.**
-Voir `setup/DIRECTION.md` pour le positionnement complet.
+**Application web fullstack déployée en production.**  
+URL : **https://bdd-momo.vercel.app**
+
+> « Comprendre l'Égypte, pas la consommer. »
+
+---
+
+## Présentation du projet
+
+Kemet est un média de vulgarisation haut de gamme sur l'Égypte ancienne, conçu pour un lecteur exigeant — quelqu'un qui a déjà lu des livres d'histoire et veut du contenu rigoureux, sourcé et sans jargon inutile.
+
+**Problème résolu** : aucun média francophone ne parle sérieusement d'égyptologie à un adulte cultivé. Les sites existants font du "Top 10 des mystères" ou du contenu généré à la chaîne.
+
+**Modèle** : contenu éditorial gratuit + ebooks premium achetables.
+
+**Public cible** : Antoine, 38 ans, ingénieur à Lyon, a lu Grimal et regarde Arte.
+
+---
+
+## Stack technique
+
+| Couche | Technologie | Justification |
+|--------|-------------|---------------|
+| **Frontend** | HTML5 / CSS3 / JavaScript vanilla | Site majoritairement statique — React aurait ajouté de la complexité inutile pour du contenu. Le HTML est l'outil adapté. |
+| **Base de données** | Supabase (PostgreSQL managé) | Même moteur SQL qu'un serveur PostgreSQL classique, avec auth, RLS et API REST intégrés. Zero infrastructure à gérer. |
+| **Backend / API** | Vercel Serverless Functions (Node.js) | Les endpoints vivent dans `/api/` et sont déployés automatiquement avec le reste du site. Pas de serveur à maintenir. |
+| **Paiements** | Stripe Checkout | Solution éprouvée, PCI-DSS compliant. Le backend valide chaque session avant de livrer l'ebook. |
+| **Déploiement** | Vercel (CDN mondial + CI/CD) | Un `git push` déclenche un build et un déploiement automatique. HTTPS géré, edge network mondial. |
+| **Visualisation 3D** | Three.js (ES modules via CDN) | Carte interactive 3D de l'Égypte avec OrbitControls, géométries extrudées, Nile animé, pyramides 3D. |
+
+---
+
+## Architecture (3 tiers)
+
+```
+┌─────────────────────────────────────┐
+│           CLIENT (Navigateur)        │
+│  HTML/CSS/JS · Three.js · React UMD │
+│  Auth dual-mode (localStorage/Supa) │
+└──────────────┬──────────────────────┘
+               │ HTTPS
+┌──────────────▼──────────────────────┐
+│         VERCEL EDGE / SERVERLESS     │
+│  CDN mondial · TLS automatique       │
+│  /api/contact          (Node.js)     │
+│  /api/create-checkout  (Stripe)      │
+│  /api/stripe-webhook   (webhook)     │
+│  /api/admin-users      (protégé)     │
+│  + 4 autres endpoints                │
+└──────────────┬──────────────────────┘
+               │ REST + JWT
+┌──────────────▼──────────────────────┐
+│           SUPABASE                   │
+│  PostgreSQL · Auth · RLS             │
+│  Tables : profiles, user_purchases,  │
+│  ebook_prices, contacts,             │
+│  ebook_requests                      │
+└─────────────────────────────────────┘
+```
+
+---
+
+## Fonctionnalités
+
+- **11 pages HTML** : index, histoire, chronologie, pharaons, théorie, ebooks, commande, contact, login, register, dashboard, admin, checkout-success
+- **Authentification complète** : inscription, connexion, sessions JWT (Supabase) avec fallback localStorage (mode démo)
+- **RBAC** : rôles `admin` / `user` appliqués côté client ET côté serveur (RLS PostgreSQL)
+- **Achat d'ebooks** : flow Stripe Checkout complet — paiement → webhook → livraison → dashboard
+- **Commandes sur-mesure** : formulaire de demande → admin fixe le prix → client paie → ebook livré
+- **Dashboard utilisateur** : bibliothèque des ebooks achetés, historique commandes
+- **Panel admin** : gestion utilisateurs, accès ebooks, prix, commandes
+- **Carte 3D interactive** : Three.js, 8 villes cliquables, Nil animé, pyramides 3D, labels géographiques
+- **Chronologie interactive** : 32+ événements filtrables par période et mot-clé
+- **API serverless** : 8 endpoints Vercel avec validation serveur, gestion d'erreurs HTTP correcte
+- **Security headers** : CSP, HSTS (2 ans), X-Frame-Options DENY, X-Content-Type-Options nosniff
+
+---
+
+## Sécurité
+
+| Mesure | Implémentation |
+|--------|---------------|
+| Mots de passe | Hashés par Supabase Auth (bcrypt interne) |
+| Sessions | JWT Supabase, expiration automatique |
+| Autorisation API | Chaque endpoint vérifie le rôle / l'email avant d'agir |
+| RLS PostgreSQL | Chaque user ne voit que ses propres données |
+| Secrets | Variables d'environnement Vercel, absents du repo |
+| Headers HTTP | CSP, HSTS, X-Frame-Options, X-Content-Type-Options |
+| Anti-IDOR | Vérification email côté serveur sur chaque opération sensible |
+
+---
 
 ## Structure du projet
 
 ```
 .
-├── index.html          → Accueil (positionnement média)
-├── histoire.html       → Récit chronologique long
-├── chronologie.html    → Frise interactive (filtre + recherche)
-├── pharaons.html       → Galerie des figures clés
-├── contact.html        → Formulaire (questions, corrections, contributions)
-├── 404.html            → Erreur
-├── voyage.html         → Redirection vers l'accueil (compat historique)
+├── index.html              → Accueil + carte 3D
+├── histoire.html           → Récit chronologique long
+├── chronologie.html        → Frise interactive
+├── pharaons.html           → Galerie des figures
+├── ebooks.html             → Catalogue ebooks
+├── commande.html           → Commande sur-mesure
+├── dashboard.html          → Espace utilisateur
+├── admin.html              → Panel admin (accès restreint)
+├── login.html / register.html
+├── contact.html
+├── api/
+│   ├── contact.js          → Formulaire de contact → Supabase
+│   ├── create-checkout.js  → Session Stripe ebook catalogue
+│   ├── create-custom-checkout.js → Session Stripe commande sur-mesure
+│   ├── stripe-webhook.js   → Livraison ebook après paiement
+│   ├── admin-users.js      → Liste utilisateurs (service role, protégé)
+│   ├── admin-commandes.js  → Liste commandes admin
+│   ├── admin-update-commande.js → Mise à jour statut commande
+│   ├── ebook-commande.js   → Création commande sur-mesure
+│   └── mes-commandes.js    → Commandes de l'utilisateur connecté
 ├── assets/
-│   ├── css/style.css   → Design system complet
-│   ├── js/main.js      → Nav, frise, recherche, formulaire
-│   └── img/            → À remplir (images libres de droits)
+│   ├── css/style.css       → Design system complet (variables CSS)
+│   ├── css/egypt-map.css   → Styles carte 3D
+│   ├── js/main.js          → Navigation, chronologie, formulaire
+│   ├── js/auth.js          → Authentification dual-mode
+│   ├── js/components.js    → Header/footer partagés
+│   ├── js/kemet-config.js  → Configuration Supabase
+│   └── js/egypt-map.js     → Carte 3D Three.js + React
 ├── data/
-│   └── timeline.json   → Base de données des événements (32 entrées de départ)
-└── setup/
-    ├── DIRECTION.md    → Positionnement verrouillé (lire en premier)
-    ├── VM_SETUP.md     → Mise en place machine virtuelle
-    └── SOURCES.md      → Où trouver les données et les sources académiques
+│   └── timeline.json       → 32+ événements de la chronologie
+├── ebooks/                 → Fichiers PDF des ebooks
+└── vercel.json             → Headers sécurité + config déploiement
 ```
 
-## Par quoi commencer
+---
 
-1. Lire `setup/DIRECTION.md` — c'est la boussole. Chaque décision de contenu doit être cohérente avec ça.
-2. Lire `setup/SOURCES.md` — pour comprendre où chercher quand tu écris un article.
-3. Mettre en place l'environnement selon `setup/VM_SETUP.md`.
-4. Lancer le site en local :
-   ```bash
-   cd /chemin/vers/kemet
-   python3 -m http.server 8000
-   ```
-   Puis http://localhost:8000
+## Base de données (Supabase / PostgreSQL)
 
-## Comment enrichir la chronologie
+```sql
+-- Profils utilisateurs (extension de auth.users)
+public.profiles        (id uuid PK → auth.users, name text, role text CHECK IN ('user','admin'))
 
-Édite `data/timeline.json`. Chaque événement suit ce format :
+-- Achats ebooks
+public.user_purchases  (id uuid PK, user_id → auth.users, ebook_slug text, purchased_at, stripe_session)
 
-```json
-{
-  "year": -1274,
-  "displayDate": "1274 av. J.-C.",
-  "period": "nouvel",
-  "title": "Bataille de Qadesh",
-  "description": "Ramsès II affronte les Hittites…"
-}
+-- Prix catalogue
+public.ebook_prices    (slug text PK, price numeric, updated_at)
+
+-- Contacts
+public.contacts        (id uuid PK, prenom, email, sujet, message, created_at)
+
+-- Commandes sur-mesure
+public.ebook_requests  (id uuid PK, user_id → auth.users, email, sujet, status, price, delivery_url, ...)
 ```
 
-Les `period` valides sont : `prehistoire`, `ancien`, `moyen`, `nouvel`, `tardif`, `greco`, `moderne`.
+**RLS (Row Level Security)** activé sur toutes les tables publiques :
+- Un `user` ne lit que ses propres lignes
+- Un `admin` accède à tout via le service role (côté serveur uniquement)
 
-Règle éditoriale : chaque entrée doit être **sourçable**. Ne mets pas un événement que tu ne pourrais pas justifier auprès d'un lecteur qui demande "d'où tu sors ça ?". Garde une trace privée de la source (livre, article, Wikidata) même si elle n'apparaît pas dans le JSON.
+---
 
-## Cadence éditoriale cible
+## Variables d'environnement
 
-Cf. `setup/DIRECTION.md` section "Cadence solo réaliste" :
+À configurer dans Vercel (ou dans un fichier `.env.local` pour le développement local avec Vercel CLI) :
 
-- 2 articles longs / mois (1500-2500 mots, sourcés)
-- 1 fiche courte / semaine (figure, lieu, objet)
-- 1 mise à jour chronologie / semaine
+```env
+SUPABASE_URL=https://xxxx.supabase.co
+SUPABASE_ANON_KEY=eyJ...
+SUPABASE_SERVICE_ROLE_KEY=eyJ...
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+BASE_URL=https://bdd-momo.vercel.app
+ADMIN_EMAIL=votre@email.com
+```
 
-Objectif 60 jours : **8 pièces de contenu publiées à un niveau que tu assumerais devant un égyptologue.**
+> ⚠️ **Aucune de ces valeurs n'est dans le repo.** Vérifiable avec `git log -p | grep -i "sk_live\|service_role\|whsec"`.
 
-## Hébergement (gratuit, recommandé)
+---
 
-- **Cloudflare Pages** → connecte un repo GitHub, push = deploy. CDN mondial, analytics gratuits. Premier choix.
-- **Netlify** → alternative simple, glisse-dépose du dossier.
-- **GitHub Pages** → gratuit, basique.
+## Compte de démonstration
 
-Pas de VPS, pas de nginx, pas de backend. Pas maintenant.
+| Rôle | Email | Mot de passe |
+|------|-------|-------------|
+| **Utilisateur** | `demo@kemet.fr` | `Kemet2025!` |
+| **Admin** | Demander à l'auteur | — |
 
-## Ce qui n'est PAS dans la v1 (volontairement)
+Le compte démo dispose de 2 ebooks déjà achetés dans la bibliothèque (tableau de bord démontrable immédiatement).
 
-- Pas de voyage, pas d'itinéraire, pas de capture de lead voyage. Définitivement.
-- Pas d'images (à ajouter depuis Met Museum API, Wikimedia Commons, Louvre — voir `setup/SOURCES.md`).
-- Pas de backend, pas de base de données serveur. Le JSON suffit jusqu'à plusieurs centaines d'entrées.
-- Pas de moteur Q&A IA. La recherche lexicale sur le JSON est suffisante et honnête.
-- Pas de newsletter active. À ajouter quand tu auras 10+ articles publiés, pas avant.
+---
 
-## Prochaines étapes (dans l'ordre)
+## Lancer en local
 
-1. Lire les 3 fichiers de `setup/` en entier.
-2. Écrire le premier vrai article long (2000 mots, 3 sources citées). Sujet proposé : *"Pourquoi Akhenaton a-t-il été effacé des listes royales ?"* — c'est un angle où l'égyptologie débat encore et où tu peux te démarquer.
-3. Créer un repo GitHub privé et pousser le projet.
-4. Déployer sur Cloudflare Pages (10 minutes).
-5. Acheter un nom de domaine (kemet.fr, kemet-media.fr, ou similaire — vérifier la disponibilité).
-6. Configurer Google Search Console + sitemap.xml.
-7. Écrire 7 autres articles en 60 jours.
-8. **Seulement après les 8 articles**, envisager newsletter, réseaux sociaux, monétisation.
+Les fonctions serverless nécessitent Vercel CLI pour tourner localement :
 
-## Le test de sanité permanent
+```bash
+# Installer Vercel CLI (une seule fois)
+npm i -g vercel
 
-Avant de publier quoi que ce soit, pose-toi la question :
-> *"Antoine, 38 ans, ingénieur à Lyon, qui a lu Grimal et regarde Arte, lirait-il ça jusqu'au bout ?"*
+# Cloner et configurer
+git clone https://github.com/f3n999/kemet.git
+cd kemet
 
-Si la réponse est non, ne publie pas. Réécris.
+# Lier au projet Vercel (récupère les env vars automatiquement)
+vercel link
+vercel env pull .env.local
+
+# Lancer en local avec les fonctions serverless actives
+vercel dev
+```
+
+> Sans `vercel dev`, les pages statiques fonctionnent via `npx serve .` ou `python3 -m http.server 8000`, mais les API (`/api/*`) ne seront pas disponibles.
+
+---
+
+## CI/CD
+
+```
+git push origin main
+       ↓
+GitHub webhook → Vercel
+       ↓
+Build automatique (< 30s)
+       ↓
+Déploiement production
+```
+
+Chaque commit sur `main` déclenche un déploiement automatique. Les Pull Requests génèrent des preview URLs isolées.
+
+---
+
+## Checklist sécurité OWASP (appliquée)
+
+- [x] **A01 Broken Access Control** — RLS PostgreSQL + vérification serveur sur chaque endpoint
+- [x] **A02 Cryptographic Failures** — HTTPS forcé (HSTS 2 ans), mots de passe jamais stockés en clair
+- [x] **A03 Injection** — Requêtes Supabase paramétrées (SDK), pas de SQL concaténé
+- [x] **A05 Security Misconfiguration** — CSP stricte, X-Frame-Options DENY, secrets en env vars
+- [x] **A07 Auth Failures** — Sessions JWT Supabase, expiration automatique, pas de secrets côté client
+
+---
+
+## Auteur
+
+Mohamed El Naggar — Bachelor 3 Cybersécurité, Oteria 2025-2026  
+Cours : Infrastructure et Programmation Web — Florian Amette

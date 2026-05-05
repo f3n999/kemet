@@ -76,11 +76,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ url: session.url });
   } catch (err) {
     console.error('create-custom-checkout error:', err.message, err.type, err.code);
-    return res.status(500).json({
-      error: 'Erreur lors de la création du paiement',
-      detail: err.message,
-      type: err.type,
-      code: err.code,
-    });
+    return res.status(500).json({ error: 'Erreur lors de la création du paiement' });
   }
 }
