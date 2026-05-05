@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
   try {
     /* Chercher par user_id OU par email */
-    let url = `${supabaseUrl}/rest/v1/ebook_requests?select=id,sujet,status,price,is_surprise,created_at,paid_at,admin_note&order=created_at.desc`;
+    let url = `${supabaseUrl}/rest/v1/ebook_requests?select=id,sujet,status,price,is_surprise,created_at,paid_at,admin_note,delivery_url&order=created_at.desc`;
     if (userId) {
       url += `&or=(user_id.eq.${userId},email.eq.${encodeURIComponent(email)})`;
     } else {

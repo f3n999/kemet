@@ -404,8 +404,13 @@ async function loadCommandesAdmin() {
             style="flex:1; min-width:160px; padding:6px 10px; border:1px solid var(--line); background:var(--papyrus); font-size:.82rem;">
           <button onclick="updateCommandeNote('${c.id}')" class="btn" style="padding:6px 12px; font-size:.72rem;">Note</button>
 
-          <!-- Livré -->
-          ${c.status === 'paid' || c.status === 'in_progress' ? `<button onclick="marquerLivre('${c.id}')" class="btn" style="padding:6px 12px; font-size:.72rem; border-color:#2a7a4a; color:#2a7a4a;">✓ Marquer livré + notifier</button>` : ''}
+          <!-- Livré : champ lien + bouton -->
+          ${c.status === 'paid' || c.status === 'in_progress' || c.status === 'accepted' ? `
+            <input type="url" placeholder="Lien de téléchargement (Drive, PDF…)" id="url-${c.id}" value="${c.delivery_url || ''}"
+              style="flex:1; min-width:220px; padding:6px 10px; border:1px solid #2a7a4a; background:var(--papyrus); font-size:.82rem;">
+            <button onclick="marquerLivre('${c.id}')" class="btn" style="padding:6px 12px; font-size:.72rem; border-color:#2a7a4a; color:#2a7a4a;">✓ Livrer + notifier</button>
+          ` : ''}
+          ${c.status === 'delivered' && c.delivery_url ? `<a href="${c.delivery_url}" target="_blank" style="color:#2a7a4a; font-size:.8rem;">📄 Lien livré</a>` : ''}
 
           <span id="flash-${c.id}" style="color:#2a7a4a; font-size:.8rem; display:none;">✓</span>
           <span id="email-flash-${c.id}" style="color:var(--lapis); font-size:.75rem; display:none;">📧 Email envoyé</span>
@@ -453,11 +458,18 @@ async function updateCommandeNote(id) {
 }
 
 async function marquerLivre(id) {
-  if (!confirm('Marquer cette commande comme livrée et notifier le client par email ?')) return;
+  const urlInput = document.getElementById('url-' + id);
+  const delivery_url = urlInput ? urlInput.value.trim() : '';
+  if (!delivery_url) {
+    alert('Collez d\'abord le lien de téléchargement de l\'ebook (Google Drive, PDF hébergé, etc.)');
+    urlInput?.focus();
+    return;
+  }
+  if (!confirm('Marquer livré et envoyer un email au client avec le lien ?')) return;
   try {
-    const data = await patchCommande(id, { status: 'delivered' });
+    const data = await patchCommande(id, { status: 'delivered', delivery_url });
     showFlash(id, data?.email?.sent);
-    setTimeout(() => loadCommandesAdmin(), 1000);
+    setTimeout(() => loadCommandesAdmin(), 1500);
   } catch (err) { alert('Erreur : ' + err.message); }
 }
 

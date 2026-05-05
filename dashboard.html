@@ -371,7 +371,16 @@ async function loadCommandes() {
         <p style="font-size:.92rem; color:var(--ink); line-height:1.55; margin-bottom:14px;">${c.sujet}</p>
         ${c.price ? `<p style="font-family:var(--serif-display); font-size:1.1rem; color:var(--lapis); margin-bottom:12px;">${parseFloat(c.price).toFixed(2)} €</p>` : ''}
         ${canPay ? `<button class="btn btn-gold" onclick="payerCommande('${c.id}', '${s.email}')">Payer ${parseFloat(c.price).toFixed(2)} € →</button>` : ''}
-        ${isPaid ? `<span style="color:#2a7a4a; font-family:var(--serif-display); font-size:.8rem; letter-spacing:.1em;">✓ Paiement reçu — votre ebook est en préparation</span>` : ''}
+        ${c.status === 'paid' || c.status === 'in_progress' ? `<span style="color:#2a7a4a; font-family:var(--serif-display); font-size:.8rem; letter-spacing:.1em;">✓ Paiement reçu — votre ebook est en préparation</span>` : ''}
+        ${c.status === 'delivered' ? `
+          <div style="margin-top:12px; padding:16px 20px; background:#f0f8f0; border:1px solid #2a7a4a;">
+            <p style="color:#2a7a4a; font-family:var(--serif-display); font-size:.8rem; letter-spacing:.1em; margin:0 0 12px;">✓ Votre ebook est prêt !</p>
+            ${c.delivery_url
+              ? `<a href="${c.delivery_url}" target="_blank" class="btn btn-gold" style="display:inline-block; padding:10px 24px;">Lire mon ebook →</a>`
+              : `<p style="font-size:.85rem; color:var(--ink-soft); margin:0;">Le lien de téléchargement vous sera envoyé par email très prochainement.</p>`
+            }
+          </div>
+        ` : ''}
         ${c.status === 'pending' ? `<span style="color:var(--ink-soft); font-size:.82rem;">Nous vous contacterons dans les 48h pour valider le sujet et fixer le prix.</span>` : ''}
         ${c.admin_note ? `<div style="margin-top:10px; padding:10px 14px; border-left:3px solid var(--gold); font-size:.85rem; color:var(--ink-soft);">${c.admin_note}</div>` : ''}
       </div>`;

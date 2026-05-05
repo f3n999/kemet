@@ -57,7 +57,8 @@ function emailAccepte({ email, sujet, price }) {
   };
 }
 
-function emailLivre({ email, sujet }) {
+function emailLivre({ email, sujet, delivery_url }) {
+  const btnUrl = delivery_url || `${BASE_URL}/dashboard.html`;
   return {
     to:      email,
     subject: 'Votre ebook Kemet est prêt !',
@@ -69,17 +70,18 @@ function emailLivre({ email, sujet }) {
         </div>
         <div style="padding:36px 32px;">
           <p style="font-size:1rem; margin-bottom:16px;">Bonjour,</p>
-          <p>Votre ebook sur mesure est <strong>prêt</strong> et disponible dans votre espace personnel.</p>
+          <p>Votre ebook sur mesure est <strong>prêt</strong>. Nous avons hâte que vous le lisiez.</p>
           <div style="border-left:3px solid #C9A84C; padding:14px 20px; margin:24px 0; background:#faf3e0;">
             <p style="font-size:.9rem; font-style:italic; color:#4a3f2a; margin:0;">"${sujet.slice(0, 200)}${sujet.length > 200 ? '…' : ''}"</p>
           </div>
           <div style="text-align:center; margin:28px 0;">
-            <a href="${BASE_URL}/dashboard.html"
+            <a href="${btnUrl}"
                style="display:inline-block; background:#1B3A6B; color:#fff; padding:14px 32px; text-decoration:none; font-family:Georgia,serif; letter-spacing:.08em;">
-              Télécharger mon ebook →
+              Accéder à mon ebook →
             </a>
           </div>
-          <p style="font-size:.85rem; color:#6b5f4a;">Merci de votre confiance. N'hésitez pas à commander un autre sujet.</p>
+          ${delivery_url ? `<p style="font-size:.82rem; color:#6b5f4a;">Lien direct : <a href="${delivery_url}" style="color:#1B3A6B;">${delivery_url}</a></p>` : ''}
+          <p style="font-size:.85rem; color:#6b5f4a; margin-top:20px;">Merci de votre confiance. N'hésitez pas à commander un autre sujet sur mesure.</p>
         </div>
         <div style="padding:20px 32px; border-top:1px solid #e8dfc8; text-align:center;">
           <p style="font-size:.75rem; color:#9a8a6a; margin:0;">Kemet — <a href="${BASE_URL}" style="color:#9a8a6a;">bdd-momo.vercel.app</a></p>
@@ -104,7 +106,7 @@ export default async function handler(req, res) {
   const { id, ...fields } = req.body || {};
   if (!id) return res.status(400).json({ error: 'id requis' });
 
-  const allowed = ['status', 'price', 'admin_note'];
+  const allowed = ['status', 'price', 'admin_note', 'delivery_url'];
   const patch   = {};
   for (const key of allowed) {
     if (key in fields) patch[key] = fields[key];
@@ -164,8 +166,9 @@ export default async function handler(req, res) {
         }));
       } else if (newStatus === 'delivered') {
         emailResult = await sendEmail(emailLivre({
-          email: commande.email,
-          sujet: commande.sujet,
+          email:        commande.email,
+          sujet:        commande.sujet,
+          delivery_url: patch.delivery_url || null,
         }));
       } else if (patch.price > 0 && commande.status === 'accepted') {
         /* Prix mis à jour sur une commande déjà acceptée → renvoyer */
