@@ -266,12 +266,15 @@
 
           <!-- TAB: COMMANDES SUR MESURE -->
           <div class="tab-panel" id="tab-commandes">
-            <h2 style="font-size:1.6rem; margin-bottom:8px;">Commandes sur mesure</h2>
+            <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:8px;">
+              <h2 style="font-size:1.6rem;">Commandes sur mesure</h2>
+              <button onclick="loadCommandesAdmin()" class="btn" style="padding:6px 14px; font-size:.72rem;">↺ Rafraîchir</button>
+            </div>
             <p class="muted" style="margin-bottom:24px; font-size:.9rem;">
-              Gérez les demandes d'ebooks sur mesure. Fixez le prix → passez en "accepted" → le client voit le bouton Payer dans son dashboard.
+              Fixez le prix → le client reçoit un email et peut payer → marquez livré quand l'ebook est prêt.
             </p>
             <div id="commandes-admin-list">
-              <p style="color:var(--ink-soft);">Chargement…</p>
+              <p style="color:var(--ink-soft);">Cliquez sur "Rafraîchir" pour charger les commandes.</p>
             </div>
           </div>
 
@@ -302,13 +305,14 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.tab-panel').forEach(x => x.classList.remove('is-active'));
       a.classList.add('is-active');
       document.getElementById('tab-' + a.dataset.tab).classList.add('is-active');
+      // Charger les commandes à chaque fois qu'on clique sur l'onglet
+      if (a.dataset.tab === 'commandes') loadCommandesAdmin();
     });
   });
 
   renderAll();
-
-  // Charger les commandes quand on clique sur l'onglet
-  document.querySelector('[data-tab="commandes"]').addEventListener('click', loadCommandesAdmin);
+  // Pré-charger les commandes en arrière-plan dès le chargement de la page
+  loadCommandesAdmin();
 });
 
 /* ── COMMANDES SUR MESURE (admin) ── */
@@ -321,19 +325,22 @@ const ADMIN_STATUS_OPTIONS = [
   { value: 'rejected',    label: 'Non retenue' },
 ];
 
-function adminHeaders() {
+function adminHeaders(withBody = false) {
   const s = getSession();
-  return { 'Content-Type': 'application/json', 'x-user-email': s.email };
+  if (!s) throw new Error('Session expirée — rechargez la page et reconnectez-vous.');
+  const h = { 'x-user-email': s.email };
+  if (withBody) h['Content-Type'] = 'application/json';
+  return h;
 }
 
 async function patchCommande(id, fields) {
   const res = await fetch('/api/admin-update-commande', {
     method:  'PATCH',
-    headers: adminHeaders(),
+    headers: adminHeaders(true),
     body:    JSON.stringify({ id, ...fields }),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+  if (!res.ok) throw new Error(`${res.status} — ${data.error || 'Erreur serveur'}`);
   return data;
 }
 
@@ -343,8 +350,10 @@ async function loadCommandesAdmin() {
 
   try {
     const res  = await fetch('/api/admin-commandes', { headers: adminHeaders() });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Erreur');
+    let data;
+    try { data = await res.json(); }
+    catch { throw new Error(`HTTP ${res.status} — réponse non-JSON (route introuvable ?)`); }
+    if (!res.ok) throw new Error(`${res.status} — ${data.error || 'Erreur'}`);
     if (!data.length) {
       el.innerHTML = '<div class="empty-state"><h3>Aucune commande reçue.</h3></div>';
       return;
