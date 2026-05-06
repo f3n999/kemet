@@ -14,7 +14,7 @@ export default [
     },
     rules: {
       "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-      "no-console": "off",          // console.error autorisé dans les API
+      "no-console": "off",
       "eqeqeq": "error",
       "no-eval": "error",
       "no-implied-eval": "error",
@@ -22,28 +22,45 @@ export default [
     },
   },
   {
-    // Scripts frontend (browser + vanilla JS)
-    files: ["assets/js/**/*.js"],
+    // egypt-map.js — ES module (import/export Three.js)
+    files: ["assets/js/egypt-map.js"],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "module",
+      globals: {
+        ...globals.browser,
+        THREE: "readonly",
+        React: "readonly",
+        ReactDOM: "readonly",
+      },
+    },
+    rules: {
+      "no-unused-vars": "warn",
+      "eqeqeq": "error",
+      "no-eval": "error",
+    },
+  },
+  {
+    // Scripts browser (globals exposés au HTML via window)
+    files: ["assets/js/*.js"],
+    ignores: ["assets/js/egypt-map.js"],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: "script",
       globals: {
         ...globals.browser,
-        // Libs chargées via CDN
-        React: "readonly",
-        ReactDOM: "readonly",
-        THREE: "readonly",
         supabase: "readonly",
         Stripe: "readonly",
       },
     },
     rules: {
-      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      // Ces fonctions sont appelées depuis le HTML (onclick, window.fn)
+      // ESLint ne voit pas les usages cross-fichiers → on désactive
+      "no-unused-vars": "off",
       "eqeqeq": "error",
       "no-eval": "error",
       "no-implied-eval": "error",
       "no-new-func": "error",
-      "no-alert": "off",            // alerts légitimes en frontend
     },
   },
 ];

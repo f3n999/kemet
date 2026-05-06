@@ -1,6 +1,7 @@
 {
   "name": "kemet",
   "version": "1.0.0",
+  "type": "module",
   "description": "Média indépendant sur l'Égypte ancienne — HTML/CSS/JS + Vercel Serverless",
   "private": true,
   "scripts": {
