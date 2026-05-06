@@ -178,6 +178,10 @@
   font-size: 0.95rem;
   line-height: 1.6;
 }
+.city-panel-empty .gold-accent {
+  color: var(--gold-bright);
+  font-weight: 600;
+}
 .city-panel-empty .map-hint-text {
   margin-top: 18px;
   font-size: 0.74rem;

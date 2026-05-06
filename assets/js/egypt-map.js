@@ -956,7 +956,7 @@ function CityPanel({ city, onReset }) {
       <aside class="city-panel city-panel-empty">
         <div>
           <div class="glyph">𓂀</div>
-          <p>Cliquez sur une <strong style="color:var(--gold-bright);">sphère dorée</strong> pour découvrir ses monuments, son époque et son rôle dans l'histoire pharaonique.</p>
+          <p>Cliquez sur une <strong class="gold-accent">sphère dorée</strong> pour découvrir ses monuments, son époque et son rôle dans l'histoire pharaonique.</p>
           <p class="map-hint-text">Glissez pour pivoter · molette pour zoomer · double-clic pour recentrer</p>
         </div>
       </aside>
