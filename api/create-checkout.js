@@ -1,4 +1,5 @@
 import Stripe from 'stripe';
+import { z } from 'zod';
 
 /* Prix maîtres — doivent rester en sync avec DEFAULT_PRICES dans auth.js */
 const PRICES = {
@@ -23,21 +24,30 @@ const TITLES = {
   'cleopatre-derniere-pharaone': 'Cléopâtre VII : La dernière pharaone face à Rome',
 };
 
+/* ── Schéma de validation Zod ── */
+const CheckoutSchema = z.object({
+  slug:  z.string().min(1).refine(s => s in PRICES, { message: 'Ebook introuvable ou gratuit' }),
+  email: z.string().email('Adresse email invalide'),
+});
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { slug, email } = req.body || {};
-
-  if (!slug || !email) {
-    return res.status(400).json({ error: 'slug et email requis' });
+  const result = CheckoutSchema.safeParse(req.body);
+  if (!result.success) {
+    const fieldErrors = result.error.flatten().fieldErrors;
+    const slugError = fieldErrors.slug?.[0];
+    const status = slugError?.includes('introuvable') ? 404 : 400;
+    return res.status(status).json({
+      error: 'Données invalides',
+      details: fieldErrors,
+    });
   }
 
-  const priceEur = PRICES[slug];
-  if (!priceEur) {
-    return res.status(404).json({ error: 'Ebook introuvable ou gratuit' });
-  }
+  const { slug, email } = result.data;
+  const priceEur = PRICES[slug]; // garanti non-nul par le schéma Zod
 
   const stripeKey = process.env.STRIPE_SECRET_KEY;
   if (!stripeKey) {

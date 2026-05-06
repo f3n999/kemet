@@ -1,23 +1,28 @@
+import { z } from 'zod';
+
+/* ── Schéma de validation Zod ── */
+const EbookCommandeSchema = z.object({
+  email:       z.string().email('Adresse email invalide'),
+  sujet:       z.string().min(5, 'Décrivez votre sujet (5 caractères min)').max(800, 'Sujet trop long'),
+  user_id:     z.string().uuid().optional().nullable(),
+  is_surprise: z.boolean().optional().default(false),
+  source:      z.enum(['web', 'admin', 'api']).optional().default('web'),
+});
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { email, sujet, user_id, is_surprise, source } = req.body || {};
-
-  /* Validation */
-  if (!email || !sujet) {
-    return res.status(400).json({ error: 'email et sujet sont requis' });
+  const result = EbookCommandeSchema.safeParse(req.body);
+  if (!result.success) {
+    return res.status(400).json({
+      error: 'Données invalides',
+      details: result.error.flatten().fieldErrors,
+    });
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ error: 'Adresse email invalide' });
-  }
-
-  if (sujet.length > 800) {
-    return res.status(400).json({ error: 'Sujet trop long (max 800 caractères)' });
-  }
+  const { email, sujet, user_id, is_surprise, source } = result.data;
 
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_ANON_KEY;

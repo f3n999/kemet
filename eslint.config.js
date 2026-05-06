@@ -22,8 +22,8 @@ export default [
     },
   },
   {
-    // egypt-map.js — ES module (import/export Three.js)
-    files: ["assets/js/egypt-map.js"],
+    // Fichiers ES module dans assets/js (import/export)
+    files: ["assets/js/egypt-map.js", "assets/js/egypt-map-data.js"],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: "module",
@@ -43,7 +43,7 @@ export default [
   {
     // Scripts browser (globals exposés au HTML via window)
     files: ["assets/js/*.js"],
-    ignores: ["assets/js/egypt-map.js"],
+    ignores: ["assets/js/egypt-map.js", "assets/js/egypt-map-data.js"],
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: "script",

@@ -1,18 +1,27 @@
+import { z } from 'zod';
+
+/* ── Schéma de validation Zod ── */
+const ContactSchema = z.object({
+  prenom: z.string().min(1, 'Prénom requis').max(100, 'Prénom trop long'),
+  email:  z.string().email('Adresse email invalide'),
+  sujet:  z.string().min(1, 'Sujet requis').max(200, 'Sujet trop long'),
+  envies: z.string().min(10, 'Message trop court (10 caractères min)').max(5000, 'Message trop long'),
+});
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { prenom, email, sujet, envies } = req.body || {};
-
-  if (!prenom || !email || !sujet || !envies) {
-    return res.status(400).json({ error: 'Tous les champs sont requis.' });
+  const result = ContactSchema.safeParse(req.body);
+  if (!result.success) {
+    return res.status(400).json({
+      error: 'Données invalides',
+      details: result.error.flatten().fieldErrors,
+    });
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ error: 'Email invalide.' });
-  }
+  const { prenom, email, sujet, envies } = result.data;
 
   try {
     const supabaseUrl  = process.env.SUPABASE_URL;
