@@ -7,8 +7,7 @@
   "scripts": {
     "lint": "eslint api/**/*.js assets/js/*.js --max-warnings 0",
     "lint:fix": "eslint api/**/*.js assets/js/*.js --fix",
-    "dev": "vercel dev",
-    "build": "vercel build"
+    "dev": "vercel dev"
   },
   "devDependencies": {
     "eslint": "^9.20.0",
