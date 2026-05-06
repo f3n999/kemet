@@ -197,25 +197,17 @@ graph TD
 
 ---
 
-## Captures d'écran
+## Aperçu de l'application
 
-### Page d'accueil — Carte 3D interactive
+> 🌐 **Application en production : [https://bdd-momo.vercel.app](https://bdd-momo.vercel.app)**
 
-> La carte Three.js affiche l'Égypte en 3D avec 8 villes cliquables, le Nil animé et des pyramides 3D géolocalisées.
-
-![Accueil — carte 3D](assets/screenshots/home-map.png)
-
-### Dashboard utilisateur — Bibliothèque
-
-> Le dashboard affiche les ebooks achetés, l'historique des commandes sur-mesure et les statuts de livraison.
-
-![Dashboard utilisateur](assets/screenshots/dashboard.png)
-
-### Panel admin — Gestion des commandes
-
-> L'admin peut voir toutes les commandes, fixer un prix, mettre à jour le statut et fournir l'URL de téléchargement.
-
-![Panel admin](assets/screenshots/admin-panel.png)
+| Page | URL directe |
+|------|-------------|
+| Accueil + carte 3D | [bdd-momo.vercel.app](https://bdd-momo.vercel.app) |
+| Chronologie interactive | [/chronologie.html](https://bdd-momo.vercel.app/chronologie.html) |
+| Catalogue ebooks | [/ebooks.html](https://bdd-momo.vercel.app/ebooks.html) |
+| Dashboard utilisateur | [/dashboard.html](https://bdd-momo.vercel.app/dashboard.html) |
+| Panel admin | [/admin.html](https://bdd-momo.vercel.app/admin.html) |
 
 ---
 
