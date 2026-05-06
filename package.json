@@ -1,8 +1,21 @@
 {
+  "name": "kemet",
+  "version": "1.0.0",
+  "description": "Média indépendant sur l'Égypte ancienne — HTML/CSS/JS + Vercel Serverless",
+  "private": true,
+  "scripts": {
+    "lint": "eslint api/**/*.js assets/js/*.js --max-warnings 0",
+    "lint:fix": "eslint api/**/*.js assets/js/*.js --fix",
+    "dev": "vercel dev",
+    "build": "vercel build"
+  },
   "devDependencies": {
+    "eslint": "^9.20.0",
+    "globals": "^15.0.0",
     "sharp": "^0.34.5"
   },
   "dependencies": {
     "stripe": "^22.1.0"
   }
 }
+
