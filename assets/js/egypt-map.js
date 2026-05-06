@@ -16,17 +16,34 @@ async function waitForGlobals() {
     const start = Date.now();
     const tick = () => {
       if (window.React && window.ReactDOM && window.htm) return resolve();
-      if (Date.now() - start > 6000) return reject(new Error('React globals timeout'));
-      setTimeout(tick, 40);
+      if (Date.now() - start > 15000) return reject(new Error('React globals timeout (15s)'));
+      setTimeout(tick, 60);
     };
     tick();
   });
 }
 
+function showFatalError(msg) {
+  const el = document.getElementById('egypt-map-root');
+  if (!el) return;
+  el.innerHTML = `
+    <div style="min-height:520px;display:flex;align-items:center;justify-content:center;
+                color:#e3b34a;font-family:Georgia,serif;text-align:center;padding:40px;
+                background:linear-gradient(180deg,#1a1410 0%,#0c0906 100%);
+                border:1px solid rgba(201,168,76,0.25);">
+      <div style="max-width:480px;">
+        <div style="font-size:48px;margin-bottom:16px;">𓂀</div>
+        <p style="color:#e3b34a;font-size:1.1rem;margin-bottom:8px;">Carte 3D indisponible</p>
+        <p style="color:rgba(243,232,206,0.6);font-size:0.85rem;font-style:italic;">${msg}</p>
+      </div>
+    </div>`;
+}
+
 try {
   await waitForGlobals();
 } catch (err) {
-  console.error('[egypt-map]', err.message);
+  console.error('[egypt-map] globals:', err.message);
+  showFatalError(err.message);
   throw err;
 }
 
@@ -745,7 +762,6 @@ class EgyptScene {
       ctx.font = `${style} "Cinzel", "Cormorant Garamond", Georgia, serif`;
       ctx.textAlign    = 'center';
       ctx.textBaseline = 'middle';
-      ctx.letterSpacing = '0.12em';
 
       if (shadow) {
         ctx.shadowColor   = 'rgba(0,0,0,0.9)';
@@ -969,14 +985,21 @@ function CityPanel({ city, onReset }) {
 
 function EgyptMapApp() {
   const [selectedId, setSelectedId] = useState(null);
+  const [sceneError, setSceneError] = useState(null);
   const containerRef = useRef(null);
   const sceneRef = useRef(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
-    const scene = new EgyptScene(containerRef.current, (id) => setSelectedId(id));
-    sceneRef.current = scene;
-    return () => scene.dispose();
+    try {
+      const scene = new EgyptScene(containerRef.current, (id) => setSelectedId(id));
+      sceneRef.current = scene;
+      console.info('[egypt-map] EgyptScene initialized');
+      return () => scene.dispose();
+    } catch (err) {
+      console.error('[egypt-map] EgyptScene error:', err);
+      setSceneError(err.message || String(err));
+    }
   }, []);
 
   useEffect(() => {
@@ -994,7 +1017,23 @@ function EgyptMapApp() {
     <div class="map-grid">
       <div class="map-3d-wrap">
         <div class="map-3d-canvas" ref=${containerRef}></div>
-        <div class="map-3d-hint">𓂀 Glissez · molette = zoom · cliquez une sphère</div>
+        ${sceneError ? html`
+          <div style=${{
+            position: 'absolute', inset: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'rgba(14,10,7,0.92)', color: '#e3b34a',
+            fontFamily: 'Georgia, serif', textAlign: 'center', padding: '40px',
+            zIndex: 5,
+          }}>
+            <div style=${{ maxWidth: '420px' }}>
+              <div style=${{ fontSize: '48px', marginBottom: '16px' }}>𓂀</div>
+              <p>Carte 3D indisponible</p>
+              <p style=${{ fontSize: '0.8rem', opacity: 0.7, fontStyle: 'italic' }}>${sceneError}</p>
+            </div>
+          </div>
+        ` : html`
+          <div class="map-3d-hint">𓂀 Glissez · molette = zoom · cliquez une sphère</div>
+        `}
       </div>
       <${CityPanel} city=${selectedCity} onReset=${reset} />
     </div>
@@ -1004,8 +1043,17 @@ function EgyptMapApp() {
 /* ────────────────────────────────────────────────
    MOUNT
    ──────────────────────────────────────────────── */
-const mountPoint = document.getElementById('egypt-map-root');
-if (mountPoint) {
-  mountPoint.innerHTML = '';
-  window.ReactDOM.createRoot(mountPoint).render(html`<${EgyptMapApp} />`);
+try {
+  const mountPoint = document.getElementById('egypt-map-root');
+  if (!mountPoint) {
+    console.warn('[egypt-map] #egypt-map-root introuvable');
+  } else {
+    mountPoint.innerHTML = '';
+    window.ReactDOM.createRoot(mountPoint).render(html`<${EgyptMapApp} />`);
+    console.info('[egypt-map] React mounted');
+  }
+} catch (err) {
+  console.error('[egypt-map] mount error:', err);
+  showFatalError(err.message || 'Erreur de montage React');
+  throw err;
 }
