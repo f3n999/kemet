@@ -92,6 +92,30 @@
   z-index: 2;
 }
 
+/* ───── Erreur d'initialisation 3D ───── */
+.map-3d-error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(14,10,7,0.92);
+  color: var(--gold-bright, #e3b34a);
+  font-family: Georgia, serif;
+  text-align: center;
+  padding: 40px;
+  z-index: 5;
+}
+.map-3d-error-inner { max-width: 420px; }
+.map-3d-error-glyph { font-size: 48px; margin-bottom: 16px; line-height: 1; }
+.map-3d-error-title { font-size: 1.05rem; margin: 0 0 10px; }
+.map-3d-error-detail {
+  font-size: 0.78rem;
+  opacity: 0.7;
+  font-style: italic;
+  margin: 0;
+}
+
 /* ───── Loading state ───── */
 .map-loading {
   min-height: 640px;

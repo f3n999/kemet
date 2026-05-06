@@ -1018,17 +1018,11 @@ function EgyptMapApp() {
       <div class="map-3d-wrap">
         <div class="map-3d-canvas" ref=${containerRef}></div>
         ${sceneError ? html`
-          <div style=${{
-            position: 'absolute', inset: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'rgba(14,10,7,0.92)', color: '#e3b34a',
-            fontFamily: 'Georgia, serif', textAlign: 'center', padding: '40px',
-            zIndex: 5,
-          }}>
-            <div style=${{ maxWidth: '420px' }}>
-              <div style=${{ fontSize: '48px', marginBottom: '16px' }}>𓂀</div>
-              <p>Carte 3D indisponible</p>
-              <p style=${{ fontSize: '0.8rem', opacity: 0.7, fontStyle: 'italic' }}>${sceneError}</p>
+          <div class="map-3d-error">
+            <div class="map-3d-error-inner">
+              <div class="map-3d-error-glyph">𓂀</div>
+              <p class="map-3d-error-title">Carte 3D indisponible</p>
+              <p class="map-3d-error-detail">${sceneError}</p>
             </div>
           </div>
         ` : html`
